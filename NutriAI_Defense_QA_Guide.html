@@ -1,0 +1,283 @@
+﻿<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="utf-8">
+<title>NutriAI — دليل الأسئلة والأجوبة لمناقشة التخرج</title>
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 15mm 20mm 15mm;
+  }
+  body {
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+    color: #1a1a1a;
+    line-height: 1.7;
+    background: #fff;
+    font-size: 13.5px;
+  }
+  .header-box {
+    text-align: center;
+    border-bottom: 3px double #2e7d32;
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+  }
+  .univ-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #1b5e20;
+    margin-bottom: 5px;
+  }
+  .doc-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #0d3813;
+    margin: 8px 0;
+  }
+  .meta-info {
+    font-size: 13px;
+    color: #555;
+  }
+  .q-card {
+    background: #fbfdfb;
+    border: 1px solid #c8e6c9;
+    border-right: 5px solid #2e7d32;
+    border-radius: 6px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    page-break-inside: avoid;
+  }
+  .q-title {
+    font-size: 15.5px;
+    font-weight: bold;
+    color: #1b5e20;
+    margin-bottom: 8px;
+  }
+  .q-goal {
+    font-size: 12.5px;
+    color: #b71c1c;
+    background: #ffebee;
+    padding: 4px 10px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .q-answer {
+    font-size: 13.5px;
+    color: #212121;
+    text-align: justify;
+  }
+  .q-answer strong {
+    color: #0d3813;
+  }
+  .code-token {
+    font-family: Consolas, monospace;
+    background: #e8f5e9;
+    color: #1b5e20;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 12.5px;
+    direction: ltr;
+    display: inline-block;
+  }
+  ul, ol {
+    margin-top: 6px;
+    margin-bottom: 6px;
+    padding-right: 22px;
+  }
+  li {
+    margin-bottom: 5px;
+  }
+  .footer {
+    text-align: center;
+    font-size: 11px;
+    color: #777;
+    margin-top: 30px;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+  }
+</style>
+</head>
+<body>
+
+<div class="header-box">
+  <div class="univ-title">جامعة دمياط — كلية الحاسبات والذكاء الاصطناعي (2025/2026)</div>
+  <div class="doc-title">🥗 NutriAI — دليل الأسئلة والأجوبة المتوقعة لمناقشة التخرج</div>
+  <div class="meta-info">
+    <strong>المشروع:</strong> NutriAI: An Intelligent Personalized Diet Recommendation System<br>
+    <strong>إشراف:</strong> أ.د. أحمد محمد ربيع &nbsp;|&nbsp; 
+    <strong>إعداد:</strong> يوسف علي، أحمد إبراهيم، أحمد محمد، عبد الوهاب أحمد
+  </div>
+</div>
+
+<div class="q-card">
+  <div class="q-title">س 1: ليه استخدمتوا Large Language Models (LLMs) ومستخدمتوش Machine Learning عادي أو Rule-Based Expert Systems؟</div>
+  <div class="q-goal">🎯 الهدف من السؤال: اختبار فهم المبرر الهندسي والمعماري لاختيار التقنية وليس مجرد اتباع الموضة.</div>
+  <div class="q-answer">
+    الأنظمة التقليدية من نوع <span class="code-token">Rule-Based Systems</span> تعتمد على شجرات قرارات وقواعد مسبقة وثابتة. هذه الأنظمة تفشل تماماً عند مواجهة معضلة <strong>التعقيد التراكمي المتداخل (Combinatorial Complexity)</strong>؛ فمثلاً مريض يعاني من سكري نوع ثانٍ + ارتفاع ضغط دم + حساسية جلوتين + يفضل نظاماً نباتياً + يتناول دواء Metformin في نفس الوقت. تغطية كل هذه الاحتمالات برمجياً يحتاج ملايين شروط <span class="code-token">if-else</span> المستحيلة واقعياً.<br>
+    أما نماذج الـ Machine Learning التقليدية (كالـ Classification)، فوظيفتها تصنيفية وليست توليدية؛ لا يمكنها كتابة خطة سردية متكاملة لـ 15 يوماً بـ 60 وجبة مع مقاديرها وملاحظاتها.<br>
+    استخدامنا لنماذج الـ LLM (خاصة Llama-3.3-70B) وفر لنا <strong>Deep Semantic Understanding</strong> لفهم العلاقات المعقدة بين الأمراض والمغذيات، وتوليد وجبات متنوعة ومتوازنة، مع القدرة على تتبع سياق المحادثة في الشات لاستبدال الأطعمة لحظياً.
+  </div>
+</div>
+
+<div class="q-card">
+  <div class="q-title">س 2: نماذج الـ LLMs معروف إنها بتعاني من الـ Hallucination (الهلوسة).. إزاي تضمنوا الأمان الإكلينيكي لمريض سكر أو ضغط؟</div>
+  <div class="q-goal">🎯 الهدف من السؤال: مناقشة الأمان الإكلينيكي (Clinical Safety Guardrails) ومنع التوصيات الخطرة.</div>
+  <div class="q-answer">
+    لم نترك الموديل يولد بحرية عشوائية، بل أحطناه بـ 4 طبقات أمان هندسية صارمة:
+    <ul>
+      <li><strong>Low Temperature (0.2):</strong> ضبطنا الـ Temperature على 0.2 في توليد الخطط لتقليل الـ Entropy وإجبار الموديل على الالتزام الصارم بالـ Tokens الأكثر حتمية وموثوقية طبية.</li>
+      <li><strong>Strict Clinical System Prompt:</strong> حقن الموديل بقواعد إكلينيكية إلزامية غير قابلة للتفاوض: منع السكريات البسيطة للسكري، تقليل الصوديوم (&lt;1500mg) للضغط، ومنع مسببات الحساسية بشكل قطعي.</li>
+      <li><strong>Structured JSON Output Contract:</strong> إجبار الموديل على إرجاع مخرجاته داخل JSON Schema محددة ومسبقة الفحص تحتوي على حقل إلزامي اسمه <span class="code-token">medical_adjustments</span> يوثق كل تعديل علاجي قام به الموديل.</li>
+      <li><strong>Post-Generation Programmatic Scan:</strong> فحص برمجي للرد في الباك إند للتأكد من خلوه من أي مكون محظور قبل عرضه، مع إرفاق Disclaimer قانوني يوضح حدود النظام كأداة إرشادية.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="q-card">
+  <div class="q-title">س 3: ليه مقسمين المشروع Backend (FastAPI) و Frontend (Streamlit)؟ ما كان ممكن يتعمل كله في ملف Streamlit واحد؟</div>
+  <div class="q-goal">🎯 الهدف من السؤال: اختبار فهم مبادئ هندسة البرمجيات (System Architecture & Separation of Concerns).</div>
+  <div class="q-answer">
+    اعتمدنا مبدأ الفصل المعماري (Architectural Decoupling) لسببين جوهريين:
+    <ul>
+      <li><strong>Scalability & Reusability:</strong> بناء الباك إند بواسطة FastAPI يتيح RESTful API مستقل وموثق بالكامل بـ Swagger/OpenAPI. هذا يعني أنه لو قررنا غداً بناء تطبيق موبايل (Flutter أو React Native)، لن نعيد كتابة سطر واحد في الباك إند أو الذكاء الاصطناعي، بل سيربط تطبيق الموبايل مباشرة مع نفس الـ Endpoints.</li>
+      <li><strong>Asynchronous Concurrency:</strong> خادم FastAPI مبني على معيار ASGI ومكتبة <span class="code-token">asyncio</span>، مما يمكنه من معالجة آلاف الطلبات المتزامنة (Non-blocking I/O) دون تجميد الخادم، بينما Streamlit يعيد تنفيذ الكود كاملاً (Script Re-run) عند كل تفاعل للمستخدم، فدمج العمليات الثقيلة داخله كان سيسبب بطئاً وتجمداً في الواجهة.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="q-card">
+  <div class="q-title">س 4: الموديل بيشتغل بـ Groq و OpenRouter.. إيه الفرق الجوهري بينهم وليه الاتنين معاً؟</div>
+  <div class="q-goal">🎯 الهدف من السؤال: اختبار فهم البنية التحتية والاستدلال السحابي وتجنب الـ Single Point of Failure.</div>
+  <div class="q-answer">
+    صممنا النظام كـ <strong>Multi-Provider Architecture</strong> لتحقيق أعلى موثوقية:
+    <ul>
+      <li><strong>Groq:</strong> يعتمد على عتاد مخصص يسمى LPU (Language Processing Unit) بدلاً من معالجات GPU التقليدية، مما يحقق سرعة استدلال مذهلة تصل إلى 250-300 توكن/ثانية. نستخدم عليه موديل Llama-3.3-70B Versatile لتوليد خطة الـ 15 يوماً كاملة (أكثر من 5,600 توكن) في أقل من 20 ثانية فقط!</li>
+      <li><strong>OpenRouter:</strong> يعمل كـ Unified Gateway تتيح الوصول لأكثر من 100 موديل مختلف (مثل GPT-4o-mini و Mistral) كبديل مرن واقتصادي.</li>
+      <li><strong>الفائدة الهندسية:</strong> تفادي الـ Single Point of Failure؛ فإذا حدث انقطاع أو تجاوز لمعدل الطلبات (Rate Limit) في Groq، يمكن للمستخدم بضغطة زر من القائمة الجانبية التحويل لـ OpenRouter فوراً دون إعادة تشغيل السيرفر.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="q-card">
+  <div class="q-title">س 5: لو انقطع الإنترنت تماماً، هل النظام يتوقف عن العمل؟ وما هو محرك الـ Offline Engine؟</div>
+  <div class="q-goal">🎯 الهدف من السؤال: اختبار مرونة النظام والعمل في ظروف عدم توفر الشبكة (Offline Resilience).</div>
+  <div class="q-answer">
+    النظام مصمم ليعمل 100% بدون إنترنت عبر <strong>Offline Clinical Engine</strong> مدمج في الباك إند:
+    <ul>
+      <li>يعتمد على معادلات التغذية الأيضية المعيارية عالمياً (Mifflin-St Jeor Equation) لحساب السعرات ومعدل الأيض الأساسي BMR والاحتياج الفعلي TDEE.</li>
+      <li>يطبق خوارزميات إكلينيكية محددة لتوزيع الماكروز ومطابقة الوجبات المناسبة لكل مرض وحساسية بصورة حتمية وآمنة طبياً.</li>
+      <li>يولد خطة الـ 15 يوماً والماكروز في أجزاء من الثانية محلياً بدون أي اتصال بالإنترنت وبدون مفاتيح API، ويعمل تلقائياً كبديل فوري (Graceful Fallback) عند انقطاع الشبكة.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="q-card">
+  <div class="q-title">س 6: كيف تم حساب السعرات والماكروز رياضياً وعلمياً في النظام؟</div>
+  <div class="q-goal">🎯 الهدف من السؤال: اختبار الأساس الرياضي والطبي المعتمد في المشروع.</div>
+  <div class="q-answer">
+    اعتمدنا معادلة <strong>Mifflin-St Jeor</strong>، وهي الأكثر دقة والمعتمدة لدى الجمعية الأمريكية للتغذية:
+    <ol>
+      <li><strong>حساب معدل الأيض الأساسي (BMR):</strong><br>
+        للذكور: (10 × الوزن كجم) + (6.25 × الطول سم) - (5 × العمر) + 5<br>
+        للإناث: (10 × الوزن كجم) + (6.25 × الطول سم) - (5 × العمر) - 161
+      </li>
+      <li><strong>حساب الاحتياج اليومي الفعلي (TDEE):</strong> ضرب BMR في معامل النشاط الحركي (من 1.2 للخامل إلى 1.9 لشديد النشاط).</li>
+      <li><strong>تعديل السعرات حسب الهدف:</strong> عجز 450-500 سعرة لإنقاص الوزن، فائض 300-350 سعرة لبناء العضلات، ومطابقة للثبات.</li>
+    </ol>
+  </div>
+</div>
+
+<div class="q-card">
+  <div class="q-title">س 7: في الكتاب والـ ERD مكتوب قاعدة بيانات، ولكن في الكود الحالي التخزين In-Memory.. ما هو التبرير الهندسي؟</div>
+  <div class="q-goal">🎯 الهدف من السؤال: فخ كلاسيكي في مناقشات التخرج لاختبار أمانة واحترافية الطالب في توضيح الـ Trade-offs.</div>
+  <div class="q-answer">
+    في مرحلة الـ Academic Prototype، كان الهدف الهندسي هو التحقق من خط أنابيب الذكاء الاصطناعي (AI Prompt & Validation Pipeline) والأمان الإكلينيكي.<br>
+    استخدام الـ In-Memory Dictionaries وفر لنا استجابة فائقة للـ Endpoints بأقل من 3 مللي ثانية، مع حماية بيانات المرضى من التسريب على الأقراص الصلبة أثناء الاختبارات.<br>
+    ومع ذلك، قمنا برسم مخطط الـ ERD بالكامل في الفصل الثالث ليمثل المستهدف المستقبلي لقاعدة بيانات PostgreSQL الإنتاجية، ووثقنا في الفصل الخامس خطة الانتقال لربط الداتابيز وتشفير كلمات المرور بـ Bcrypt.
+  </div>
+</div>
+
+<div class="q-card">
+  <div class="q-title">س 8: ما هو الدور الحقيقي لمكتبة Pydantic في المشروع؟ وهل هي مجرد Type Hinting؟</div>
+  <div class="q-goal">🎯 الهدف من السؤال: اختبار المهارات التكنيكال في معايير كود بايثون وهندسة الـ API.</div>
+  <div class="q-answer">
+    الـ Pydantic في مشروعنا هو <strong>حارس البوابة الأول (First Line of Defense)</strong>:
+    <ul>
+      <li>يقوم بفرض قيود صارمة وقت التشغيل (Runtime Data Validation)؛ فيمنع قبول عمر خارج نطاق 10-100 سنة، أو وزن خارج نطاق 30-300 كجم.</li>
+      <li>يرفض الطلبات غير المطابقة فوراً بكود HTTP 422 مع ذكر الحقل غير الصالح بدقة، مما يمنع إرسال أي بيانات مشوهة للموديل ويوفر التكلفة واستهلاك التوكنز.</li>
+      <li>تستخدم مكتبة <span class="code-token">pydantic-settings</span> لإدارة ملف الإعدادات <span class="code-token">.env</span> بطريقة Type-Safe تفشل فوراً عند الإقلاع (Fail-Fast) إذا كان هناك إعداد ناقص، بدلاً من انهيار السيرفر فجأة في الإنتاج.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="q-card">
+  <div class="q-title">س 9: كيف تضمنون إرجاع JSON سليم من الـ LLM دون أن يفسد الماركداون أو النصوص التوضيحية الواجهة؟</div>
+  <div class="q-goal">🎯 الهدف من السؤال: اختبار الـ Defensive Programming و الـ Post-Processing.</div>
+  <div class="q-answer">
+    بنينا طبقة معالجة دفاعية داخل دالة <span class="code-token">parse_llm_json()</span>:
+    <ul>
+      <li>تقوم بإزالة علامات الكود <span class="code-token">`json</span> و <span class="code-token">`</span> تلقائياً إذا أضافها الموديل.</li>
+      <li>تصلح الأقواس المزدوجة الناتجة عن التنسيق <span class="code-token">{{</span> و <span class="code-token">}}</span>.</li>
+      <li>تستخدم دالتي <span class="code-token">find('{')</span> و <span class="code-token">rfind('}')</span> لقص واستخراج كائن الـ JSON فقط وتجاهل أي نص شارح قبله أو بعده.</li>
+      <li>تتحقق من وجود المفاتيح الإلزامية مثل <span class="code-token">meal_plan</span> وترفض أي كائن ناقص برمجياً قبل تمريره للواجهة.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="q-card">
+  <div class="q-title">س 10: لماذا تم ضبط الـ Temperature عند 0.2 لتوليد الخطة وعند 0.7 لشات المتابعة؟</div>
+  <div class="q-goal">🎯 الهدف من السؤال: فهم الـ Hyperparameters وتأثيرها على استقرار وموثوقية مخرجات الذكاء الاصطناعي.</div>
+  <div class="q-answer">
+    الـ Temperature يتحكم في اتساع أو حدة توزيع الاحتمالات (Probability Distribution):
+    <ul>
+      <li><strong>في توليد الدايت (0.2):</strong> المهمة طبية صارمة تتطلب الالتزام الدقيق بالقواعد الإكلينيكية وهيكل الـ JSON، فالقيمة المنخفضة تجعل الموديل شبه حتمي (Deterministic) وعالي الموثوقية.</li>
+      <li><strong>في الشات (0.7):</strong> المهمة حوارية وتفاعلية، فالقيمة الأعلى تمنح الموديل مرونة لغوية وتنوعاً في صياغة النصائح وبدائل الأكلات مع بقائه مقيداً بسياق الخطة المعتمدة مسبقاً.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="q-card">
+  <div class="q-title">س 11: كيف تم تأمين واجهة الـ API ضد اختراق خصوصية المستخدمين؟</div>
+  <div class="q-goal">🎯 الهدف من السؤال: اختبار أمان التطبيقات والمصادقة (API Security & Access Control).</div>
+  <div class="q-answer">
+    يعتمد النظام على معيار <strong>JWT (JSON Web Tokens)</strong> المشفر بخوارزمية <strong>HS256</strong>:
+    <ul>
+      <li>كل مسار محمي يتطلب تمرير الـ Token في ترويسة <span class="code-token">Authorization: Bearer</span> ويتم فحصه عبر Dependency Injection في FastAPI.</li>
+      <li><strong>حماية الجلسات (Session Scoping):</strong> حتى لو امتلك المهاجم توكن صالح، بمجرد محاولته طلب جلسة تخص مستخدماً آخر، يتحقق السيرفر من تطابق اسم المالك مع اسم المستخدم المشفر في التوكن، ويرد بـ <strong>HTTP 404</strong> عمداً لمنع تسريب أي معلومات تفيد بوجود الجلسة أصلاً.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="q-card">
+  <div class="q-title">س 12: ما هي التكلفة الحقيقية لتشغيل هذا النظام على أرض الواقع؟</div>
+  <div class="q-goal">🎯 الهدف من السؤال: دراسة الجدوى الاقتصادية واستهلاك الموارد (Cloud Economics).</div>
+  <div class="q-answer">
+    تعتبر التكلفة شبه منعدمة مقارنة بالاستضافة الذاتية:
+    <ul>
+      <li>استضافة موديل 70B محلياً تتطلب كارتي شاشة من فئة A100 بذاكرة 80GB VRAM بتكلفة آلاف الدولارات شهرياً.</li>
+      <li>عبر الـ API Inference من Groq، توليد خطة 15 يوماً كاملة يستهلك حوالي 6,700 توكن إجمالاً، بتكلفة تبلغ حوالي <strong>0.004 دولار فقط</strong> (أقل من نصف سنت أمريكي لكل خطة)، مما يحقق أعلى جدوى اقتصادية وقابلية للتوسع التجاري.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="q-card">
+  <div class="q-title">س 13: ما هي خريطة الطريق المستقبلية لنقل المشروع من نموذج أولي إلى منتج طبي معتمد؟</div>
+  <div class="q-goal">🎯 الهدف من السؤال: استعراض رؤية الفريق للتطوير المستمر وأخلاقيات الذكاء الاصطناعي الطبي.</div>
+  <div class="q-answer">
+    تتضمن خارطة الطريق في الفصل الخامس 4 ركائز أساسية:
+    <ol>
+      <li><strong>RAG Architecture:</strong> ربط النظام بقواعد بيانات وزارة الزراعة الأمريكية (USDA FoodData Central) لحساب السعرات من بيانات مخبرية حقيقية بدلاً من تقديرات الموديل.</li>
+      <li><strong>Dietitian-in-the-Loop:</strong> لوحة تحكم تسمح لأخصائي التغذية المعتمدين بمراجعة وتعديل الخطط قبل اعتمادها للمريض.</li>
+      <li><strong>Wearables Integration:</strong> ربط التطبيق بالساعات الذكية (Apple Health / Fitbit) لتحديث معدل النشاط الحركي الفعلي وإعادة ضبط السعرات أسبوعياً.</li>
+      <li><strong>Mobile PWA & Arabic Localization:</strong> تعريب الواجهة بالكامل وتضمين أسماء الأكلات الشعبية المصرية والعربية.</li>
+    </ol>
+  </div>
+</div>
+
+<div class="footer">
+  مشروع تخرج 2025/2026 — كلية الحاسبات والذكاء الاصطناعي — جامعة دمياط
+</div>
+
+</body>
+</html>

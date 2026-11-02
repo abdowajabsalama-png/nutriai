@@ -1,0 +1,270 @@
+﻿<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="utf-8">
+<title>NutriAI — سكريبت العرض التقديمي والمناقشة</title>
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 15mm 20mm 15mm;
+  }
+  body {
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+    color: #1a1a1a;
+    line-height: 1.75;
+    background: #fff;
+    font-size: 13.5px;
+  }
+  .header-box {
+    text-align: center;
+    border-bottom: 3px double #1565c0;
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+  }
+  .univ-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #0d47a1;
+    margin-bottom: 5px;
+  }
+  .doc-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #0b2d64;
+    margin: 8px 0;
+  }
+  .meta-info {
+    font-size: 13px;
+    color: #555;
+  }
+  .slide-card {
+    background: #fdfefe;
+    border: 1px solid #bbdefb;
+    border-right: 5px solid #1976d2;
+    border-radius: 6px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    page-break-inside: avoid;
+  }
+  .slide-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e3f2fd;
+    padding-bottom: 6px;
+    margin-bottom: 10px;
+  }
+  .slide-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #0d47a1;
+  }
+  .speaker-badge {
+    background: #e3f2fd;
+    color: #0d47a1;
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-weight: bold;
+  }
+  .stage-direction {
+    font-size: 12.5px;
+    color: #e65100;
+    background: #fff3e0;
+    padding: 5px 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    font-style: italic;
+  }
+  .speech-text {
+    font-size: 13.5px;
+    color: #212121;
+    text-align: justify;
+  }
+  .speech-text strong {
+    color: #0b2d64;
+  }
+  .tips-box {
+    background: #f1f8e9;
+    border-right: 4px solid #558b2f;
+    padding: 12px 16px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: 13px;
+  }
+  .footer {
+    text-align: center;
+    font-size: 11px;
+    color: #777;
+    margin-top: 30px;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+  }
+</style>
+</head>
+<body>
+
+<div class="header-box">
+  <div class="univ-title">جامعة دمياط — كلية الحاسبات والذكاء الاصطناعي (2025/2026)</div>
+  <div class="doc-title">🎙️ NutriAI — سكريبت العرض التقديمي والمناقشة الشفهية</div>
+  <div class="meta-info">
+    <strong>المشروع:</strong> NutriAI: An Intelligent Personalized Diet Recommendation System<br>
+    <strong>إشراف:</strong> أ.د. أحمد محمد ربيع &nbsp;|&nbsp; 
+    <strong>إعداد:</strong> يوسف علي، أحمد إبراهيم، أحمد محمد، عبد الوهاب أحمد
+  </div>
+</div>
+
+<div class="tips-box">
+  <strong>💡 نصائح ذهبية قبل صعود المنصة:</strong>
+  <ul>
+    <li>تحدث بنبرة هادئة وواثقة؛ لا تقرأ قراءة حرفية من الشرائح، بل انظر إلى لجنة المناقشة.</li>
+    <li>ركز على إبراز الجهد الهندسي (Engineering Decoupling, Pydantic Type-Safety, Clinical Guardrails).</li>
+    <li>قسّم الشرائح بالتساوي بين الزملاء كما هو موضح بالأسفل.</li>
+  </ul>
+</div>
+
+<div class="slide-card">
+  <div class="slide-header">
+    <div class="slide-title">الشريحة 1: الافتتاحية والترحيب (Title & Introduction)</div>
+    <div class="speaker-badge">المتحدث 1</div>
+  </div>
+  <div class="stage-direction">وقفة واثقة مع ابتسامة، الترحيب بالدكتور المشرف ولجنة الحكم الموقرة.</div>
+  <div class="speech-text">
+    "بسم الله الرحمن الرحيم.<br>
+    نرحب بلجنة المناقشة والحكم الموقرة، ونخص بعظيم الشكر والامتنان أستاذنا المشرف الأستاذ الدكتور <strong>أحمد محمد ربيع</strong> على دعمه وتوجيهه العلمي الدائم طوال فترة العمل.<br>
+    معكم فريق مشروع <strong>NutriAI</strong>: يوسف علي، أحمد إبراهيم، أحمد محمد، وأنا عبد الوهاب أحمد.<br>
+    مشروعنا بعنوان: <strong>NutriAI: An Intelligent Personalized Diet Recommendation System</strong>.<br>
+    مشروعنا اليوم ليس مجرد شات بوت عادي أو تجربة نظرية، بل نقدم نظاماً برمجياً متكاملاً يوظف نماذج الذكاء الاصطناعي التوليدية المتقدمة لتقديم تغذية إكلينيكية مخصصة وآمنة طبياً، لمواجهة أزمة حقيقية في رعاية الصحة العامة."
+  </div>
+</div>
+
+<div class="slide-card">
+  <div class="slide-header">
+    <div class="slide-title">الشريحة 2: المشكلة والواقع الحالي (Problem Statement)</div>
+    <div class="speaker-badge">المتحدث 1</div>
+  </div>
+  <div class="stage-direction">ربط المشكلة بالواقع اليومي ومعاناة المرضى.</div>
+  <div class="speech-text">
+    "أي شخص اليوم يريد تحسين صحته يجد أمامه خيارين:<br>
+    إما استشارة أخصائي تغذية محترف، وهو خيار ممتاز لكنه مكلف مادياً جداً وغير متاح لمعظم الفئات المجتمعية.<br>
+    أو اللجوء لجداول الإنترنت والتطبيقات العامة، وهنا يكمن الخطر الحقيقي: فهذه التطبيقات تقدم خططاً عامة (Generic Plans) لا تراعي الحالة الصحية للفرد.<br>
+    المشكلة تتحول لخطر سريري مهدد للحياة عندما يكون المستخدم مصاباً بالسكري، أو ارتفاع ضغط الدم، أو حساسية من أطعمة معينة. فلو اتبع مريض سكر نظاماً عشوائياً عالي السكريات، ستتدهور حالته مباشرة.<br>
+    السؤال الذي انطلق منه مشروعنا: <strong>كيف نوفر خبيراً ذكياً في التغذية الإكلينيكية، يفهم الحالات الطبية المعقدة، ومتاحاً للجميع مجاناً على مدار الساعة؟</strong>"
+  </div>
+</div>
+
+<div class="slide-card">
+  <div class="slide-header">
+    <div class="slide-title">الشريحة 3: مقارنة الأنظمة الحالية (NutriAI vs Existing Solutions)</div>
+    <div class="speaker-badge">المتحدث 2</div>
+  </div>
+  <div class="stage-direction">استعراض نقاط القوة والضعف في الأنظمة الحالية بالجدول المقارن.</div>
+  <div class="speech-text">
+    "قمنا بعمل دراسة مرجعية (Benchmarking) للحلول المتوفرة في السوق ورصدنا 3 فئات رئيسية:
+    <ul>
+      <li><strong>تطبيقات حساب السعرات (مثل MyFitnessPal):</strong> هي مجرد أدوات تدوين ومراقبة (Loggers)؛ لا تولد وجبات ولا تفهم الأمراض.</li>
+      <li><strong>الأنظمة المعتمدة على القواعد (Rule-Based Systems):</strong> أنظمة جامدة جداً تفشل برمجياً أمام تداخل عدة أمراض وحساسيات معاً (Combinatorial Complexity).</li>
+      <li><strong>الشات بوتس العامة (ChatGPT و Gemini):</strong> ذكية لغوياً، لكنها تفتقر لمدخلات البيانات المهيكلة، ولا تملك قواعد أمان إكلينيكية مدمجة مما يجعلها عرضة للهلوسة الطبية الخطيرة (Hallucinations).</li>
+    </ul>
+    من هنا جاء <strong>NutriAI</strong> ليجمع بين الذكاء اللغوي الفائق للـ LLMs ودقة القواعد الإكلينيكية الصارمة."
+  </div>
+</div>
+
+<div class="slide-card">
+  <div class="slide-header">
+    <div class="slide-title">الشريحة 4: أهداف النظام (System Objectives)</div>
+    <div class="speaker-badge">المتحدث 2</div>
+  </div>
+  <div class="stage-direction">التأكيد على الأهداف الهندسية الخمسة.</div>
+  <div class="speech-text">
+    "صممنا نظام NutriAI ليحقق 5 أهداف هندسية حيوية:
+    <ol>
+      <li><strong>توليد خطة غذائية لـ 15 يوماً:</strong> تشمل 4 وجبات يومية دقيقة السعرات وتوزيع الماكروز (بروتين، كارب، دهون).</li>
+      <li><strong>التكيف الإكلينيكي التلقائي (Clinical Safety):</strong> تعديل الوجبات تلقائياً لمرضى السكري، والضغط، والكوليسترول، والغدة الدرقية.</li>
+      <li><strong>إدارة الحساسية واللاكتوز والجلوتين:</strong> استبعاد تام لأي مكون ممنوع بصورة قاطعة.</li>
+      <li><strong>شات تفاعلي بذاكرة كاملة (Conversational Chat):</strong> للاستفسار، وطلب بدائل للأكلات، واستشارة النظام دون فقدان سياق الدايت.</li>
+      <li><strong>معمارية متعددة المزودين (Multi-Provider):</strong> تتيح العمل السحابي فائق السرعة عبر Groq و OpenRouter، والعمل المحلي بالكامل بدون نت (Offline)."
+    </ol>
+  </div>
+</div>
+
+<div class="slide-card">
+  <div class="slide-header">
+    <div class="slide-title">الشريحة 5: معمارية النظام وفصل الطبقات (System Architecture)</div>
+    <div class="speaker-badge">المتحدث 3</div>
+  </div>
+  <div class="stage-direction">شرح مخطط المعمارية (Figure 32) والتركيز على الـ Decoupling.</div>
+  <div class="speech-text">
+    "بنينا النظام على مبدأ الفصل المعماري التام (Architectural Decoupling):<br>
+    - <strong>طبقة العرض (Frontend Layer):</strong> واجهة تفاعلية مبنية بـ Streamlit مع CSS احترافي، مهمتها جمع البيانات وعرض الخطط.<br>
+    - <strong>طبقة الخادم (Backend Layer):</strong> سيرفر FastAPI غير متزامن بالكامل (Async/ASGI)، محمي بنظام مصادقة JWT مشفر بخوارزمية HS256.<br>
+    - <strong>طبقة التحقق والبرومبت (Clinical Prompt Builder):</strong> تفحص البيانات بواسطة مكتبة Pydantic، وتدمج القواعد الإكلينيكية وتفرض عقد الـ JSON الصارم.<br>
+    - <strong>طبقة المزودين (Provider Factory):</strong> واجهة موحدة تسمح بالتبديل الفوري بين Groq و OpenRouter و Offline Engine دون إعادة تشغيل الخادم."
+  </div>
+</div>
+
+<div class="slide-card">
+  <div class="slide-header">
+    <div class="slide-title">الشريحة 6: التقنيات وكفاءة الموارد (Tech Stack & Resource Efficiency)</div>
+    <div class="speaker-badge">المتحدث 3</div>
+  </div>
+  <div class="stage-direction">التأكيد على كيف كسرنا حاجز الهاردوير (0 GPU locally).</div>
+  <div class="speech-text">
+    "التحدي الأكبر كان: كيف نشغل موديل عملاق بحجم 70 مليار معامل (Llama-3.3-70B) دون الحاجة لخوادم بملايين الجنيهات؟<br>
+    اعتمدنا على <strong>API-Based Inference Architecture</strong> بالاستفادة من معالجات LPU لدى Groq.<br>
+    النتيجة الهندسية: النظام يعمل بالكامل على لابتوب عادي بمعالج Core i5 ورامات 8GB فقط، واستهلاك GPU محلي = صفر!<br>
+    كما تم ضبط الـ Temperature على 0.2 في توليد الوجبات لضمان الحتمية والأمان الطبي، وعلى 0.7 في الشات لضمان المرونة اللغوية."
+  </div>
+</div>
+
+<div class="slide-card">
+  <div class="slide-header">
+    <div class="slide-title">الشريحة 7: العرض الحي للمشروع (Live Demo Walkthrough)</div>
+    <div class="speaker-badge">المتحدث 4 (أو مهندس الواجهة)</div>
+  </div>
+  <div class="stage-direction">فتح شاشة المتصفح والتفاعل العملي أمام الدكاترة.</div>
+  <div class="speech-text">
+    "ننتقل الآن للعرض الحي للبرنامج (Live Demo):<br>
+    1. نسجل الدخول، ونرى استجابة الـ JWT الفورية في ترويسة الطلب.<br>
+    2. ندخل بروفايلاً سريرياً معقداً: شخص مصاب بـ <strong>السكري</strong> + <strong>ضغط الدم</strong> + <strong>حساسية مكسرات</strong> + <strong>نظام نباتي</strong>.<br>
+    3. نضغط 'Generate My 15-Day Meal Plan'.. الباك إند يحسب BMR و TDEE بمعادلة Mifflin-St Jeor ويحقن القواعد الطبية.<br>
+    4. تظهر النتيجة خلال ثوانٍ: بار الماكروز والسعرات مضبوط، وقائمة الـ Medical Adjustments توضح صراحة استبعاد السكريات البسيطة وخفض الصوديوم وحظر المكسرات.<br>
+    5. في الشات بالأسفل: نسأل عن بديل للتوفو، فيرد الموديل فوراً ببديل نباتي آمن لا يرفع سكر الدم!"
+  </div>
+</div>
+
+<div class="slide-card">
+  <div class="slide-header">
+    <div class="slide-title">الشريحة 8: النتائج والأرقام المقاسة (Experimental Results)</div>
+    <div class="speaker-badge">المتحدث 4</div>
+  </div>
+  <div class="stage-direction">عرض أرقام جدول 12 و 13 بثقة واضحة.</div>
+  <div class="speech-text">
+    "في الفصل الرابع قمنا بقياس أداء النظام بالأرقام الحقيقية:
+    <ul>
+      <li><strong>زمن استجابة الـ Endpoints المحلية:</strong> أقل من <strong>3 مللي ثانية (ms)</strong>.</li>
+      <li><strong>زمن توليد خطة 15 يوماً كاملة:</strong> بلغ <strong>19.6 ثانية</strong> فقط لموديل 70B يولد أكثر من 5,600 توكن إخراج.</li>
+      <li><strong>زمن رد الشات:</strong> <strong>1.5 ثانية</strong> فقط عبر Llama-3.1-8B.</li>
+      <li><strong>نسبة الالتزام بالقواعد الإكلينيكية (Safety Verification):</strong> حققت <strong>100%</strong> في الفحص البرمجي لملفات الاختبار السريرية."
+    </ul>
+  </div>
+</div>
+
+<div class="slide-card">
+  <div class="slide-header">
+    <div class="slide-title">الشريحة 9: التطوير المستقبلي والخاتمة (Future Works & Thanks)</div>
+    <div class="speaker-badge">المتحدث 1 (أو الجميع)</div>
+  </div>
+  <div class="stage-direction">الختام بشكر اللجنة والاستعداد للمناقشة.</div>
+  <div class="speech-text">
+    "ختاماً، وضعنا خارطة طريق واضحة لنقل المشروع لمنتج سريري معتمد تشمل: ربط النظام بتقنية RAG مع قواعد بيانات USDA، وإتاحة لوحة تحكم لأطباء التغذية (Dietitian-in-the-Loop)، وإطلاق تطبيق موبايل بواجهة عربية كاملة.<br>
+    بنشكر حضراتكم جداً على سعة صدركم ووقتكم الثمين، ومستعدون ومرحبون بكافة أسئلة واستفسارات اللجنة الموقرة."
+  </div>
+</div>
+
+<div class="footer">
+  مشروع تخرج 2025/2026 — كلية الحاسبات والذكاء الاصطناعي — جامعة دمياط
+</div>
+
+</body>
+</html>

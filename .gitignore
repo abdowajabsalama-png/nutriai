@@ -1,0 +1,9 @@
+venv/
+__pycache__/
+*.pyc
+.env
+data/*.db
+data/*.db-journal
+launcher.log
+debug_plan*.pdf
+*.log
