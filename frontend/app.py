@@ -1020,10 +1020,12 @@ def render_diet_plan(plan: dict):
                 if m:
                     label = meal_labels.get(meal_key, meal_key)
                     cal_str = m.get("calories", "")
+                    note_str = m.get("notes", "")
+                    note_badge = f'<br><span style="font-size:0.75rem; color:#2e7d32; font-weight:bold; background:rgba(46,125,50,0.12); padding:2px 8px; border-radius:4px; display:inline-block; margin-top:3px;">✨ {note_str}</span>' if (note_str and any(k in note_str for k in ["طلبك", "استبدال", "معدل", "تبديل"])) else ""
                     meals_html += (
                         f'<div class="meal-row">'
                         f'<span class="meal-label">{label}</span>'
-                        f'<span class="meal-text">{m.get("meal", "")}</span>'
+                        f'<span class="meal-text">{m.get("meal", "")}{note_badge}</span>'
                         f'<span class="meal-cal">{cal_str}</span>'
                         f'</div>'
                     )
@@ -1117,6 +1119,7 @@ def render_chat():
                     ]
                     if data.get("diet_plan"):
                         st.session_state.diet_plan = data["diet_plan"]
+                        st.toast("✅ تم تحديث جداول الخطة الغذائية فوراً!", icon="🥗")
                     st.rerun()
 
     st.markdown("<br>", unsafe_allow_html=True)
@@ -1150,6 +1153,7 @@ def render_chat():
                     ]
                     if data.get("diet_plan"):
                         st.session_state.diet_plan = data["diet_plan"]
+                        st.toast("✅ تم تحديث جداول الخطة الغذائية فوراً!", icon="🥗")
                     st.rerun()
                 else:
                     st.error(data.get("detail", "فشل إرسال الرسالة / Chat failed"))

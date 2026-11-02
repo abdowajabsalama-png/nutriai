@@ -6,6 +6,7 @@ Backend: FastAPI with SQLite Database Persistence
 import os
 import json
 import uuid
+import copy
 import logging
 from datetime import datetime, timedelta
 from typing import Optional, List
@@ -483,6 +484,18 @@ async def chat(
             diet_plan=active_plan,
             temperature=0.7,
         )
+
+    # For external providers (Groq/OpenAI), synchronize deterministic plan modifications
+    if req.provider != "offline" and active_plan:
+        offline_engine = OfflineProvider()
+        plan_copy = copy.deepcopy(active_plan)
+        sync_reply = await offline_engine.chat_with_history(messages=chat_payload, diet_plan=plan_copy)
+        if any(kw in sync_reply for kw in ["✅", "تم تحديث", "تم تبديل", "تم تعديل"]):
+            active_plan.clear()
+            active_plan.update(plan_copy)
+            # If the external provider gave a generic answer, enrich it with the confirmation
+            if "تم" not in reply:
+                reply = f"{reply}\n\n{sync_reply}"
 
     # Save assistant reply to SQLite
     db.add_message(req.session_id, "assistant", reply)

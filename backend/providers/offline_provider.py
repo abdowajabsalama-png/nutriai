@@ -7,6 +7,7 @@ Supports rich bilingual interactive clinical chat with contextual memory of the 
 
 import json
 import re
+import copy
 from typing import List, Dict, Optional, Any
 
 
@@ -690,28 +691,39 @@ class OfflineProvider:
             'مش عاوز سمك', 'بدون سمك', 'شيل السمك', 'مش عاوز تونه', 'no fish', 'no tuna'
         ])
 
-        # Multi-day extraction with Arabic prefixes (ب, بال, لل, و, ف) and words
+        # Multi-day extraction with Arabic prefixes (ب, بال, لل, و, ف, ك) and all Egyptian colloquial variants
         ar_num_map = [
-            ('الاول', 1), ('اول', 1), ('واحد', 1),
-            ('الثاني', 2), ('تاني', 2), ('اثنين', 2),
-            ('الثالث', 3), ('تالت', 3), ('ثلاثة', 3),
-            ('الرابع', 4), ('رابع', 4), ('اربعة', 4),
-            ('الخامس', 5), ('خامس', 5), ('خمسة', 5),
-            ('السادس', 6), ('سادس', 6), ('ستة', 6),
-            ('السابع', 7), ('سابع', 7), ('سبعة', 7),
-            ('الثامن', 8), ('تامن', 8), ('ثمانية', 8),
-            ('التاسع', 9), ('تاسع', 9), ('تسعة', 9),
-            ('العاشر', 10), ('عاشر', 10), ('عشرة', 10),
+            # Day 1
+            ('الاولاني', 1), ('اولاني', 1), ('الاول', 1), ('اول', 1), ('واحد', 1),
+            # Day 2
+            ('الثاني', 2), ('التاني', 2), ('تاني', 2), ('ثاني', 2), ('اثنين', 2), ('اتنين', 2),
+            # Day 3
+            ('الثالث', 3), ('التالت', 3), ('تالت', 3), ('ثالث', 3), ('ثلاثة', 3), ('تلاتة', 3), ('تلاته', 3),
+            # Day 4
+            ('الرابع', 4), ('رابع', 4), ('اربعة', 4), ('اربعه', 4),
+            # Day 5
+            ('الخامس', 5), ('خامس', 5), ('خمسة', 5), ('خمسه', 5),
+            # Day 6
+            ('السادس', 6), ('سادس', 6), ('ستة', 6), ('سته', 6),
+            # Day 7
+            ('السابع', 7), ('سابع', 7), ('سبعة', 7), ('سبعه', 7),
+            # Day 8
+            ('الثامن', 8), ('التامن', 8), ('تامن', 8), ('ثامن', 8), ('ثمانية', 8), ('تمانية', 8), ('تمانيه', 8),
+            # Day 9
+            ('التاسع', 9), ('تاسع', 9), ('تسعة', 9), ('تسعه', 9),
+            # Day 10
+            ('العاشر', 10), ('عاشر', 10), ('عشرة', 10), ('عشره', 10),
+            # Day 11 to 15
             ('الحادي عشر', 11), ('11', 11),
-            ('الثاني عشر', 12), ('12', 12),
-            ('الثالث عشر', 13), ('13', 13),
+            ('الثاني عشر', 12), ('التاني عشر', 12), ('12', 12),
+            ('الثالث عشر', 13), ('التالت عشر', 13), ('13', 13),
             ('الرابع عشر', 14), ('14', 14),
             ('الخامس عشر', 15), ('15', 15),
             ('10', 10), ('9', 9), ('8', 8), ('7', 7), ('6', 6), ('5', 5), ('4', 4), ('3', 3), ('2', 2), ('1', 1)
         ]
         detected_days = []
         for word, num in ar_num_map:
-            pattern = r'(?:^|\s|[^\w])(?:[بولف]|بال|لل)?' + re.escape(word) + r'(?:$|\s|[^\w])'
+            pattern = r'(?:^|\s|[^\w])(?:[بولفك]|بال|لل)?' + re.escape(word) + r'(?:$|\s|[^\w])'
             for m in re.finditer(pattern, clean_msg):
                 detected_days.append((m.start(), num))
         detected_days.sort(key=lambda x: x[0])
@@ -720,64 +732,77 @@ class OfflineProvider:
             if not ordered_days or ordered_days[-1] != n:
                 ordered_days.append(n)
 
-        # ── Case A: Day Swapping (e.g. 'عدل اليوم الاول بالخامس ومش عاوز بيض') ──
-        if len(ordered_days) >= 2 and (is_modify_intent or any(p in clean_msg for p in ['بال', 'بـ', 'مع', 'with'])):
+        # Context follow-up (e.g. user previously mentioned two days and now says: 'عدلهم ف الخطه' or 'طبق التعديل')
+        is_confirm_intent = any(w in clean_msg for w in ['عدلهم', 'بدلهم', 'غيرهم', 'طبق', 'اعتمد', 'نفذ', 'اوك', 'تمام عدل', 'update them', 'apply'])
+        if len(ordered_days) < 2 and is_confirm_intent:
+            for prev_m in reversed(messages[:-1]):
+                if prev_m.get('role') == 'user':
+                    p_txt = prev_m.get('content', '').replace('أ', 'ا').replace('إ', 'ا').replace('آ', 'ا').replace('ة', 'ه')
+                    p_days = []
+                    for word, num in ar_num_map:
+                        p_pat = r'(?:^|\s|[^\w])(?:[بولفك]|بال|لل)?' + re.escape(word) + r'(?:$|\s|[^\w])'
+                        for m in re.finditer(p_pat, p_txt):
+                            p_days.append((m.start(), num))
+                    p_days.sort(key=lambda x: x[0])
+                    for pos, n in p_days:
+                        if not ordered_days or ordered_days[-1] != n:
+                            ordered_days.append(n)
+                    if len(ordered_days) >= 2:
+                        break
+
+        # ── Case A: Day Swapping (e.g. 'اليوم الاول ب اليوم التاني', 'عدل الاول بالخامس', '1 ب 2') ──
+        if len(ordered_days) >= 2:
             src_day = ordered_days[0]
             tgt_day = ordered_days[1]
             
-            # Retrieve target day meals
-            tgt_data = meal_list[tgt_day - 1] if meal_list and len(meal_list) >= tgt_day else {}
-            tgt_meals = tgt_data.get('meals', {})
+            if meal_list and len(meal_list) >= max(src_day, tgt_day):
+                src_data = meal_list[src_day - 1]
+                tgt_data = meal_list[tgt_day - 1]
+                
+                # Bilateral swap of meals between the two days
+                src_meals_copy = copy.deepcopy(src_data.get('meals', {}))
+                tgt_meals_copy = copy.deepcopy(tgt_data.get('meals', {}))
+                
+                # Apply extra exclusions if requested in the same command
+                if is_exclude_egg:
+                    for d_m in [src_meals_copy, tgt_meals_copy]:
+                        if 'breakfast' in d_m and 'بيض' in d_m['breakfast'].get('meal', ''):
+                            d_m['breakfast']['meal'] = "120 جم جبنة قريش طازجة بزيت الزيتون والزعتر مع نصف رغيف بلدي وخيار"
+                            d_m['breakfast']['calories'] = "340 سعرة (22 جم بروتين)"
+                            d_m['breakfast']['notes'] = "تم التحديث بناءً على طلبك في الشات"
 
-            b_desc = tgt_meals.get('breakfast', {}).get('meal', 'بيضتان مسلوقتان مع ربع رغيف بلدي وسلطة خضراء')
-            b_cals = tgt_meals.get('breakfast', {}).get('calories', '350 سعرة')
-            l_desc = tgt_meals.get('lunch', {}).get('meal', 'صدر دجاج مشوي مع أرز بني وخضار سوتيه وسلطة')
-            l_cals = tgt_meals.get('lunch', {}).get('calories', '600 سعرة')
-            d_desc = tgt_meals.get('dinner', {}).get('meal', 'كوب زبادي خفيف مع توست أسمر وجبنة قريش')
-            d_cals = tgt_meals.get('dinner', {}).get('calories', '300 سعرة')
-            s_desc = tgt_meals.get('snack', {}).get('meal', 'تفاحة خضراء مع حفنة مكسرات نية')
-            s_cals = tgt_meals.get('snack', {}).get('calories', '150 سعرة')
+                src_data['meals'] = tgt_meals_copy
+                tgt_data['meals'] = src_meals_copy
+                
+                for mk in ['breakfast', 'lunch', 'dinner', 'snack']:
+                    if mk in src_data['meals']:
+                        src_data['meals'][mk]['notes'] = f"تم تبديلها مع اليوم {tgt_day}"
+                    if mk in tgt_data['meals']:
+                        tgt_data['meals'][mk]['notes'] = f"تم تبديلها مع اليوم {src_day}"
 
-            ex_notes = []
-            if is_exclude_egg or ('بيض' in b_desc and is_exclude_egg):
-                b_desc = "120 جم جبنة قريش طازجة بزيت الزيتون والزعتر مع نصف رغيف بلدي وخيار (بديل البيض غني بالبروتين)"
-                b_cals = "340 سعرة (22 جم بروتين)"
-                ex_notes.append("استبعاد البيض تماماً وتعويضه بجبنة قريش عالية البروتين")
-            if is_exclude_chicken or ('دجاج' in l_desc and is_exclude_chicken):
-                l_desc = "180 جم سمك فيليه مشوي بالأعشاب والليمون مع 5 ملاعق كينوا وخضار سوتيه"
-                l_cals = "550 سعرة (38 جم بروتين)"
-                ex_notes.append("استبعاد الدجاج وتعويضه بسمك فيليه مشوي")
+                b_desc = src_data['meals'].get('breakfast', {}).get('meal', '')
+                l_desc = src_data['meals'].get('lunch', {}).get('meal', '')
+                d_desc = src_data['meals'].get('dinner', {}).get('meal', '')
+                s_desc = src_data['meals'].get('snack', {}).get('meal', '')
 
-            # Update the plan in memory so it reflects everywhere
-            if meal_list and len(meal_list) >= src_day:
-                meal_list[src_day - 1]['meals'] = {
-                    'breakfast': {'meal': b_desc, 'calories': b_cals, 'notes': 'معدل بناء على طلبك'},
-                    'lunch':     {'meal': l_desc, 'calories': l_cals, 'notes': 'معدل بناء على طلبك'},
-                    'dinner':    {'meal': d_desc, 'calories': d_cals, 'notes': 'معدل بناء على طلبك'},
-                    'snack':     {'meal': s_desc, 'calories': s_cals, 'notes': 'معدل بناء على طلبك'},
-                }
-
-            note_txt = f"\n*(ملاحظة خاصة: تم {', و'.join(ex_notes)})*" if ex_notes else ""
-
-            if is_ar:
-                return (
-                    f"✅ **تم تعديل خطتك الغذائية بنجاح!**\n"
-                    f"تم استبدال وجبات **اليوم {src_day}** بوجبات **اليوم {tgt_day}** بنجاح{note_txt}:\n\n"
-                    f"🍳 **الإفطار المعدل ({b_cals}):**\n{b_desc}\n\n"
-                    f"🥗 **الغداء (من جدول اليوم {tgt_day}) ({l_cals}):**\n{l_desc}\n\n"
-                    f"🍽️ **العشاء ({d_cals}):**\n{d_desc}\n\n"
-                    f"🍎 **سناك خفيف ({s_cals}):**\n{s_desc}\n\n"
-                    f"✨ تم تحديث الخطة وحساب السعرات لتضمن ثبات نزول الوزن دون أي تراجع في نسبة البروتين اليومية."
-                )
-            else:
-                return (
-                    f"✅ **Meal Plan Updated Successfully!**\n"
-                    f"Day {src_day} meals have been replaced with Day {tgt_day} meals:\n\n"
-                    f"🍳 **Breakfast ({b_cals}):**\n{b_desc}\n\n"
-                    f"🥗 **Lunch ({l_cals}):**\n{l_desc}\n\n"
-                    f"🍽️ **Dinner ({d_cals}):**\n{d_desc}\n\n"
-                    f"🍎 **Snack ({s_cals}):**\n{s_desc}"
-                )
+                if is_ar:
+                    return (
+                        f"✅ **تم تبديل وجبات اليوم {src_day} مع وجبات اليوم {tgt_day} بنجاح!**\n\n"
+                        f"📋 **وجبات اليوم {src_day} الجديدة (أصبحت وجبات اليوم {tgt_day}):**\n"
+                        f"• 🍳 **الإفطار:** {b_desc}\n"
+                        f"• 🥗 **الغداء:** {l_desc}\n"
+                        f"• 🍽️ **العشاء:** {d_desc}\n"
+                        f"• 🍎 **السناك:** {s_desc}\n\n"
+                        f"🎉 **أصبحت جداول الخطة في الموقع وملف الـ PDF الرسمي محدثة بالكامل الآن!**"
+                    )
+                else:
+                    return (
+                        f"✅ **Day {src_day} and Day {tgt_day} meals have been swapped successfully!**\n\n"
+                        f"• Breakfast: {b_desc}\n"
+                        f"• Lunch: {l_desc}\n"
+                        f"• Dinner: {d_desc}\n\n"
+                        f"🎉 The diet plan tables and official PDF are now fully updated!"
+                    )
 
         # ── Case B: Single Day Modification (e.g. 'عدل اليوم الاول') ──
         if len(ordered_days) == 1 and (is_modify_intent or is_exclude_egg or is_exclude_chicken):
