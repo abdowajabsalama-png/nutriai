@@ -1,6 +1,6 @@
 @echo off
 title NutriAI
-cd /d "C:\Users\Abdo\Desktop\pp\nutrial-ai"
+cd /d "%~dp0"
 
 :: Kill any stale processes on 8000 and 8501 to guarantee fresh code reload
 for /f "tokens=5" %%a in ('netstat -aon ^| findstr :8000') do taskkill /f /pid %%a >nul 2>&1
