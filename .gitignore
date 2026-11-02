@@ -7,3 +7,5 @@ data/*.db-journal
 launcher.log
 debug_plan*.pdf
 *.log
+ngrok.exe
+ngrok.yml
