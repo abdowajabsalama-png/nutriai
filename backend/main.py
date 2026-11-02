@@ -489,11 +489,12 @@ async def chat(
     if active_plan:
         db.save_session_plan(req.session_id, active_plan, language=session.get("language", "ar"))
 
-    # Return updated history
+    # Return updated history and updated plan
     updated_history = db.get_messages(req.session_id)
     return {
-        "reply":   reply,
-        "history": [{"role": m["role"], "content": m["content"]} for m in updated_history],
+        "reply":     reply,
+        "history":   [{"role": m["role"], "content": m["content"]} for m in updated_history],
+        "diet_plan": active_plan,
     }
 
 

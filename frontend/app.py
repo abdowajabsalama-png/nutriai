@@ -1115,6 +1115,8 @@ def render_chat():
                     st.session_state.chat_history = [
                         m for m in data.get("history", []) if m["role"] != "system"
                     ]
+                    if data.get("diet_plan"):
+                        st.session_state.diet_plan = data["diet_plan"]
                     st.rerun()
 
     st.markdown("<br>", unsafe_allow_html=True)
@@ -1146,6 +1148,8 @@ def render_chat():
                     st.session_state.chat_history = [
                         m for m in data.get("history", []) if m["role"] != "system"
                     ]
+                    if data.get("diet_plan"):
+                        st.session_state.diet_plan = data["diet_plan"]
                     st.rerun()
                 else:
                     st.error(data.get("detail", "فشل إرسال الرسالة / Chat failed"))

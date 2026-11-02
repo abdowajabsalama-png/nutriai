@@ -556,112 +556,122 @@ class OfflineProvider:
                     "• Avoid caffeine at least 6 hours before bedtime to preserve deep sleep quality."
                 )
 
-        # ── 5. SPECIFIC FOOD SUBSTITUTIONS (PRIORITY OVER GENERIC MEALS) ──
+        # ── 5. SPECIFIC FOOD SUBSTITUTIONS (INFORMATIONAL EQUIVALENCES) ──
         is_sub_intent = any(k in clean_msg for k in ['بديل', 'استبدال', 'ابدل', 'بدائل', 'تغيير', 'غير', 'بدل', 'replace', 'substitute'])
+        is_apply_intent = any(w in clean_msg for w in [
+            'في الخطه', 'في الخطة', 'في الجداول', 'في الجدول', 'شيل', 'مش عاوز', 'مش عايز',
+            'بدون', 'احذف', 'اعتمد', 'طبق', 'حدث', 'استبدل', 'بدل'
+        ])
 
-        # Egg substitution
-        if 'بيض' in clean_msg and (is_sub_intent or 'فطار' in clean_msg or 'عشا' in clean_msg):
-            if is_ar:
-                return (
-                    "🥚 **بدائل البيض بالجرامات المتكافئة:**\n\n"
-                    "كل بيضتين مسلوقتين (حوالي 140 سعرة و13 جم بروتين) يمكنك استبدالهما بـ:\n"
-                    "• **100 جم جبنة قريش** بزيت الزيتون ورشة زعتر أو كمون.\n"
-                    "• **150 جم زبادي يوناني طبيعي** غير محلى.\n"
-                    "• **4 ملاعق كبيرة فول مدمس** بالكمون والليمون وزيت الزيتون.\n"
-                    "• **علبة تونة مصفاة بالماء** والليمون.\n"
-                    "• **100 جم توفو** مشوح بالأعشاب والكركم (خيار نباتي)."
-                )
-            else:
-                return (
-                    "🥚 **Egg Substitutions:**\n\n"
-                    "2 boiled eggs (approx. 140 kcal, 13g protein) can be substituted with:\n"
-                    "• 100g low-fat cottage cheese with olive oil and oregano\n"
-                    "• 150g plain unsweetened Greek yogurt\n"
-                    "• 4 tbsp cooked fava beans with olive oil and lemon\n"
-                    "• 1 small can of water-drained tuna"
-                )
+        # If user wants to apply changes or modify plan, skip pure informational guides so section 5.5 executes
+        if not is_apply_intent:
+            # Egg substitution (Informational)
+            if 'بيض' in clean_msg and (is_sub_intent or 'فطار' in clean_msg or 'عشا' in clean_msg):
+                if is_ar:
+                    return (
+                        "🥚 **بدائل البيض بالجرامات المتكافئة:**\n\n"
+                        "كل بيضتين مسلوقتين (حوالي 140 سعرة و13 جم بروتين) يمكنك استبدالهما بـ:\n"
+                        "• **100 جم جبنة قريش** بزيت الزيتون ورشة زعتر أو كمون.\n"
+                        "• **150 جم زبادي يوناني طبيعي** غير محلى.\n"
+                        "• **4 ملاعق كبيرة فول مدمس** بالكمون والليمون وزيت الزيتون.\n"
+                        "• **علبة تونة مصفاة بالماء** والليمون.\n"
+                        "• **100 جم توفو** مشوح بالأعشاب والكركم (خيار نباتي).\n\n"
+                        "💡 *لتطبيق هذا البديل في جداول خطتك الـ 15 يوماً وتحديث ملف الـ PDF فوراً، قل لي:* **(استبدل البيض بجبنة قريش في الخطة)**."
+                    )
+                else:
+                    return (
+                        "🥚 **Egg Substitutions:**\n\n"
+                        "2 boiled eggs (approx. 140 kcal, 13g protein) can be substituted with:\n"
+                        "• 100g low-fat cottage cheese with olive oil and oregano\n"
+                        "• 150g plain unsweetened Greek yogurt\n"
+                        "• 4 tbsp cooked fava beans with olive oil and lemon\n"
+                        "• 1 small can of water-drained tuna"
+                    )
 
-        # Chicken substitution
-        if any(k in clean_msg for k in ['فراخ', 'دجاج', 'صدر دجاج', 'chicken']) and (is_sub_intent or 'غدا' in clean_msg or 'لحم' in clean_msg):
-            if is_ar:
-                return (
-                    "🍗 **بدائل صدور الدجاج بالجرامات المتكافئة:**\n\n"
-                    "كل 150 جم صدر دجاج مشوي (حوالي 200-240 سعرة و35 جم بروتين) يمكن استبداله بـ:\n"
-                    "• **150 جم صدر ديك رومي مشوي**.\n"
-                    "• **170 جم سمك فيليه مشوي** (بلطي، بوري، قشر بياض).\n"
-                    "• **150 جم سمك سلمون مشوي** (غني جداً بالأوميغا 3 والدهون الصحية).\n"
-                    "• **علبة تونة مصفاة بالماء** (140 جم صافي).\n"
-                    "• **180 جم جبن قريش قليل الدسم** مع سلطة خضراء.\n"
-                    "• **3 بيضات مسلوقة** (بيضتان كاملتان + بياض بيضة)."
-                )
-            else:
-                return (
-                    "🍗 **Chicken Breast Substitutions:**\n\n"
-                    "150g grilled chicken breast can be replaced with:\n"
-                    "• 150g grilled turkey breast\n"
-                    "• 170g grilled white fish fillet\n"
-                    "• 150g baked salmon fillet\n"
-                    "• 1 standard can of water-drained chunk tuna\n"
-                    "• 3 boiled eggs (2 whole + 1 white)"
-                )
+            # Chicken substitution (Informational)
+            if any(k in clean_msg for k in ['فراخ', 'دجاج', 'صدر دجاج', 'chicken']) and (is_sub_intent or 'غدا' in clean_msg or 'لحم' in clean_msg):
+                if is_ar:
+                    return (
+                        "🍗 **بدائل صدور الدجاج بالجرامات المتكافئة:**\n\n"
+                        "كل 150 جم صدر دجاج مشوي (حوالي 200-240 سعرة و35 جم بروتين) يمكن استبداله بـ:\n"
+                        "• **150 جم صدر ديك رومي مشوي**.\n"
+                        "• **170 جم سمك فيليه مشوي** (بلطي، بوري، قشر بياض).\n"
+                        "• **150 جم سمك سلمون مشوي** (غني جداً بالأوميغا 3 والدهون الصحية).\n"
+                        "• **علبة تونة مصفاة بالماء** (140 جم صافي).\n"
+                        "• **180 جم جبن قريش قليل الدسم** مع سلطة خضراء.\n"
+                        "• **3 بيضات مسلوقة** (بيضتان كاملتان + بياض بيضة).\n\n"
+                        "💡 *لتطبيق هذا البديل في جداول خطتك الـ 15 يوماً وتحديث ملف الـ PDF فوراً، قل لي:* **(استبدل الفراخ بسمك مشوي في الخطة)**."
+                    )
+                else:
+                    return (
+                        "🍗 **Chicken Breast Substitutions:**\n\n"
+                        "150g grilled chicken breast can be replaced with:\n"
+                        "• 150g grilled turkey breast\n"
+                        "• 170g grilled white fish fillet\n"
+                        "• 150g baked salmon fillet\n"
+                        "• 1 standard can of water-drained chunk tuna\n"
+                        "• 3 boiled eggs (2 whole + 1 white)"
+                    )
 
-        # Fish & Tuna substitution
-        if any(k in clean_msg for k in ['سمك', 'سلمون', 'تونه', 'fish', 'tuna']) and is_sub_intent:
-            if is_ar:
-                return (
-                    "🐟 **بدائل الأسماك والتونة:**\n\n"
-                    "وجبة السمك أو التونة المشوية يمكن استبدالها بـ:\n"
-                    "• 150 جم صدر دجاج أو ديك رومي مشوي.\n"
-                    "• 3 بيضات مسلوقة مع نصف رغيف بلدي وسلطة.\n"
-                    "• طبق عدس بني مسلوق (كوب مطبوخ) مع ملعقة زيت زيتون وخضار."
-                )
-            else:
-                return (
-                    "🐟 **Fish & Seafood Substitutions:**\n\n"
-                    "Can be replaced with 150g grilled chicken or turkey breast, 3 boiled eggs, or 1 cup of cooked brown lentils."
-                )
+            # Fish & Tuna substitution (Informational)
+            if any(k in clean_msg for k in ['سمك', 'سلمون', 'تونه', 'تونة', 'fish', 'tuna']) and is_sub_intent:
+                if is_ar:
+                    return (
+                        "🐟 **بدائل الأسماك والتونة بالجرامات المتكافئة:**\n\n"
+                        "وجبة السمك أو التونة المشوية يمكن استبدالها بـ:\n"
+                        "• **150 جم صدر دجاج أو ديك رومي مشوي**.\n"
+                        "• **3 بيضات مسلوقة** مع نصف رغيف بلدي وسلطة.\n"
+                        "• **طبق عدس بني مسلوق** (كوب مطبوخ) مع ملعقة زيت زيتون وخضار.\n\n"
+                        "💡 *لتطبيق هذا البديل في جداول خطتك فوراً، قل لي:* **(بدل السمك بصدور دجاج في الخطة)**."
+                    )
+                else:
+                    return (
+                        "🐟 **Fish & Seafood Substitutions:**\n\n"
+                        "Can be replaced with 150g grilled chicken or turkey breast, 3 boiled eggs, or 1 cup of cooked brown lentils."
+                    )
 
-        # Bread / Rice / Carbs substitution
-        if any(k in clean_msg for k in ['رز', 'ارز', 'عيش', 'خبز', 'مكرونه', 'bread', 'rice', 'بطاطا']) and (is_sub_intent or 'نشويات' in clean_msg):
-            if is_ar:
-                return (
-                    "🍚 **بدائل الأرز البني والخبز (النشويات المعقدة):**\n\n"
-                    "كل 5 ملاعق أرز بني مطبوخ يمكن استبدالها بأحد الخيارات المتكافئة التالية:\n"
-                    "• **حبة بطاطا حلوة متوسطة** مشوية بالفرن (حوالي 150 جم).\n"
-                    "• **حبة بطاطس مسلوقة أو مشوية** متوسطة الحجم مهروسة برشة كمون وزيت زيتون.\n"
-                    "• **5 ملاعق كبيرة كينوا أو برغل مطبوخ**.\n"
-                    "• **نصف رغيف خبز بلدي أسمر (ردة)** أو شريحتين توست حبوب كاملة.\n"
-                    "• **4 ملاعق كبيرة شوفان كامل جاف** مطبوخ بحليب خالي الدسم."
-                )
-            else:
-                return (
-                    "🍚 **Carbohydrate Substitutions:**\n\n"
-                    "5 tbsp cooked brown rice can be replaced with:\n"
-                    "• 1 medium baked sweet potato (approx. 150g)\n"
-                    "• 5 tbsp cooked quinoa or buckwheat\n"
-                    "• 2 slices 100% whole grain toast\n"
-                    "• 40g dry rolled oats cooked with water"
-                )
+            # Bread / Rice / Carbs substitution (Informational)
+            if any(k in clean_msg for k in ['رز', 'ارز', 'عيش', 'خبز', 'مكرونه', 'bread', 'rice', 'بطاطا']) and (is_sub_intent or 'نشويات' in clean_msg):
+                if is_ar:
+                    return (
+                        "🍚 **بدائل الأرز البني والخبز (النشويات المعقدة):**\n\n"
+                        "كل 5 ملاعق أرز بني مطبوخ يمكن استبدالها بأحد الخيارات المتكافئة التالية:\n"
+                        "• **حبة بطاطا حلوة متوسطة** مشوية بالفرن (حوالي 150 جم).\n"
+                        "• **حبة بطاطس مسلوقة أو مشوية** متوسطة الحجم مهروسة برشة كمون وزيت زيتون.\n"
+                        "• **5 ملاعق كبيرة كينوا أو برغل مطبوخ**.\n"
+                        "• **نصف رغيف خبز بلدي أسمر (ردة)** أو شريحتين توست حبوب كاملة.\n"
+                        "• **4 ملاعق كبيرة شوفان كامل جاف** مطبوخ بحليب خالي الدسم.\n\n"
+                        "💡 *لتطبيق هذا البديل في جداول خطتك فوراً، قل لي:* **(استبدل الأرز ببطاطا مشوية في الخطة)**."
+                    )
+                else:
+                    return (
+                        "🍚 **Carbohydrate Substitutions:**\n\n"
+                        "5 tbsp cooked brown rice can be replaced with:\n"
+                        "• 1 medium baked sweet potato (approx. 150g)\n"
+                        "• 5 tbsp cooked quinoa or buckwheat\n"
+                        "• 2 slices 100% whole grain toast\n"
+                        "• 40g dry rolled oats cooked with water"
+                    )
 
-        # General substitution request
-        if is_sub_intent:
-            if is_ar:
-                return (
-                    "🔄 **دليل الاستبدال الغذائي الذكي:**\n\n"
-                    "• **البروتين:** صدور دجاج <-> سمك فيليه <-> تونة <-> ديك رومي <-> بيض مسلوق <-> جبن قريش.\n"
-                    "• **النشويات:** أرز بني <-> بطاطا مشوية <-> كينوا <-> شوفان <-> خبز حبوب كاملة.\n"
-                    "• **الدهون الصحية:** زيت زيتون بكر <-> أفوكادو <-> 10 حبات لوز أو عين جمل <-> بذور شيا.\n"
-                    "• **الألبان:** حليب البقر <-> حليب اللوز أو الشوفان غير المحلى.\n\n"
-                    "👉 أخبرني بالمكون المحدد الذي ترغب في استبداله وسأعطيك البديل والجرام المناسب فوراً!"
-                )
-            else:
-                return (
-                    "🔄 **Smart Ingredient Substitutions:**\n\n"
-                    "• **Proteins:** Chicken breast <-> Turkey, Salmon, Cod, Tuna, Eggs, or Cottage cheese.\n"
-                    "• **Carbs:** Brown rice <-> Sweet potato, Quinoa, Rolled oats, or Whole wheat bread.\n"
-                    "• **Healthy Fats:** Olive oil <-> Avocado, Raw walnuts, Almonds, or Chia seeds.\n\n"
-                    "Tell me the exact food you wish to replace and I will provide the precise equivalent portion!"
-                )
+            # General substitution guide
+            if is_sub_intent:
+                if is_ar:
+                    return (
+                        "🔄 **دليل الاستبدال الغذائي الذكي:**\n\n"
+                        "• **البروتين:** صدور دجاج <-> سمك فيليه <-> تونة <-> ديك رومي <-> بيض مسلوق <-> جبن قريش.\n"
+                        "• **النشويات:** أرز بني <-> بطاطا مشوية <-> كينوا <-> شوفان <-> خبز حبوب كاملة.\n"
+                        "• **الدهون الصحية:** زيت زيتون بكر <-> أفوكادو <-> 10 حبات لوز أو عين جمل <-> بذور شيا.\n"
+                        "• **الألبان:** حليب البقر <-> حليب اللوز أو الشوفان غير المحلى.\n\n"
+                        "👉 أخبرني بالمكون المحدد الذي ترغب في استبداله وسأعطيك البديل والجرام المناسب فوراً!"
+                    )
+                else:
+                    return (
+                        "🔄 **Smart Ingredient Substitutions:**\n\n"
+                        "• **Proteins:** Chicken breast <-> Turkey, Salmon, Cod, Tuna, Eggs, or Cottage cheese.\n"
+                        "• **Carbs:** Brown rice <-> Sweet potato, Quinoa, Rolled oats, or Whole wheat bread.\n"
+                        "• **Healthy Fats:** Olive oil <-> Avocado, Raw walnuts, Almonds, or Chia seeds.\n\n"
+                        "Tell me the exact food you wish to replace and I will provide the precise equivalent portion!"
+                    )
 
         # ── 5.5 MEAL MODIFICATIONS, DAY SWAPPING & INGREDIENT EXCLUSIONS ──
         is_modify_intent = any(w in clean_msg for w in [
@@ -806,20 +816,90 @@ class OfflineProvider:
             else:
                 return f"📋 Customization options for Day {target_d}: Option A (Oats, Tuna, Greek Yogurt) or Option B (Eggs, Grilled Fish, Cottage Cheese)."
 
-        # ── Case C: Standalone Food Exclusions (e.g. 'مش عاوز بيض' / 'no eggs') ──
-        if is_exclude_egg:
+        # ── Case C: Standalone Food Exclusions & Global Plan Updates ──
+        def replace_food_globally(old_kw, new_meal_str, new_cal_str, target_meal_type='breakfast'):
+            cnt = 0
+            for d in meal_list:
+                meals = d.get('meals', {})
+                for m_t in [target_meal_type, 'breakfast', 'lunch', 'dinner']:
+                    m_item = meals.get(m_t, {})
+                    if old_kw in m_item.get('meal', ''):
+                        m_item['meal'] = new_meal_str
+                        m_item['calories'] = new_cal_str
+                        m_item['notes'] = 'تم التحديث بناءً على طلبك في الشات'
+                        cnt += 1
+            return cnt
+
+        if is_exclude_egg or ('بيض' in clean_msg and any(w in clean_msg for w in ['استبدل', 'بدل', 'شيل', 'غير', 'مش عاوز', 'بدون', 'احذف'])):
+            replace_food_globally('بيض', '120 جم جبنة قريش طازجة بزيت الزيتون والزعتر مع نصف رغيف بلدي وخيار', '340 سعرة (22 جم بروتين)', 'breakfast')
             if is_ar:
                 return (
-                    "🥚 **تم اعتماد استبعاد البيض بالكامل من خطتك الغذائية:**\n\n"
-                    "يمكنك تعويض أي وجبة إفطار تحتوي على بيض بأحد البدائل التالية بنفس القيمة الغذائية:\n"
-                    "• **120 جم جبنة قريش طازجة** مع ملعقة زيت زيتون بكر ورشة زعتر ونصف رغيف بلدي.\n"
-                    "• **150 جم زبادي يوناني طبيعي** مع ملعقة بذور شيا ومكسرات نية.\n"
-                    "• **4 ملاعق كبيرة فول مدمس بالليمون والكمون** وزيت الزيتون مع سلطة خضراء.\n"
-                    "• **علبة تونة مصفاة بالماء** مع عصير ليمون وتوست أسمر.\n\n"
-                    "✨ جميع هذه البدائل تمدك بـ 20-25 جم بروتين صافي بدون أي تأثير سلبي على عجز السعرات."
+                    "✅ **تم تحديث خطتك وجداولك الغذائية بنجاح!**\n\n"
+                    "تم تطبيق استبعاد البيض في **جميع أيام الخطة (15 يوماً)** وتعويضه بـ:\n"
+                    "• **الإفطار الجديد المعتمد:** 120 جم جبنة قريش طازجة بزيت الزيتون والزعتر مع نصف رغيف بلدي وسلطة خضراء.\n"
+                    "• **القيمة الغذائية:** 340 سعرة حرارية | 22 جم بروتين صافي (متكافئة تماماً مع وجبة البيض).\n\n"
+                    "🎉 **أصبحت جداول الخطة في الموقع وملف الـ PDF الرسمي محدثة بالكامل الآن!**"
                 )
             else:
-                return "🥚 Eggs excluded! Substitute with 120g low-fat cottage cheese, 150g plain Greek yogurt, or 1 can of water-drained tuna."
+                return "✅ **Plan Updated!** Eggs have been excluded from all 15 days and replaced with 120g low-fat cottage cheese with olive oil and whole pita."
+
+        if is_exclude_chicken or (any(w in clean_msg for w in ['فراخ', 'دجاج']) and any(w in clean_msg for w in ['استبدل', 'بدل', 'شيل', 'غير', 'مش عاوز', 'بدون', 'احذف'])):
+            replace_food_globally('دجاج', '170 جم سمك فيليه مشوي بالأعشاب والليمون مع 5 ملاعق أرز بني وخضار سوتيه', '550 سعرة (38 جم بروتين)', 'lunch')
+            replace_food_globally('فراخ', '170 جم سمك فيليه مشوي بالأعشاب والليمون مع 5 ملاعق أرز بني وخضار سوتيه', '550 سعرة (38 جم بروتين)', 'lunch')
+            if is_ar:
+                return (
+                    "✅ **تم تحديث خطتك وجداولك الغذائية بنجاح!**\n\n"
+                    "تم استبدال الدجاج في **جميع وجبات الغداء** بـ:\n"
+                    "• **الغداء الجديد المعتمد:** 170 جم سمك فيليه مشوي بالأعشاب والليمون مع 5 ملاعق أرز بني وخضار سوتيه وسلطة خضراء.\n"
+                    "• **القيمة الغذائية:** 550 سعرة حرارية | 38 جم بروتين صافي.\n\n"
+                    "🎉 **أصبحت جداول الخطة في الموقع وملف الـ PDF الرسمي محدثة بالكامل الآن!**"
+                )
+            else:
+                return "✅ **Plan Updated!** Chicken has been replaced with 170g grilled white fish fillet across all 15 days."
+
+        # Tuna / Fish Replacement
+        if any(w in clean_msg for w in ['تونة', 'تونه', 'سمك']) and any(w in clean_msg for w in ['استبدل', 'بدل', 'شيل', 'غير', 'مش عاوز', 'بدون', 'احذف']):
+            replace_food_globally('تونة', '160 جم صدور دجاج مشوية مع سلطة خضراء ونصف رغيف بلدي', '380 سعرة (35 جم بروتين)', 'dinner')
+            replace_food_globally('تونه', '160 جم صدور دجاج مشوية مع سلطة خضراء ونصف رغيف بلدي', '380 سعرة (35 جم بروتين)', 'dinner')
+            replace_food_globally('سمك', '170 جم صدور دجاج مشوية بالأعشاب مع أرز بسمتي وخضار مشوي', '520 سعرة (38 جم بروتين)', 'lunch')
+            if is_ar:
+                return (
+                    "✅ **تم تحديث خطتك وجداولك الغذائية بنجاح!**\n\n"
+                    "تم استبدال الأسماك والتونة في جداولك بـ:\n"
+                    "• **البديل المعتمد:** صدور دجاج مشوية بالأعشاب بنفس السعرات ومحتوى البروتين العالي.\n\n"
+                    "🎉 **أصبحت جداول الخطة في الموقع وملف الـ PDF الرسمي محدثة بالكامل الآن!**"
+                )
+            else:
+                return "✅ **Plan Updated!** Fish and tuna have been replaced with grilled chicken breast across all 15 days."
+
+        # Rice / Carbs Replacement
+        if any(w in clean_msg for w in ['أرز', 'رز']) and any(w in clean_msg for w in ['استبدل', 'بدل', 'شيل', 'غير', 'مش عاوز', 'بدون', 'احذف']):
+            replace_food_globally('أرز', '200 جم بطاطس أو بطاطا مشوية بالفرن مع رشة زيت زيتون وأعشاب', '220 سعرة (45 جم كارب صحي)', 'lunch')
+            replace_food_globally('رز', '200 جم بطاطس أو بطاطا مشوية بالفرن مع رشة زيت زيتون وأعشاب', '220 سعرة (45 جم كارب صحي)', 'lunch')
+            if is_ar:
+                return (
+                    "✅ **تم تحديث خطتك وجداولك الغذائية بنجاح!**\n\n"
+                    "تم استبدال الأرز في وجبات الغداء بـ:\n"
+                    "• **الكارب الصحي المعتمد:** 200 جم بطاطس أو بطاطا مشوية بالفرن (ألياف أعلى ومؤشر جلايسيمي ممتاز).\n\n"
+                    "🎉 **أصبحت جداول الخطة في الموقع وملف الـ PDF الرسمي محدثة بالكامل الآن!**"
+                )
+            else:
+                return "✅ **Plan Updated!** Rice has been replaced with 200g baked potato/sweet potato across all 15 days."
+
+        # ── Case D: Generic Update Request (e.g. 'حدث الخطة والجداول') ──
+        is_generic_update = any(p in clean_msg for p in ['حدث الخطه', 'حدث الجداول', 'تحديث الخطه', 'تحديث الجداول', 'تحديث الخطه والجداول', 'حدث الخطه والجداول'])
+        if is_generic_update:
+            if is_ar:
+                return (
+                    "✨ **مستعد لتحديث وتعديل خطتك وجداولك الغذائية فوراً!**\n\n"
+                    "أخبرني بالتعديل أو الاستبدال الذي ترغب في اعتماده في جداول الخطة، وسيقوم النظام بتحديث جداول الـ 15 يوماً وملف الـ PDF فوراً:\n"
+                    "• **استبدال أطعمة بالكامل:** (مثال: *'استبدل البيض بجبنة قريش'* أو *'بدل الفراخ بسمك مشوي'*).\n"
+                    "• **تبديل وجبات أيام معينة:** (مثال: *'بدل اليوم الأول باليوم الخامس'*).\n"
+                    "• **استبعاد أي مكون:** (مثال: *'شيل البيض من الخطة'* أو *'مش عاوز تونة'*).\n\n"
+                    "ما هو التعديل أو الاستبدال الذي ترغب في تطبيقه الآن؟"
+                )
+            else:
+                return "✨ Ready to update your plan and tables! Tell me what to modify (e.g. 'replace eggs with cottage cheese' or 'swap day 1 with day 5')."
 
         # ── 6. SPECIFIC DAY INQUIRY (Robust extraction for Day 1 to 15) ──
         day_match = re.search(r'(?:يوم|اليوم|day)\s*(\d+)', clean_msg)
