@@ -318,7 +318,7 @@ def inject_styles(theme: str, lang: str):
         font-weight: 600 !important;
     }}
 
-    /* ── Inputs Styling & Wrappers (Unified modern borders, zero inner line/dash) ── */
+    /* ── Inputs Styling & Wrappers (Prevent dark background when typing) ── */
     div[data-baseweb="input"],
     div[data-baseweb="base-input"],
     div[data-baseweb="textarea"],
@@ -326,28 +326,14 @@ def inject_styles(theme: str, lang: str):
     .stNumberInput > div > div,
     .stTextArea > div > div {{
         background-color: {bg_input} !important;
-        border: 1.5px solid {border_color} !important;
+        border-color: {border_color} !important;
         color: {text_color} !important;
-        border-radius: 10px !important;
-        transition: all 0.2s ease !important;
+        border-radius: 6px !important;
     }}
 
-    /* Inner input element has NO border so NO vertical line or dash ever appears */
     .stTextInput input,
     .stNumberInput input,
-    .stTextArea textarea {{
-        background-color: transparent !important;
-        border: none !important;
-        outline: none !important;
-        box-shadow: none !important;
-        color: {text_color} !important;
-        -webkit-text-fill-color: {text_color} !important;
-        text-align: {text_align} !important;
-        direction: {direction} !important;
-        padding: 8px 12px !important;
-        font-size: 0.95rem !important;
-    }}
-
+    .stTextArea textarea,
     .stSelectbox select,
     div[data-baseweb="select"],
     div[data-baseweb="select"] > div {{
@@ -355,7 +341,7 @@ def inject_styles(theme: str, lang: str):
         border: 1.5px solid {border_color} !important;
         color: {text_color} !important;
         -webkit-text-fill-color: {text_color} !important;
-        border-radius: 10px !important;
+        border-radius: 6px !important;
         text-align: {text_align} !important;
         direction: {direction} !important;
     }}
@@ -365,56 +351,7 @@ def inject_styles(theme: str, lang: str):
     div[data-baseweb="base-input"]:focus-within,
     div[data-baseweb="textarea"]:focus-within {{
         border-color: #16a34a !important;
-        box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.18) !important;
-    }}
-
-    /* ── Password Visibility Eye Toggle Button (Clean, Visible & Modern) ── */
-    div[data-baseweb="input"] button,
-    div[data-baseweb="base-input"] button,
-    .stTextInput button,
-    div[data-testid="stTextInput"] button[data-testid="stBaseButton-secondary"] {{
-        background: transparent !important;
-        background-color: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
-        color: {'#94a3b8' if is_dark else '#475569'} !important;
-        padding: 0 10px !important;
-        margin: 0 !important;
-        min-height: 0 !important;
-        height: 100% !important;
-        width: auto !important;
-        cursor: pointer !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        opacity: 0.85 !important;
-        transition: all 0.2s ease !important;
-    }}
-    div[data-baseweb="input"] button:hover,
-    div[data-baseweb="base-input"] button:hover,
-    .stTextInput button:hover {{
-        background: transparent !important;
-        background-color: transparent !important;
-        border: none !important;
-        opacity: 1 !important;
-    }}
-    div[data-baseweb="input"] button svg,
-    div[data-baseweb="base-input"] button svg,
-    .stTextInput button svg {{
-        fill: {'#94a3b8' if is_dark else '#475569'} !important;
-        stroke: {'#94a3b8' if is_dark else '#475569'} !important;
-        color: {'#94a3b8' if is_dark else '#475569'} !important;
-        width: 20px !important;
-        height: 20px !important;
-        transition: all 0.2s ease !important;
-    }}
-    div[data-baseweb="input"] button:hover svg,
-    div[data-baseweb="base-input"] button:hover svg,
-    .stTextInput button:hover svg {{
-        fill: #16a34a !important;
-        stroke: #16a34a !important;
-        color: #16a34a !important;
-        transform: scale(1.15) !important;
+        box-shadow: 0 0 0 1px #16a34a !important;
     }}
 
     /* ── Checkboxes (Fix black box in Light Mode) ── */
@@ -600,59 +537,28 @@ def inject_styles(theme: str, lang: str):
         letter-spacing: 0.5px;
     }}
 
-    /* ── Modern Segmented Capsule Tabs ── */
-    div[data-baseweb="tab-list"] {{
-        background-color: {'rgba(255,255,255,0.04)' if is_dark else '#f1f5f9'} !important;
-        border-radius: 12px !important;
-        padding: 4px !important;
-        gap: 6px !important;
-        border: 1px solid {border_color} !important;
-    }}
-    div[data-baseweb="tab-list"] button[data-baseweb="tab"] {{
-        border-radius: 9px !important;
-        border: none !important;
-        padding: 8px 16px !important;
-        background-color: transparent !important;
-        color: {text_muted} !important;
-        font-weight: 600 !important;
-        transition: all 0.2s ease !important;
-    }}
-    div[data-baseweb="tab-list"] button[aria-selected="true"] {{
-        background-color: {'#16a34a' if is_dark else '#ffffff'} !important;
-        color: {'#ffffff' if is_dark else '#15803d'} !important;
-        box-shadow: {'0 2px 8px rgba(0,0,0,0.3)' if is_dark else '0 2px 6px rgba(0,0,0,0.08)'} !important;
-    }}
-    div[data-baseweb="tab-highlight"],
-    div[data-baseweb="tab-border"] {{
-        display: none !important;
-    }}
-
-    /* ── Buttons & Download Button (Exclude input icons, Add modern gradients) ── */
+    /* ── Buttons & Download Button (Fix dark/black box in Light Mode) ── */
     .stButton > button,
     .stDownloadButton > button,
     div[data-testid="stDownloadButton"] > button,
-    .stFormSubmitButton > button,
-    button[data-testid="stBaseButton-primary"],
-    .main button[data-testid="stBaseButton-secondary"]:not(div[data-baseweb="input"] button):not(div[data-baseweb="base-input"] button):not(.stTextInput button) {{
-        background: linear-gradient(135deg, { '#15803d' if is_dark else '#16a34a' }, { '#166534' if is_dark else '#15803d' }) !important;
+    button[data-testid="stBaseButton-secondary"],
+    button[data-testid="stBaseButton-primary"] {{
+        background: { '#1b5e20' if is_dark else '#16a34a' } !important;
         color: #ffffff !important;
-        border: 1px solid { '#22c55e' if is_dark else '#16a34a' } !important;
-        border-radius: 10px !important;
+        border: 1px solid { '#2e7d32' if is_dark else '#15803d' } !important;
+        border-radius: 8px !important;
         font-family: {'"Cairo", ' if is_ar else ''}'DM Sans', sans-serif !important;
-        font-weight: 700 !important;
-        padding: 0.6rem 1.4rem !important;
-        box-shadow: 0 4px 12px rgba(22, 163, 74, 0.22) !important;
-        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        font-weight: 600 !important;
+        padding: 0.5rem 1.2rem !important;
+        transition: all 0.2s !important;
     }}
     .stButton > button:hover,
     .stDownloadButton > button:hover,
     div[data-testid="stDownloadButton"] > button:hover,
-    .stFormSubmitButton > button:hover,
-    button[data-testid="stBaseButton-primary"]:hover,
-    .main button[data-testid="stBaseButton-secondary"]:not(div[data-baseweb="input"] button):not(div[data-baseweb="base-input"] button):not(.stTextInput button):hover {{
-        background: linear-gradient(135deg, { '#16a34a' if is_dark else '#15803d' }, { '#22c55e' if is_dark else '#166534' }) !important;
-        box-shadow: 0 6px 18px rgba(22, 163, 74, 0.32) !important;
-        transform: translateY(-1px) !important;
+    button[data-testid="stBaseButton-secondary"]:hover,
+    button[data-testid="stBaseButton-primary"]:hover {{
+        background: { '#2e7d32' if is_dark else '#15803d' } !important;
+        border-color: { '#388e3c' if is_dark else '#166534' } !important;
         color: #ffffff !important;
     }}
     div[data-testid="stDownloadButton"] {{
@@ -784,61 +690,47 @@ def render_auth():
     t = T[st.session_state.lang]
     inject_styles(st.session_state.theme, st.session_state.lang)
 
-    # ── Top Modern Toolbar for Theme & Language (Sleek Rounded Pills) ──
-    top_empty, top_tools = st.columns([2.7, 1.3])
-    with top_tools:
-        c_l, c_th = st.columns(2)
-        with c_l:
-            lang_choice = st.selectbox(
-                "Language",
-                ["ar", "en"],
-                index=0 if st.session_state.lang == "ar" else 1,
-                format_func=lambda x: "🇸🇦 العربية" if x == "ar" else "🇬🇧 English",
-                key="auth_lang_choice",
-                label_visibility="collapsed",
-            )
-            if lang_choice != st.session_state.lang:
-                st.session_state.lang = lang_choice
-                st.rerun()
-
-        with c_th:
-            theme_choice = st.selectbox(
-                "Theme",
-                ["dark", "light"],
-                index=0 if st.session_state.theme == "dark" else 1,
-                format_func=lambda x: "🌙 داكن" if x == "dark" else "☀️ فاتح",
-                key="auth_theme_choice",
-                label_visibility="collapsed",
-            )
-            if theme_choice != st.session_state.theme:
-                st.session_state.theme = theme_choice
-                st.rerun()
-
-    # ── Visual Spacer: Moves Registration/Login Down Harmoniously ──
-    st.markdown('<div style="height: 38px; width: 100%;"></div>', unsafe_allow_html=True)
-
-    c1, c2, c3 = st.columns([1, 1.35, 1])
-    with c2:
-        st.markdown(
-            f"""
-            <div style="text-align: center; margin-bottom: 22px;">
-                <div style="display: inline-flex; align-items: center; gap: 6px; padding: 5px 16px; border-radius: 9999px; font-size: 0.78rem; font-weight: 700; color: #16a34a; background: {'rgba(22, 163, 74, 0.12)' if st.session_state.theme == 'dark' else '#dcfce7'}; border: 1px solid {'rgba(22, 163, 74, 0.28)' if st.session_state.theme == 'dark' else '#bbf7d0'}; margin-bottom: 12px; letter-spacing: 0.5px;">
-                    🥗 NutriAI Medical System
-                </div>
-                <div class="nutriai-logo" style="font-size: 2.3rem; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 6px;">NutriAI</div>
-                <div class="nutriai-tagline" style="font-size: 0.9rem; margin-bottom: 0;">{t["tagline"]}</div>
-            </div>
-            """,
-            unsafe_allow_html=True,
+    # Top Controls for Auth Page (Theme & Language)
+    col_t1, col_t2 = st.columns([1, 1])
+    with col_t1:
+        lang_choice = st.radio(
+            t["language"],
+            ["ar", "en"],
+            index=0 if st.session_state.lang == "ar" else 1,
+            format_func=lambda x: t["lang_ar"] if x == "ar" else t["lang_en"],
+            horizontal=True,
+            key="auth_lang_radio",
         )
+        if lang_choice != st.session_state.lang:
+            st.session_state.lang = lang_choice
+            st.rerun()
+
+    with col_t2:
+        theme_choice = st.radio(
+            t["theme"],
+            ["dark", "light"],
+            index=0 if st.session_state.theme == "dark" else 1,
+            format_func=lambda x: t["dark"] if x == "dark" else t["light"],
+            horizontal=True,
+            key="auth_theme_radio",
+        )
+        if theme_choice != st.session_state.theme:
+            st.session_state.theme = theme_choice
+            st.rerun()
+
+    st.markdown("<br>", unsafe_allow_html=True)
+    c1, c2, c3 = st.columns([1, 1.4, 1])
+    with c2:
+        st.markdown(f'<div class="nutriai-logo">🥗 NutriAI</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="nutriai-tagline">{t["tagline"]}</div>', unsafe_allow_html=True)
 
         tab_login, tab_register = st.tabs([t["login"], t["register"]])
 
         with tab_login:
-            st.markdown('<div style="height: 14px;"></div>', unsafe_allow_html=True)
+            st.markdown("<br>", unsafe_allow_html=True)
+            # Clean fields without any transparent placeholders
             username = st.text_input(t["username"], key="login_user")
             password = st.text_input(t["password"], type="password", key="login_pass")
-            st.markdown('<div style="height: 10px;"></div>', unsafe_allow_html=True)
             if st.button(t["login_btn"], use_container_width=True):
                 if not username or not password:
                     st.error(t["fill_all"])
@@ -854,11 +746,11 @@ def render_auth():
                         st.error(data.get("detail", "فشل تسجيل الدخول / Login failed"))
 
         with tab_register:
-            st.markdown('<div style="height: 14px;"></div>', unsafe_allow_html=True)
+            st.markdown("<br>", unsafe_allow_html=True)
+            # Clean registration fields without transparent placeholders
             r_user  = st.text_input(t["username"], key="reg_user")
             r_email = st.text_input(t["email"],    key="reg_email")
             r_pass  = st.text_input(t["password"], type="password", key="reg_pass")
-            st.markdown('<div style="height: 10px;"></div>', unsafe_allow_html=True)
             if st.button(t["create_account"], use_container_width=True):
                 if not r_user or not r_email or not r_pass:
                     st.error(t["fill_all"])
@@ -885,12 +777,11 @@ def render_sidebar():
         c_lang, c_thm = st.columns(2)
         with c_lang:
             lang_choice = st.selectbox(
-                "Language",
+                "🌐",
                 ["ar", "en"],
                 index=0 if st.session_state.lang == "ar" else 1,
                 format_func=lambda x: "🇸🇦 العربية" if x == "ar" else "🇬🇧 English",
                 key="sb_lang_sel",
-                label_visibility="collapsed",
             )
             if lang_choice != st.session_state.lang:
                 st.session_state.lang = lang_choice
@@ -898,12 +789,11 @@ def render_sidebar():
 
         with c_thm:
             theme_choice = st.selectbox(
-                "Theme",
+                "🎨",
                 ["dark", "light"],
                 index=0 if st.session_state.theme == "dark" else 1,
                 format_func=lambda x: "🌙 داكن" if x == "dark" else "☀️ فاتح",
                 key="sb_thm_sel",
-                label_visibility="collapsed",
             )
             if theme_choice != st.session_state.theme:
                 st.session_state.theme = theme_choice
