@@ -249,11 +249,12 @@ def inject_styles(theme: str, lang: str):
         disc_brd      = "#fde68a"
         disc_txt      = "#92400e"
 
-    # Dropdown & Lucide Icon Variables
-    dropdown_bg     = "#15171E" if is_dark else "#ffffff"
-    dropdown_border = "#2D3B30" if is_dark else "#d1d5db"
-    selected_bg     = "#1B5428"
-    item_hover_bg   = "rgba(27, 84, 40, 0.4)" if is_dark else "rgba(27, 84, 40, 0.12)"
+    # Dropdown & Lucide Icon Variables (NutriAI Premium SaaS Palette)
+    dropdown_bg     = "#171A20" if is_dark else "#FFFFFF"
+    dropdown_border = "#303A32" if is_dark else "#E2E8F0"
+    selected_bg     = "#1E4D2B"
+    item_hover_bg   = "#252B32" if is_dark else "#F3F4F6"
+    opt_text_color  = "#E5E7EB" if is_dark else "#1F2937"
     icon_stroke     = "%2322c55e" if is_dark else "%2316a34a"
 
     globe2_svg = (
@@ -664,46 +665,63 @@ def inject_styles(theme: str, lang: str):
         margin-bottom: 0 !important;
     }}
 
-    /* Remove duplicated borders, nested outlines, and excessive shadows */
-    .top-controls-bar div[data-baseweb="select"] *,
-    .sidebar-controls-bar div[data-baseweb="select"] * {{
+    /* Remove duplicated borders, nested outlines, and excessive shadows from BaseWeb/Bootstrap */
+    .top-controls-bar div[data-testid="stSelectbox"] *,
+    .sidebar-controls-bar div[data-testid="stSelectbox"] *,
+    .lang-ctrl-box *,
+    .theme-ctrl-box *,
+    .sidebar-lang-box *,
+    .sidebar-theme-box * {{
         border: none !important;
         outline: none !important;
         box-shadow: none !important;
         background-color: transparent !important;
     }}
 
-    /* Single subtle border #2D3B30, dark dropdown background #15171E */
+    /* Main Trigger Box: Single subtle border 1px solid #303A32, Background #171A20, Border-radius 12px */
     .top-controls-bar div[data-baseweb="select"],
-    .sidebar-controls-bar div[data-baseweb="select"] {{
+    .sidebar-controls-bar div[data-baseweb="select"],
+    .lang-ctrl-box div[data-baseweb="select"],
+    .theme-ctrl-box div[data-baseweb="select"],
+    .sidebar-lang-box div[data-baseweb="select"],
+    .sidebar-theme-box div[data-baseweb="select"] {{
         background-color: {dropdown_bg} !important;
         background: {dropdown_bg} !important;
         border: 1px solid {dropdown_border} !important;
-        border-radius: 8px !important;
-        min-height: 36px !important;
-        height: 36px !important;
+        border-radius: 12px !important;
+        min-height: 42px !important;
+        height: 42px !important;
         box-shadow: none !important;
         outline: none !important;
         transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease !important;
         cursor: pointer !important;
+        display: flex !important;
+        align-items: center !important;
     }}
 
-    /* Clean Hover & Focus transition (0.2s) without excessive glow */
+    /* Clean Hover & Focus: 1px subtle ring #16a34a without excessive glow */
     .top-controls-bar div[data-baseweb="select"]:hover,
     .sidebar-controls-bar div[data-baseweb="select"]:hover,
     .top-controls-bar div[data-baseweb="select"]:focus-within,
-    .sidebar-controls-bar div[data-baseweb="select"]:focus-within {{
-        border-color: #16a34a !important;
-        box-shadow: 0 0 0 1px #16a34a !important;
+    .sidebar-controls-bar div[data-baseweb="select"]:focus-within,
+    .lang-ctrl-box div[data-baseweb="select"]:hover,
+    .theme-ctrl-box div[data-baseweb="select"]:hover,
+    .sidebar-lang-box div[data-baseweb="select"]:hover,
+    .sidebar-theme-box div[data-baseweb="select"]:hover {{
+        border-color: #16A34A !important;
+        box-shadow: 0 0 0 1px #16A34A !important;
     }}
 
+    /* Option Text inside Trigger: #E5E7EB (Dark) / #1F2937 (Light) with full readability */
     .top-controls-bar div[data-baseweb="select"] [data-testid="stMarkdownContainer"] p,
     .sidebar-controls-bar div[data-baseweb="select"] [data-testid="stMarkdownContainer"] p,
     .top-controls-bar div[data-baseweb="select"] span,
-    .sidebar-controls-bar div[data-baseweb="select"] span {{
-        color: {text_color} !important;
-        font-size: 0.84rem !important;
-        font-weight: 600 !important;
+    .sidebar-controls-bar div[data-baseweb="select"] span,
+    .top-controls-bar div[data-baseweb="select"] div,
+    .sidebar-controls-bar div[data-baseweb="select"] div {{
+        color: {opt_text_color} !important;
+        font-size: 0.88rem !important;
+        font-weight: 500 !important;
         letter-spacing: 0.2px !important;
         white-space: nowrap !important;
     }}
@@ -713,14 +731,14 @@ def inject_styles(theme: str, lang: str):
     .sidebar-lang-box div[data-baseweb="select"]::before {{
         content: "";
         display: inline-block;
-        width: 15px;
-        height: 15px;
+        width: 16px;
+        height: 16px;
         background-image: url("{globe2_svg}");
         background-repeat: no-repeat;
         background-position: center;
         background-size: contain;
-        margin-inline-start: 10px;
-        margin-inline-end: 6px;
+        margin-inline-start: 14px;
+        margin-inline-end: 8px;
         flex-shrink: 0;
     }}
 
@@ -729,92 +747,132 @@ def inject_styles(theme: str, lang: str):
     .sidebar-theme-box div[data-baseweb="select"]::before {{
         content: "";
         display: inline-block;
-        width: 15px;
-        height: 15px;
+        width: 16px;
+        height: 16px;
         background-image: url("{theme_icon_svg}");
         background-repeat: no-repeat;
         background-position: center;
         background-size: contain;
-        margin-inline-start: 10px;
-        margin-inline-end: 6px;
+        margin-inline-start: 14px;
+        margin-inline-end: 8px;
         flex-shrink: 0;
     }}
 
     /* Compact caret arrow */
     .top-controls-bar div[data-baseweb="select"] svg,
     .sidebar-controls-bar div[data-baseweb="select"] svg {{
-        fill: #94a3b8 !important;
-        color: #94a3b8 !important;
-        width: 15px !important;
-        height: 15px !important;
+        fill: #94A3B8 !important;
+        color: #94A3B8 !important;
+        width: 16px !important;
+        height: 16px !important;
+        margin-inline-end: 12px !important;
         transition: transform 0.2s ease, fill 0.2s ease !important;
     }}
     .top-controls-bar div[data-baseweb="select"]:hover svg,
     .sidebar-controls-bar div[data-baseweb="select"]:hover svg {{
-        fill: #22c55e !important;
-        color: #22c55e !important;
+        fill: #22C55E !important;
+        color: #22C55E !important;
     }}
 
-    /* Popover Reset: remove outer duplicated borders and outlines */
+    /* ── Dropdown Popover Menu (Dark Background #171A20, Single Border #303A32, Radius 12px) ── */
     div[data-baseweb="popover"],
     div[data-baseweb="popover"] > div,
     div[data-baseweb="popover"] > div > div {{
         background: transparent !important;
+        background-color: transparent !important;
         border: none !important;
         box-shadow: none !important;
         outline: none !important;
         padding: 0 !important;
     }}
 
-    /* Single clean popover container (#15171E background, #2D3B30 border) */
-    div[data-baseweb="popover"] ul[data-baseweb="menu"],
-    div[data-baseweb="popover"] ul[role="listbox"],
+    /* Force override any white/light container in Dark Mode */
+    body div[data-baseweb="popover"] ul,
+    body div[data-baseweb="popover"] [data-baseweb="menu"],
+    body div[data-baseweb="popover"] [role="listbox"],
     ul[data-baseweb="menu"],
-    ul[role="listbox"] {{
+    ul[role="listbox"],
+    .dropdown-menu {{
         background-color: {dropdown_bg} !important;
         background: {dropdown_bg} !important;
         border: 1px solid {dropdown_border} !important;
-        border-radius: 8px !important;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45) !important;
-        padding: 4px !important;
+        border-radius: 12px !important;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5) !important;
+        padding: 6px !important;
         outline: none !important;
+        overflow: hidden !important;
     }}
 
-    div[data-baseweb="popover"] li[data-baseweb="menu-item"],
-    div[data-baseweb="popover"] li[role="option"],
+    /* Normal Option: Text #E5E7EB, Padding 12px 16px, Transition 0.2s ease */
+    body div[data-baseweb="popover"] li,
+    body div[data-baseweb="popover"] [data-baseweb="menu-item"],
+    body div[data-baseweb="popover"] [role="option"],
+    ul[data-baseweb="menu"] li,
     li[data-baseweb="menu-item"],
-    li[role="option"] {{
+    li[role="option"],
+    .dropdown-item {{
+        background-color: transparent !important;
         background: transparent !important;
-        color: {text_color} !important;
-        font-size: 0.84rem !important;
+        color: {opt_text_color} !important;
+        padding: 12px 16px !important;
+        border-radius: 8px !important;
+        font-size: 0.88rem !important;
         font-weight: 500 !important;
-        padding: 6px 12px !important;
-        margin: 2px 0 !important;
-        border-radius: 6px !important;
+        line-height: 1.4 !important;
         border: none !important;
         outline: none !important;
-        transition: background-color 0.2s ease, color 0.2s ease !important;
+        box-shadow: none !important;
         cursor: pointer !important;
+        margin: 2px 0 !important;
+        transition: background-color 0.2s ease, color 0.2s ease !important;
     }}
 
-    /* Smooth Hover Transition (0.2s) */
-    div[data-baseweb="popover"] li[data-baseweb="menu-item"]:hover,
-    div[data-baseweb="popover"] li[role="option"]:hover,
+    /* Prevent any nested elements inside li from inheriting white background or dark text */
+    body div[data-baseweb="popover"] li *,
+    body div[data-baseweb="popover"] [role="option"] *,
+    li[data-baseweb="menu-item"] *,
+    li[role="option"] *,
+    .dropdown-item * {{
+        background: transparent !important;
+        background-color: transparent !important;
+        color: inherit !important;
+    }}
+
+    /* Hover State: Background #252B32 (Dark) / #F3F4F6 (Light) */
+    body div[data-baseweb="popover"] li:hover,
+    body div[data-baseweb="popover"] [data-baseweb="menu-item"]:hover,
+    body div[data-baseweb="popover"] [role="option"]:hover,
+    ul[data-baseweb="menu"] li:hover,
     li[data-baseweb="menu-item"]:hover,
-    li[role="option"]:hover {{
+    li[role="option"]:hover,
+    .dropdown-item:hover {{
         background-color: {item_hover_bg} !important;
-        color: #ffffff !important;
+        background: {item_hover_bg} !important;
+        color: {'#FFFFFF' if is_dark else '#111827'} !important;
     }}
 
-    /* Selected Option Background: #1B5428 */
-    div[data-baseweb="popover"] li[aria-selected="true"],
-    div[data-baseweb="popover"] li[data-baseweb="menu-item"][aria-selected="true"],
+    /* Selected Option: Background #1E4D2B, Text #FFFFFF */
+    body div[data-baseweb="popover"] li[aria-selected="true"],
+    body div[data-baseweb="popover"] [data-baseweb="menu-item"][aria-selected="true"],
+    body div[data-baseweb="popover"] [role="option"][aria-selected="true"],
+    ul[data-baseweb="menu"] li[aria-selected="true"],
     li[data-baseweb="menu-item"][aria-selected="true"],
-    li[role="option"][aria-selected="true"] {{
+    li[role="option"][aria-selected="true"],
+    .dropdown-item.active {{
         background-color: {selected_bg} !important;
         background: {selected_bg} !important;
-        color: #ffffff !important;
+        color: #FFFFFF !important;
         font-weight: 600 !important;
+    }}
+
+    body div[data-baseweb="popover"] li[aria-selected="true"]:hover,
+    body div[data-baseweb="popover"] [data-baseweb="menu-item"][aria-selected="true"]:hover,
+    body div[data-baseweb="popover"] [role="option"][aria-selected="true"]:hover,
+    li[data-baseweb="menu-item"][aria-selected="true"]:hover,
+    li[role="option"][aria-selected="true"]:hover {{
+        background-color: #266337 !important;
+        background: #266337 !important;
+        color: #FFFFFF !important;
     }}
 
     .disclaimer {{
