@@ -622,7 +622,7 @@ def inject_styles(theme: str, lang: str):
     }}
 
 
-    /* ── Modern Semi-Transparent Controls for Language & Theme (Globe & Sun/Moon) ── */
+    /* ── Modern Controls for Language & Theme ── */
     .top-controls-bar, .sidebar-controls-bar {{
         display: flex !important;
         align-items: center !important;
@@ -634,24 +634,29 @@ def inject_styles(theme: str, lang: str):
         margin-bottom: 0 !important;
     }}
 
+    /* Idle State: subtle, thinner border (reduced green thickness) */
     .top-controls-bar div[data-baseweb="select"],
     .sidebar-controls-bar div[data-baseweb="select"] {{
-        background: {'rgba(18, 24, 27, 0.75)' if is_dark else 'rgba(255, 255, 255, 0.85)'} !important;
+        background: {'rgba(18, 24, 27, 0.8)' if is_dark else 'rgba(255, 255, 255, 0.9)'} !important;
         backdrop-filter: blur(12px) !important;
         -webkit-backdrop-filter: blur(12px) !important;
-        border: 1.5px solid {'rgba(34, 197, 94, 0.35)' if is_dark else 'rgba(22, 163, 74, 0.35)'} !important;
+        border: 1px solid {'rgba(255, 255, 255, 0.12)' if is_dark else 'rgba(0, 0, 0, 0.12)'} !important;
         border-radius: 12px !important;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08) !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
         transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
         min-height: 38px !important;
         height: 38px !important;
     }}
 
+    /* Focus & Hover State: clear vibrant green border on focus/hover */
     .top-controls-bar div[data-baseweb="select"]:hover,
-    .sidebar-controls-bar div[data-baseweb="select"]:hover {{
+    .sidebar-controls-bar div[data-baseweb="select"]:hover,
+    .top-controls-bar div[data-baseweb="select"]:focus-within,
+    .sidebar-controls-bar div[data-baseweb="select"]:focus-within {{
+        border: 1.5px solid #16a34a !important;
         border-color: #16a34a !important;
-        box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.25), 0 6px 18px rgba(0, 0, 0, 0.15) !important;
-        transform: translateY(-2px) !important;
+        box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.28), 0 6px 18px rgba(0, 0, 0, 0.2) !important;
+        transform: translateY(-1px) !important;
     }}
 
     .top-controls-bar div[data-baseweb="select"] > div,
@@ -667,6 +672,19 @@ def inject_styles(theme: str, lang: str):
         cursor: pointer !important;
     }}
 
+    /* Small Globe Icon beside the Language Dropdown */
+    .lang-ctrl-box div[data-baseweb="select"]::before,
+    .sidebar-lang-box div[data-baseweb="select"]::before {{
+        content: "🌐";
+        font-size: 0.92rem;
+        margin-inline-start: 10px;
+        margin-inline-end: 2px;
+        line-height: 1;
+        display: inline-flex;
+        align-items: center;
+        pointer-events: none;
+    }}
+
     .top-controls-bar div[data-baseweb="select"] svg,
     .sidebar-controls-bar div[data-baseweb="select"] svg {{
         fill: {'#4ade80' if is_dark else '#16a34a'} !important;
@@ -679,28 +697,48 @@ def inject_styles(theme: str, lang: str):
         transform: scale(1.15) !important;
     }}
 
-    /* Modern Dropdown Popover Menu */
+    /* ── Dropdown Popover Menu (Dark Mode & Light Mode Theme Consistency) ── */
+    div[data-baseweb="popover"],
+    div[data-baseweb="popover"] > div,
+    div[data-baseweb="popover"] > div > div,
+    div[data-baseweb="popover"] ul,
     div[data-baseweb="popover"] ul[data-baseweb="menu"],
-    ul[data-baseweb="menu"] {{
+    div[data-baseweb="popover"] [role="listbox"],
+    ul[data-baseweb="menu"],
+    ul[role="listbox"] {{
+        background-color: {'#13191a' if is_dark else '#ffffff'} !important;
         background: {'#13191a' if is_dark else '#ffffff'} !important;
-        border: 1px solid {'rgba(34, 197, 94, 0.3)' if is_dark else '#cbd5e1'} !important;
+        border: 1px solid {'rgba(34, 197, 94, 0.25)' if is_dark else '#cbd5e1'} !important;
         border-radius: 12px !important;
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25) !important;
-        padding: 6px !important;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45) !important;
+        padding: 4px !important;
     }}
+
+    div[data-baseweb="popover"] li,
     div[data-baseweb="popover"] li[data-baseweb="menu-item"],
-    li[data-baseweb="menu-item"] {{
+    div[data-baseweb="popover"] [role="option"],
+    li[data-baseweb="menu-item"],
+    li[role="option"] {{
+        background-color: transparent !important;
+        background: transparent !important;
+        color: {'#f3f4f6' if is_dark else '#111827'} !important;
         border-radius: 8px !important;
-        font-size: 0.86rem !important;
+        font-size: 0.88rem !important;
         font-weight: 600 !important;
-        padding: 8px 12px !important;
-        color: {text_color} !important;
+        padding: 8px 14px !important;
+        margin-bottom: 2px !important;
         transition: all 0.15s ease !important;
+        cursor: pointer !important;
     }}
-    div[data-baseweb="popover"] li[data-baseweb="menu-item"]:hover,
-    li[data-baseweb="menu-item"]:hover {{
-        background: {'rgba(22, 163, 74, 0.2)' if is_dark else 'rgba(22, 163, 74, 0.12)'} !important;
-        color: #16a34a !important;
+
+    div[data-baseweb="popover"] li:hover,
+    div[data-baseweb="popover"] li[aria-selected="true"],
+    div[data-baseweb="popover"] [role="option"]:hover,
+    li[data-baseweb="menu-item"]:hover,
+    li[role="option"]:hover {{
+        background-color: {'rgba(22, 163, 74, 0.25)' if is_dark else 'rgba(22, 163, 74, 0.12)'} !important;
+        background: {'rgba(22, 163, 74, 0.25)' if is_dark else 'rgba(22, 163, 74, 0.12)'} !important;
+        color: {'#4ade80' if is_dark else '#16a34a'} !important;
     }}
 
     .disclaimer {{
@@ -830,21 +868,23 @@ def render_auth():
 
     # Modern Top Controls Bar for Auth Page (Globe & Sun/Moon Compact Selectors)
     st.markdown('<div class="top-controls-bar">', unsafe_allow_html=True)
-    c_empty, c_bar = st.columns([2.2, 1.8])
+    c_empty, c_bar = st.columns([2.0, 2.0])
     with c_bar:
         c_l, c_th = st.columns(2)
         with c_l:
+            st.markdown('<div class="lang-ctrl-box">', unsafe_allow_html=True)
             lang_choice = st.selectbox(
                 "Language",
                 ["ar", "en"],
                 index=0 if st.session_state.lang == "ar" else 1,
-                format_func=lambda x: "Arabic 🇪🇬" if x == "ar" else "English 🇺🇸",
+                format_func=lambda x: "العربية 🇪🇬" if x == "ar" else "English 🇺🇸",
                 key="auth_lang_ctrl",
                 label_visibility="collapsed",
             )
             if lang_choice != st.session_state.lang:
                 st.session_state.lang = lang_choice
                 st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
 
         with c_th:
             theme_choice = st.selectbox(
@@ -919,17 +959,19 @@ def render_sidebar():
         st.markdown('<div class="sidebar-controls-bar">', unsafe_allow_html=True)
         c_lang, c_thm = st.columns(2)
         with c_lang:
+            st.markdown('<div class="sidebar-lang-box">', unsafe_allow_html=True)
             lang_choice = st.selectbox(
                 "Language",
                 ["ar", "en"],
                 index=0 if st.session_state.lang == "ar" else 1,
-                format_func=lambda x: "Arabic 🇪🇬" if x == "ar" else "English 🇺🇸",
+                format_func=lambda x: "العربية 🇪🇬" if x == "ar" else "English 🇺🇸",
                 key="sb_lang_sel",
                 label_visibility="collapsed",
             )
             if lang_choice != st.session_state.lang:
                 st.session_state.lang = lang_choice
                 st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
 
         with c_thm:
             theme_choice = st.selectbox(
