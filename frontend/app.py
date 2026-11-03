@@ -15,6 +15,38 @@ from frontend.pdf_export import generate_diet_pdf
 
 BACKEND_URL = "http://127.0.0.1:8000"
 
+# Auto-start backend in background thread if not already running (Cloud / Standalone resilience)
+def _ensure_backend():
+    import sys, threading, time
+    from pathlib import Path
+    root = Path(__file__).resolve().parent.parent
+    if str(root) not in sys.path:
+        sys.path.insert(0, str(root))
+    try:
+        r = requests.get(f"{BACKEND_URL}/docs", timeout=0.6)
+        if r.status_code == 200:
+            return
+    except Exception:
+        pass
+    try:
+        import uvicorn
+        from backend.main import app as _fapp
+        _cfg = uvicorn.Config(_fapp, host="127.0.0.1", port=8000, log_level="warning")
+        _srv = uvicorn.Server(_cfg)
+        _t = threading.Thread(target=_srv.run, daemon=True)
+        _t.start()
+        for _ in range(25):
+            time.sleep(0.2)
+            try:
+                if requests.get(f"{BACKEND_URL}/docs", timeout=0.4).status_code == 200:
+                    break
+            except Exception:
+                pass
+    except Exception:
+        pass
+
+_ensure_backend()
+
 st.set_page_config(
     page_title="NutriAI - Personalized Nutrition",
     page_icon="🥗",
