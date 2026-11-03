@@ -354,6 +354,62 @@ def inject_styles(theme: str, lang: str):
         box-shadow: 0 0 0 1px #16a34a !important;
     }}
 
+    /* ── Password Field & Visibility Eye Toggle Fix ── */
+    .stTextInput input[type="password"] {{
+        border: none !important;
+        background-color: transparent !important;
+        box-shadow: none !important;
+        outline: none !important;
+    }}
+    div[data-baseweb="input"] button,
+    div[data-baseweb="base-input"] button,
+    .stTextInput button,
+    div[data-testid="stTextInput"] button[data-testid="stBaseButton-secondary"] {{
+        background: transparent !important;
+        background-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        color: {'#94a3b8' if is_dark else '#475569'} !important;
+        padding: 0 8px !important;
+        margin: 0 !important;
+        min-height: auto !important;
+        height: 100% !important;
+        width: auto !important;
+        cursor: pointer !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        opacity: 0.9 !important;
+        transition: all 0.2s ease !important;
+    }}
+    div[data-baseweb="input"] button:hover,
+    div[data-baseweb="base-input"] button:hover,
+    .stTextInput button:hover {{
+        background: transparent !important;
+        background-color: transparent !important;
+        border: none !important;
+        opacity: 1 !important;
+    }}
+    div[data-baseweb="input"] button svg,
+    div[data-baseweb="base-input"] button svg,
+    .stTextInput button svg {{
+        fill: {'#94a3b8' if is_dark else '#475569'} !important;
+        stroke: {'#94a3b8' if is_dark else '#475569'} !important;
+        color: {'#94a3b8' if is_dark else '#475569'} !important;
+        width: 20px !important;
+        height: 20px !important;
+        transition: all 0.2s ease !important;
+    }}
+    div[data-baseweb="input"] button:hover svg,
+    div[data-baseweb="base-input"] button:hover svg,
+    .stTextInput button:hover svg {{
+        fill: #16a34a !important;
+        stroke: #16a34a !important;
+        color: #16a34a !important;
+        transform: scale(1.15) !important;
+    }}
+
+
     /* ── Checkboxes (Fix black box in Light Mode) ── */
     div[data-testid="stCheckbox"] {{
         background-color: transparent !important;
@@ -541,7 +597,7 @@ def inject_styles(theme: str, lang: str):
     .stButton > button,
     .stDownloadButton > button,
     div[data-testid="stDownloadButton"] > button,
-    button[data-testid="stBaseButton-secondary"],
+    button[data-testid="stBaseButton-secondary"]:not(div[data-baseweb="input"] button):not(div[data-baseweb="base-input"] button):not(.stTextInput button),
     button[data-testid="stBaseButton-primary"] {{
         background: { '#1b5e20' if is_dark else '#16a34a' } !important;
         color: #ffffff !important;
