@@ -249,6 +249,36 @@ def inject_styles(theme: str, lang: str):
         disc_brd      = "#fde68a"
         disc_txt      = "#92400e"
 
+    # Dropdown & Lucide Icon Variables
+    dropdown_bg     = "#15171E" if is_dark else "#ffffff"
+    dropdown_border = "#2D3B30" if is_dark else "#d1d5db"
+    selected_bg     = "#1B5428"
+    item_hover_bg   = "rgba(27, 84, 40, 0.4)" if is_dark else "rgba(27, 84, 40, 0.12)"
+    icon_stroke     = "%2322c55e" if is_dark else "%2316a34a"
+
+    globe2_svg = (
+        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' "
+        f"fill='none' stroke='{icon_stroke}' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E"
+        "%3Ccircle cx='12' cy='12' r='10'/%3E"
+        "%3Cpath d='M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20'/%3E"
+        "%3Cpath d='M2 12h20'/%3E%3C/svg%3E"
+    )
+    moon_svg = (
+        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' "
+        f"fill='none' stroke='{icon_stroke}' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E"
+        "%3Cpath d='M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z'/%3E%3C/svg%3E"
+    )
+    sun_svg = (
+        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' "
+        f"fill='none' stroke='{icon_stroke}' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E"
+        "%3Ccircle cx='12' cy='12' r='4'/%3E"
+        "%3Cpath d='M12 2v2'/%3E%3Cpath d='M12 20v2'/%3E"
+        "%3Cpath d='m4.93 4.93 1.41 1.41'/%3E%3Cpath d='m17.66 17.66 1.41 1.41'/%3E"
+        "%3Cpath d='M2 12h2'/%3E%3Cpath d='M20 12h2'/%3E"
+        "%3Cpath d='m6.34 17.66-1.41 1.41'/%3E%3Cpath d='m19.07 4.93-1.41 1.41'/%3E%3C/svg%3E"
+    )
+    theme_icon_svg = moon_svg if is_dark else sun_svg
+
     day_border = f"border-right: 4px solid #16a34a; border-radius: 8px 0 0 8px;" if is_ar else f"border-left: 4px solid #16a34a; border-radius: 0 8px 8px 0;"
 
     css = f"""
@@ -622,7 +652,7 @@ def inject_styles(theme: str, lang: str):
     }}
 
 
-    /* ── Modern Controls for Language & Theme ── */
+    /* ── NutriAI Premium SaaS Controls: Language & Theme ── */
     .top-controls-bar, .sidebar-controls-bar {{
         display: flex !important;
         align-items: center !important;
@@ -634,111 +664,157 @@ def inject_styles(theme: str, lang: str):
         margin-bottom: 0 !important;
     }}
 
-    /* Idle State: subtle, thinner border (reduced green thickness) */
-    .top-controls-bar div[data-baseweb="select"],
-    .sidebar-controls-bar div[data-baseweb="select"] {{
-        background: {'rgba(18, 24, 27, 0.8)' if is_dark else 'rgba(255, 255, 255, 0.9)'} !important;
-        backdrop-filter: blur(12px) !important;
-        -webkit-backdrop-filter: blur(12px) !important;
-        border: 1px solid {'rgba(255, 255, 255, 0.12)' if is_dark else 'rgba(0, 0, 0, 0.12)'} !important;
-        border-radius: 12px !important;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
-        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        min-height: 38px !important;
-        height: 38px !important;
+    /* Remove duplicated borders, nested outlines, and excessive shadows */
+    .top-controls-bar div[data-baseweb="select"] *,
+    .sidebar-controls-bar div[data-baseweb="select"] * {{
+        border: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+        background-color: transparent !important;
     }}
 
-    /* Focus & Hover State: clear vibrant green border on focus/hover */
+    /* Single subtle border #2D3B30, dark dropdown background #15171E */
+    .top-controls-bar div[data-baseweb="select"],
+    .sidebar-controls-bar div[data-baseweb="select"] {{
+        background-color: {dropdown_bg} !important;
+        background: {dropdown_bg} !important;
+        border: 1px solid {dropdown_border} !important;
+        border-radius: 8px !important;
+        min-height: 36px !important;
+        height: 36px !important;
+        box-shadow: none !important;
+        outline: none !important;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease !important;
+        cursor: pointer !important;
+    }}
+
+    /* Clean Hover & Focus transition (0.2s) without excessive glow */
     .top-controls-bar div[data-baseweb="select"]:hover,
     .sidebar-controls-bar div[data-baseweb="select"]:hover,
     .top-controls-bar div[data-baseweb="select"]:focus-within,
     .sidebar-controls-bar div[data-baseweb="select"]:focus-within {{
-        border: 1.5px solid #16a34a !important;
         border-color: #16a34a !important;
-        box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.28), 0 6px 18px rgba(0, 0, 0, 0.2) !important;
-        transform: translateY(-1px) !important;
+        box-shadow: 0 0 0 1px #16a34a !important;
     }}
 
-    .top-controls-bar div[data-baseweb="select"] > div,
-    .sidebar-controls-bar div[data-baseweb="select"] > div {{
-        background: transparent !important;
-        border: none !important;
-        font-weight: 700 !important;
-        font-size: 0.86rem !important;
+    .top-controls-bar div[data-baseweb="select"] [data-testid="stMarkdownContainer"] p,
+    .sidebar-controls-bar div[data-baseweb="select"] [data-testid="stMarkdownContainer"] p,
+    .top-controls-bar div[data-baseweb="select"] span,
+    .sidebar-controls-bar div[data-baseweb="select"] span {{
         color: {text_color} !important;
-        padding: 0 6px !important;
-        white-space: nowrap !important;
+        font-size: 0.84rem !important;
+        font-weight: 600 !important;
         letter-spacing: 0.2px !important;
-        cursor: pointer !important;
+        white-space: nowrap !important;
     }}
 
-    /* Small Globe Icon beside the Language Dropdown */
+    /* Lucide Globe2 Icon for Language Dropdown */
     .lang-ctrl-box div[data-baseweb="select"]::before,
     .sidebar-lang-box div[data-baseweb="select"]::before {{
-        content: "🌐";
-        font-size: 0.92rem;
+        content: "";
+        display: inline-block;
+        width: 15px;
+        height: 15px;
+        background-image: url("{globe2_svg}");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
         margin-inline-start: 10px;
-        margin-inline-end: 2px;
-        line-height: 1;
-        display: inline-flex;
-        align-items: center;
-        pointer-events: none;
+        margin-inline-end: 6px;
+        flex-shrink: 0;
     }}
 
+    /* Lucide Moon / Sun Icon for Theme Dropdown */
+    .theme-ctrl-box div[data-baseweb="select"]::before,
+    .sidebar-theme-box div[data-baseweb="select"]::before {{
+        content: "";
+        display: inline-block;
+        width: 15px;
+        height: 15px;
+        background-image: url("{theme_icon_svg}");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        margin-inline-start: 10px;
+        margin-inline-end: 6px;
+        flex-shrink: 0;
+    }}
+
+    /* Compact caret arrow */
     .top-controls-bar div[data-baseweb="select"] svg,
     .sidebar-controls-bar div[data-baseweb="select"] svg {{
-        fill: {'#4ade80' if is_dark else '#16a34a'} !important;
-        color: {'#4ade80' if is_dark else '#16a34a'} !important;
-        transition: transform 0.2s ease !important;
+        fill: #94a3b8 !important;
+        color: #94a3b8 !important;
+        width: 15px !important;
+        height: 15px !important;
+        transition: transform 0.2s ease, fill 0.2s ease !important;
     }}
-
     .top-controls-bar div[data-baseweb="select"]:hover svg,
     .sidebar-controls-bar div[data-baseweb="select"]:hover svg {{
-        transform: scale(1.15) !important;
+        fill: #22c55e !important;
+        color: #22c55e !important;
     }}
 
-    /* ── Dropdown Popover Menu (Dark Mode & Light Mode Theme Consistency) ── */
+    /* Popover Reset: remove outer duplicated borders and outlines */
     div[data-baseweb="popover"],
     div[data-baseweb="popover"] > div,
-    div[data-baseweb="popover"] > div > div,
-    div[data-baseweb="popover"] ul,
-    div[data-baseweb="popover"] ul[data-baseweb="menu"],
-    div[data-baseweb="popover"] [role="listbox"],
-    ul[data-baseweb="menu"],
-    ul[role="listbox"] {{
-        background-color: {'#13191a' if is_dark else '#ffffff'} !important;
-        background: {'#13191a' if is_dark else '#ffffff'} !important;
-        border: 1px solid {'rgba(34, 197, 94, 0.25)' if is_dark else '#cbd5e1'} !important;
-        border-radius: 12px !important;
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45) !important;
-        padding: 4px !important;
+    div[data-baseweb="popover"] > div > div {{
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        outline: none !important;
+        padding: 0 !important;
     }}
 
-    div[data-baseweb="popover"] li,
+    /* Single clean popover container (#15171E background, #2D3B30 border) */
+    div[data-baseweb="popover"] ul[data-baseweb="menu"],
+    div[data-baseweb="popover"] ul[role="listbox"],
+    ul[data-baseweb="menu"],
+    ul[role="listbox"] {{
+        background-color: {dropdown_bg} !important;
+        background: {dropdown_bg} !important;
+        border: 1px solid {dropdown_border} !important;
+        border-radius: 8px !important;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45) !important;
+        padding: 4px !important;
+        outline: none !important;
+    }}
+
     div[data-baseweb="popover"] li[data-baseweb="menu-item"],
-    div[data-baseweb="popover"] [role="option"],
+    div[data-baseweb="popover"] li[role="option"],
     li[data-baseweb="menu-item"],
     li[role="option"] {{
-        background-color: transparent !important;
         background: transparent !important;
-        color: {'#f3f4f6' if is_dark else '#111827'} !important;
-        border-radius: 8px !important;
-        font-size: 0.88rem !important;
-        font-weight: 600 !important;
-        padding: 8px 14px !important;
-        margin-bottom: 2px !important;
-        transition: all 0.15s ease !important;
+        color: {text_color} !important;
+        font-size: 0.84rem !important;
+        font-weight: 500 !important;
+        padding: 6px 12px !important;
+        margin: 2px 0 !important;
+        border-radius: 6px !important;
+        border: none !important;
+        outline: none !important;
+        transition: background-color 0.2s ease, color 0.2s ease !important;
         cursor: pointer !important;
     }}
 
-    div[data-baseweb="popover"] li:hover,
-    div[data-baseweb="popover"] li[aria-selected="true"],
-    div[data-baseweb="popover"] [role="option"]:hover,
+    /* Smooth Hover Transition (0.2s) */
+    div[data-baseweb="popover"] li[data-baseweb="menu-item"]:hover,
+    div[data-baseweb="popover"] li[role="option"]:hover,
     li[data-baseweb="menu-item"]:hover,
     li[role="option"]:hover {{
-        background-color: {'rgba(22, 163, 74, 0.25)' if is_dark else 'rgba(22, 163, 74, 0.12)'} !important;
-        background: {'rgba(22, 163, 74, 0.25)' if is_dark else 'rgba(22, 163, 74, 0.12)'} !important;
-        color: {'#4ade80' if is_dark else '#16a34a'} !important;
+        background-color: {item_hover_bg} !important;
+        color: #ffffff !important;
+    }}
+
+    /* Selected Option Background: #1B5428 */
+    div[data-baseweb="popover"] li[aria-selected="true"],
+    div[data-baseweb="popover"] li[data-baseweb="menu-item"][aria-selected="true"],
+    li[data-baseweb="menu-item"][aria-selected="true"],
+    li[role="option"][aria-selected="true"] {{
+        background-color: {selected_bg} !important;
+        background: {selected_bg} !important;
+        color: #ffffff !important;
+        font-weight: 600 !important;
     }}
 
     .disclaimer {{
@@ -877,7 +953,7 @@ def render_auth():
                 "Language",
                 ["ar", "en"],
                 index=0 if st.session_state.lang == "ar" else 1,
-                format_func=lambda x: "العربية 🇪🇬" if x == "ar" else "English 🇺🇸",
+                format_func=lambda x: "العربية" if x == "ar" else "English",
                 key="auth_lang_ctrl",
                 label_visibility="collapsed",
             )
@@ -887,17 +963,19 @@ def render_auth():
             st.markdown('</div>', unsafe_allow_html=True)
 
         with c_th:
+            st.markdown('<div class="theme-ctrl-box">', unsafe_allow_html=True)
             theme_choice = st.selectbox(
                 "Theme",
                 ["dark", "light"],
                 index=0 if st.session_state.theme == "dark" else 1,
-                format_func=lambda x: "🌙 Dark" if x == "dark" else "☀️ Light",
+                format_func=lambda x: "Dark" if x == "dark" else "Light",
                 key="auth_theme_ctrl",
                 label_visibility="collapsed",
             )
             if theme_choice != st.session_state.theme:
                 st.session_state.theme = theme_choice
                 st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
@@ -964,7 +1042,7 @@ def render_sidebar():
                 "Language",
                 ["ar", "en"],
                 index=0 if st.session_state.lang == "ar" else 1,
-                format_func=lambda x: "العربية 🇪🇬" if x == "ar" else "English 🇺🇸",
+                format_func=lambda x: "العربية" if x == "ar" else "English",
                 key="sb_lang_sel",
                 label_visibility="collapsed",
             )
@@ -974,17 +1052,19 @@ def render_sidebar():
             st.markdown('</div>', unsafe_allow_html=True)
 
         with c_thm:
+            st.markdown('<div class="sidebar-theme-box">', unsafe_allow_html=True)
             theme_choice = st.selectbox(
                 "Theme",
                 ["dark", "light"],
                 index=0 if st.session_state.theme == "dark" else 1,
-                format_func=lambda x: "🌙 Dark" if x == "dark" else "☀️ Light",
+                format_func=lambda x: "Dark" if x == "dark" else "Light",
                 key="sb_thm_sel",
                 label_visibility="collapsed",
             )
             if theme_choice != st.session_state.theme:
                 st.session_state.theme = theme_choice
                 st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
         st.divider()
