@@ -7,7 +7,6 @@ import streamlit as st
 import requests
 import json
 from datetime import datetime
-from frontend.pdf_export import generate_diet_pdf
 
 # ══════════════════════════════════════════════════════════════════════════════
 # CONFIG & PAGE SETUP
@@ -608,6 +607,17 @@ init_state()
 # ══════════════════════════════════════════════════════════════════════════════
 
 _DIRECT_CLIENT = None
+_USE_LOCAL_HTTP = None
+def _is_local_http():
+    global _USE_LOCAL_HTTP
+    if _USE_LOCAL_HTTP is None:
+        try:
+            r = requests.get(f"{BACKEND_URL}/docs", timeout=0.2)
+            _USE_LOCAL_HTTP = (r.status_code == 200)
+        except Exception:
+            _USE_LOCAL_HTTP = False
+    return _USE_LOCAL_HTTP
+
 def _get_direct_client():
     global _DIRECT_CLIENT
     if _DIRECT_CLIENT is None:
@@ -626,11 +636,12 @@ def auth_headers():
 
 def api_post(path, payload, auth=False):
     headers = auth_headers() if auth else {}
-    try:
-        r = requests.post(f"{BACKEND_URL}{path}", json=payload, headers=headers, timeout=1.5)
-        return r.json(), r.status_code
-    except Exception:
-        pass
+    if _is_local_http():
+        try:
+            r = requests.post(f"{BACKEND_URL}{path}", json=payload, headers=headers, timeout=60)
+            return r.json(), r.status_code
+        except Exception:
+            pass
     try:
         r = _get_direct_client().post(path, json=payload, headers=headers)
         return r.json(), r.status_code
@@ -639,11 +650,12 @@ def api_post(path, payload, auth=False):
 
 def api_get(path, auth=True):
     headers = auth_headers() if auth else {}
-    try:
-        r = requests.get(f"{BACKEND_URL}{path}", headers=headers, timeout=1.5)
-        return r.json(), r.status_code
-    except Exception:
-        pass
+    if _is_local_http():
+        try:
+            r = requests.get(f"{BACKEND_URL}{path}", headers=headers, timeout=15)
+            return r.json(), r.status_code
+        except Exception:
+            pass
     try:
         r = _get_direct_client().get(path, headers=headers)
         return r.json(), r.status_code
@@ -652,11 +664,12 @@ def api_get(path, auth=True):
 
 def api_delete(path):
     headers = auth_headers()
-    try:
-        r = requests.delete(f"{BACKEND_URL}{path}", headers=headers, timeout=1.5)
-        return r.json(), r.status_code
-    except Exception:
-        pass
+    if _is_local_http():
+        try:
+            r = requests.delete(f"{BACKEND_URL}{path}", headers=headers, timeout=10)
+            return r.json(), r.status_code
+        except Exception:
+            pass
     try:
         r = _get_direct_client().delete(path, headers=headers)
         return r.json(), r.status_code
@@ -1080,6 +1093,7 @@ def render_diet_plan(plan: dict):
 
     # ── Official PDF Download Button (Generates a clean clinical PDF, not raw code) ──
     try:
+        from frontend.pdf_export import generate_diet_pdf
         pdf_data = generate_diet_pdf(plan, username=st.session_state.username or "User", language=st.session_state.lang)
         st.download_button(
             label=t["download_pdf"],
