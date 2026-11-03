@@ -15,38 +15,6 @@ from frontend.pdf_export import generate_diet_pdf
 
 BACKEND_URL = "http://127.0.0.1:8000"
 
-# Auto-start backend in background thread if not already running (Cloud / Standalone resilience)
-def _ensure_backend():
-    import sys, threading, time
-    from pathlib import Path
-    root = Path(__file__).resolve().parent.parent
-    if str(root) not in sys.path:
-        sys.path.insert(0, str(root))
-    try:
-        r = requests.get(f"{BACKEND_URL}/docs", timeout=0.6)
-        if r.status_code == 200:
-            return
-    except Exception:
-        pass
-    try:
-        import uvicorn
-        from backend.main import app as _fapp
-        _cfg = uvicorn.Config(_fapp, host="127.0.0.1", port=8000, log_level="warning")
-        _srv = uvicorn.Server(_cfg)
-        _t = threading.Thread(target=_srv.run, daemon=True)
-        _t.start()
-        for _ in range(25):
-            time.sleep(0.2)
-            try:
-                if requests.get(f"{BACKEND_URL}/docs", timeout=0.4).status_code == 200:
-                    break
-            except Exception:
-                pass
-    except Exception:
-        pass
-
-_ensure_backend()
-
 st.set_page_config(
     page_title="NutriAI - Personalized Nutrition",
     page_icon="🥗",
@@ -639,30 +607,61 @@ init_state()
 # API HELPERS
 # ══════════════════════════════════════════════════════════════════════════════
 
+_DIRECT_CLIENT = None
+def _get_direct_client():
+    global _DIRECT_CLIENT
+    if _DIRECT_CLIENT is None:
+        import sys
+        from pathlib import Path
+        root = Path(__file__).resolve().parent.parent
+        if str(root) not in sys.path:
+            sys.path.insert(0, str(root))
+        from backend.main import app as _backend_app
+        from starlette.testclient import TestClient
+        _DIRECT_CLIENT = TestClient(_backend_app, raise_server_exceptions=False)
+    return _DIRECT_CLIENT
+
 def auth_headers():
     return {"Authorization": f"Bearer {st.session_state.token}"}
 
 def api_post(path, payload, auth=False):
     headers = auth_headers() if auth else {}
     try:
-        r = requests.post(f"{BACKEND_URL}{path}", json=payload, headers=headers, timeout=120)
+        r = requests.post(f"{BACKEND_URL}{path}", json=payload, headers=headers, timeout=1.5)
         return r.json(), r.status_code
-    except requests.exceptions.ConnectionError:
-        return {"detail": "تعذر الاتصال بالخادم. يرجى التأكد من تشغيل السيرفر." if st.session_state.lang == "ar" else "Cannot connect to backend server."}, 503
+    except Exception:
+        pass
+    try:
+        r = _get_direct_client().post(path, json=payload, headers=headers)
+        return r.json(), r.status_code
+    except Exception as e:
+        return {"detail": f"Error: {e}"}, 503
 
 def api_get(path, auth=True):
+    headers = auth_headers() if auth else {}
     try:
-        r = requests.get(f"{BACKEND_URL}{path}", headers=auth_headers() if auth else {}, timeout=15)
+        r = requests.get(f"{BACKEND_URL}{path}", headers=headers, timeout=1.5)
         return r.json(), r.status_code
-    except requests.exceptions.ConnectionError:
-        return {"detail": "تعذر الاتصال بالخادم."}, 503
+    except Exception:
+        pass
+    try:
+        r = _get_direct_client().get(path, headers=headers)
+        return r.json(), r.status_code
+    except Exception as e:
+        return {"detail": f"Error: {e}"}, 503
 
 def api_delete(path):
+    headers = auth_headers()
     try:
-        r = requests.delete(f"{BACKEND_URL}{path}", headers=auth_headers(), timeout=10)
+        r = requests.delete(f"{BACKEND_URL}{path}", headers=headers, timeout=1.5)
         return r.json(), r.status_code
-    except requests.exceptions.ConnectionError:
-        return {"detail": "تعذر الاتصال بالخادم."}, 503
+    except Exception:
+        pass
+    try:
+        r = _get_direct_client().delete(path, headers=headers)
+        return r.json(), r.status_code
+    except Exception as e:
+        return {"detail": f"Error: {e}"}, 503
 
 def _load_sessions():
     data, code = api_get("/sessions")
