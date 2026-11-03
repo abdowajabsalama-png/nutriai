@@ -18,6 +18,10 @@ echo      - يقدروا يفتحوه من أي موبايل، آيفون، أو
 echo      - اترك هذه النافذة مفتوحة طوال فترة التجربة (إغلاقها يوقف الرابط).
 echo ===============================================================================
 echo.
-cd /d "%~dp0"
-ngrok.exe http --url=https://magnolia-cuddly-debtor.ngrok-free.dev 8501 --config "%~dp0ngrok.yml"
+if exist "%~dp0ngrok.exe" (
+    cd /d "%~dp0"
+) else (
+    cd /d "C:\Users\Abdo\Desktop\pp\nutrial-ai"
+)
+ngrok.exe http --url=https://magnolia-cuddly-debtor.ngrok-free.dev 8501 --config "C:\Users\Abdo\Desktop\pp\nutrial-ai\ngrok.yml"
 pause
