@@ -837,7 +837,7 @@ def render_auth():
                 "Language",
                 ["ar", "en"],
                 index=0 if st.session_state.lang == "ar" else 1,
-                format_func=lambda x: "🇪🇬 AR" if x == "ar" else "🇺🇸 EN",
+                format_func=lambda x: "🇪🇬" if x == "ar" else "🇺🇸",
                 key="auth_lang_ctrl",
                 label_visibility="collapsed",
             )
@@ -922,7 +922,7 @@ def render_sidebar():
                 "Language",
                 ["ar", "en"],
                 index=0 if st.session_state.lang == "ar" else 1,
-                format_func=lambda x: "🇪🇬 AR" if x == "ar" else "🇺🇸 EN",
+                format_func=lambda x: "🇪🇬" if x == "ar" else "🇺🇸",
                 key="sb_lang_sel",
                 label_visibility="collapsed",
             )
