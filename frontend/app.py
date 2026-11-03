@@ -661,8 +661,9 @@ def inject_styles(theme: str, lang: str):
         font-weight: 700 !important;
         font-size: 0.86rem !important;
         color: {text_color} !important;
-        padding: 0 8px !important;
-        letter-spacing: 0.5px !important;
+        padding: 0 6px !important;
+        white-space: nowrap !important;
+        letter-spacing: 0.2px !important;
         cursor: pointer !important;
     }}
 
@@ -829,7 +830,7 @@ def render_auth():
 
     # Modern Top Controls Bar for Auth Page (Globe & Sun/Moon Compact Selectors)
     st.markdown('<div class="top-controls-bar">', unsafe_allow_html=True)
-    c_empty, c_bar = st.columns([2.8, 1.2])
+    c_empty, c_bar = st.columns([2.2, 1.8])
     with c_bar:
         c_l, c_th = st.columns(2)
         with c_l:
@@ -837,7 +838,7 @@ def render_auth():
                 "Language",
                 ["ar", "en"],
                 index=0 if st.session_state.lang == "ar" else 1,
-                format_func=lambda x: "🇪🇬" if x == "ar" else "🇺🇸",
+                format_func=lambda x: "Arabic 🇪🇬" if x == "ar" else "English 🇺🇸",
                 key="auth_lang_ctrl",
                 label_visibility="collapsed",
             )
@@ -922,7 +923,7 @@ def render_sidebar():
                 "Language",
                 ["ar", "en"],
                 index=0 if st.session_state.lang == "ar" else 1,
-                format_func=lambda x: "🇪🇬" if x == "ar" else "🇺🇸",
+                format_func=lambda x: "Arabic 🇪🇬" if x == "ar" else "English 🇺🇸",
                 key="sb_lang_sel",
                 label_visibility="collapsed",
             )
