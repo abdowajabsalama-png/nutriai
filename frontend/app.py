@@ -621,6 +621,87 @@ def inject_styles(theme: str, lang: str):
         background-color: transparent !important;
     }}
 
+
+    /* ── Modern Semi-Transparent Controls for Language & Theme (Globe & Sun/Moon) ── */
+    .top-controls-bar, .sidebar-controls-bar {{
+        display: flex !important;
+        align-items: center !important;
+        margin-bottom: 0.5rem !important;
+    }}
+
+    .top-controls-bar div[data-testid="stSelectbox"],
+    .sidebar-controls-bar div[data-testid="stSelectbox"] {{
+        margin-bottom: 0 !important;
+    }}
+
+    .top-controls-bar div[data-baseweb="select"],
+    .sidebar-controls-bar div[data-baseweb="select"] {{
+        background: {'rgba(18, 24, 27, 0.75)' if is_dark else 'rgba(255, 255, 255, 0.85)'} !important;
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important;
+        border: 1.5px solid {'rgba(34, 197, 94, 0.35)' if is_dark else 'rgba(22, 163, 74, 0.35)'} !important;
+        border-radius: 12px !important;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08) !important;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        min-height: 38px !important;
+        height: 38px !important;
+    }}
+
+    .top-controls-bar div[data-baseweb="select"]:hover,
+    .sidebar-controls-bar div[data-baseweb="select"]:hover {{
+        border-color: #16a34a !important;
+        box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.25), 0 6px 18px rgba(0, 0, 0, 0.15) !important;
+        transform: translateY(-2px) !important;
+    }}
+
+    .top-controls-bar div[data-baseweb="select"] > div,
+    .sidebar-controls-bar div[data-baseweb="select"] > div {{
+        background: transparent !important;
+        border: none !important;
+        font-weight: 700 !important;
+        font-size: 0.86rem !important;
+        color: {text_color} !important;
+        padding: 0 8px !important;
+        letter-spacing: 0.5px !important;
+        cursor: pointer !important;
+    }}
+
+    .top-controls-bar div[data-baseweb="select"] svg,
+    .sidebar-controls-bar div[data-baseweb="select"] svg {{
+        fill: {'#4ade80' if is_dark else '#16a34a'} !important;
+        color: {'#4ade80' if is_dark else '#16a34a'} !important;
+        transition: transform 0.2s ease !important;
+    }}
+
+    .top-controls-bar div[data-baseweb="select"]:hover svg,
+    .sidebar-controls-bar div[data-baseweb="select"]:hover svg {{
+        transform: scale(1.15) !important;
+    }}
+
+    /* Modern Dropdown Popover Menu */
+    div[data-baseweb="popover"] ul[data-baseweb="menu"],
+    ul[data-baseweb="menu"] {{
+        background: {'#13191a' if is_dark else '#ffffff'} !important;
+        border: 1px solid {'rgba(34, 197, 94, 0.3)' if is_dark else '#cbd5e1'} !important;
+        border-radius: 12px !important;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25) !important;
+        padding: 6px !important;
+    }}
+    div[data-baseweb="popover"] li[data-baseweb="menu-item"],
+    li[data-baseweb="menu-item"] {{
+        border-radius: 8px !important;
+        font-size: 0.86rem !important;
+        font-weight: 600 !important;
+        padding: 8px 12px !important;
+        color: {text_color} !important;
+        transition: all 0.15s ease !important;
+    }}
+    div[data-baseweb="popover"] li[data-baseweb="menu-item"]:hover,
+    li[data-baseweb="menu-item"]:hover {{
+        background: {'rgba(22, 163, 74, 0.2)' if is_dark else 'rgba(22, 163, 74, 0.12)'} !important;
+        color: #16a34a !important;
+    }}
+
     .disclaimer {{
         background: {disc_bg};
         border: 1px solid {disc_brd};
@@ -746,33 +827,37 @@ def render_auth():
     t = T[st.session_state.lang]
     inject_styles(st.session_state.theme, st.session_state.lang)
 
-    # Top Controls for Auth Page (Theme & Language)
-    col_t1, col_t2 = st.columns([1, 1])
-    with col_t1:
-        lang_choice = st.radio(
-            t["language"],
-            ["ar", "en"],
-            index=0 if st.session_state.lang == "ar" else 1,
-            format_func=lambda x: t["lang_ar"] if x == "ar" else t["lang_en"],
-            horizontal=True,
-            key="auth_lang_radio",
-        )
-        if lang_choice != st.session_state.lang:
-            st.session_state.lang = lang_choice
-            st.rerun()
+    # Modern Top Controls Bar for Auth Page (Globe & Sun/Moon Compact Selectors)
+    st.markdown('<div class="top-controls-bar">', unsafe_allow_html=True)
+    c_empty, c_bar = st.columns([2.8, 1.2])
+    with c_bar:
+        c_l, c_th = st.columns(2)
+        with c_l:
+            lang_choice = st.selectbox(
+                "Language",
+                ["ar", "en"],
+                index=0 if st.session_state.lang == "ar" else 1,
+                format_func=lambda x: "🌐 AR" if x == "ar" else "🌐 EN",
+                key="auth_lang_ctrl",
+                label_visibility="collapsed",
+            )
+            if lang_choice != st.session_state.lang:
+                st.session_state.lang = lang_choice
+                st.rerun()
 
-    with col_t2:
-        theme_choice = st.radio(
-            t["theme"],
-            ["dark", "light"],
-            index=0 if st.session_state.theme == "dark" else 1,
-            format_func=lambda x: t["dark"] if x == "dark" else t["light"],
-            horizontal=True,
-            key="auth_theme_radio",
-        )
-        if theme_choice != st.session_state.theme:
-            st.session_state.theme = theme_choice
-            st.rerun()
+        with c_th:
+            theme_choice = st.selectbox(
+                "Theme",
+                ["dark", "light"],
+                index=0 if st.session_state.theme == "dark" else 1,
+                format_func=lambda x: "🌙 Dark" if x == "dark" else "☀️ Light",
+                key="auth_theme_ctrl",
+                label_visibility="collapsed",
+            )
+            if theme_choice != st.session_state.theme:
+                st.session_state.theme = theme_choice
+                st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
     c1, c2, c3 = st.columns([1, 1.4, 1])
@@ -829,15 +914,17 @@ def render_sidebar():
         st.markdown('<div class="nutriai-logo" style="font-size:1.4rem">🥗 NutriAI</div>', unsafe_allow_html=True)
         st.markdown(f'<div class="nutriai-tagline">@{st.session_state.username}</div>', unsafe_allow_html=True)
 
-        # ── Language & Theme Controls ──
+        # ── Modern Language & Theme Controls (Globe & Sun/Moon) ──
+        st.markdown('<div class="sidebar-controls-bar">', unsafe_allow_html=True)
         c_lang, c_thm = st.columns(2)
         with c_lang:
             lang_choice = st.selectbox(
-                "🌐",
+                "Language",
                 ["ar", "en"],
                 index=0 if st.session_state.lang == "ar" else 1,
-                format_func=lambda x: "🇸🇦 العربية" if x == "ar" else "🇬🇧 English",
+                format_func=lambda x: "🌐 AR" if x == "ar" else "🌐 EN",
                 key="sb_lang_sel",
+                label_visibility="collapsed",
             )
             if lang_choice != st.session_state.lang:
                 st.session_state.lang = lang_choice
@@ -845,15 +932,17 @@ def render_sidebar():
 
         with c_thm:
             theme_choice = st.selectbox(
-                "🎨",
+                "Theme",
                 ["dark", "light"],
                 index=0 if st.session_state.theme == "dark" else 1,
-                format_func=lambda x: "🌙 داكن" if x == "dark" else "☀️ فاتح",
+                format_func=lambda x: "🌙 Dark" if x == "dark" else "☀️ Light",
                 key="sb_thm_sel",
+                label_visibility="collapsed",
             )
             if theme_choice != st.session_state.theme:
                 st.session_state.theme = theme_choice
                 st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
 
         st.divider()
 
