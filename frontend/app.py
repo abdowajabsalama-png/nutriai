@@ -252,10 +252,11 @@ def inject_styles(theme: str, lang: str):
     # Dropdown & Lucide Icon Variables (NutriAI Premium SaaS Palette)
     dropdown_bg     = "#171A20" if is_dark else "#FFFFFF"
     dropdown_border = "#303A32" if is_dark else "#E2E8F0"
-    selected_bg     = "#1E4D2B"
+    selected_bg     = "#238636"  # Softer emerald green
     item_hover_bg   = "#252B32" if is_dark else "#F3F4F6"
-    opt_text_color  = "#E5E7EB" if is_dark else "#1F2937"
+    opt_text_color  = "#F3F4F6" if is_dark else "#111827"
     icon_stroke     = "%2322c55e" if is_dark else "%2316a34a"
+    chevron_stroke  = "%23CBD5E1" if is_dark else "%2364748B"
 
     globe2_svg = (
         "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' "
@@ -279,6 +280,12 @@ def inject_styles(theme: str, lang: str):
         "%3Cpath d='m6.34 17.66-1.41 1.41'/%3E%3Cpath d='m19.07 4.93-1.41 1.41'/%3E%3C/svg%3E"
     )
     theme_icon_svg = moon_svg if is_dark else sun_svg
+
+    chevron_down_svg = (
+        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' "
+        f"fill='none' stroke='{chevron_stroke}' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E"
+        "%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"
+    )
 
     day_border = f"border-right: 4px solid #16a34a; border-radius: 8px 0 0 8px;" if is_ar else f"border-left: 4px solid #16a34a; border-radius: 0 8px 8px 0;"
 
@@ -758,23 +765,37 @@ def inject_styles(theme: str, lang: str):
         flex-shrink: 0;
     }}
 
-    /* Compact caret arrow */
+    /* Hide default faint BaseWeb caret arrow */
     .top-controls-bar div[data-baseweb="select"] svg,
     .sidebar-controls-bar div[data-baseweb="select"] svg {{
-        fill: #94A3B8 !important;
-        color: #94A3B8 !important;
-        width: 16px !important;
-        height: 16px !important;
-        margin-inline-end: 12px !important;
-        transition: transform 0.2s ease, fill 0.2s ease !important;
-    }}
-    .top-controls-bar div[data-baseweb="select"]:hover svg,
-    .sidebar-controls-bar div[data-baseweb="select"]:hover svg {{
-        fill: #22C55E !important;
-        color: #22C55E !important;
+        display: none !important;
     }}
 
-    /* ── Dropdown Popover Menu (Dark Background #171A20, Single Border #303A32, Radius 12px) ── */
+    /* Clear Lucide ChevronDown Icon on Trailing Edge */
+    .top-controls-bar div[data-baseweb="select"]::after,
+    .sidebar-controls-bar div[data-baseweb="select"]::after {{
+        content: "";
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        background-image: url("{chevron_down_svg}");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        margin-inline-end: 14px;
+        margin-inline-start: 6px;
+        flex-shrink: 0;
+        pointer-events: none;
+        transition: transform 0.2s ease, opacity 0.2s ease !important;
+        opacity: 0.85;
+    }}
+    .top-controls-bar div[data-baseweb="select"]:hover::after,
+    .sidebar-controls-bar div[data-baseweb="select"]:hover::after {{
+        opacity: 1;
+        transform: translateY(1px);
+    }}
+
+    /* ── Dropdown Popover Menu (Dark Background #171A20, Single Border #303A32, Radius 12px, Subtle Shadow) ── */
     div[data-baseweb="popover"],
     div[data-baseweb="popover"] > div,
     div[data-baseweb="popover"] > div > div {{
@@ -786,7 +807,7 @@ def inject_styles(theme: str, lang: str):
         padding: 0 !important;
     }}
 
-    /* Force override any white/light container in Dark Mode */
+    /* Single subtle border, 12px radius, and subtle shadow: 0 8px 24px rgba(0,0,0,0.18) */
     body div[data-baseweb="popover"] ul,
     body div[data-baseweb="popover"] [data-baseweb="menu"],
     body div[data-baseweb="popover"] [role="listbox"],
@@ -797,13 +818,13 @@ def inject_styles(theme: str, lang: str):
         background: {dropdown_bg} !important;
         border: 1px solid {dropdown_border} !important;
         border-radius: 12px !important;
-        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5) !important;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18) !important;
         padding: 6px !important;
         outline: none !important;
         overflow: hidden !important;
     }}
 
-    /* Normal Option: Text #E5E7EB, Padding 12px 16px, Transition 0.2s ease */
+    /* Option Padding 10px 16px, Enhanced Contrast & Readability */
     body div[data-baseweb="popover"] li,
     body div[data-baseweb="popover"] [data-baseweb="menu-item"],
     body div[data-baseweb="popover"] [role="option"],
@@ -814,7 +835,7 @@ def inject_styles(theme: str, lang: str):
         background-color: transparent !important;
         background: transparent !important;
         color: {opt_text_color} !important;
-        padding: 12px 16px !important;
+        padding: 10px 16px !important;
         border-radius: 8px !important;
         font-size: 0.88rem !important;
         font-weight: 500 !important;
@@ -849,9 +870,10 @@ def inject_styles(theme: str, lang: str):
         background-color: {item_hover_bg} !important;
         background: {item_hover_bg} !important;
         color: {'#FFFFFF' if is_dark else '#111827'} !important;
+        font-weight: 500 !important;
     }}
 
-    /* Selected Option: Background #1E4D2B, Text #FFFFFF */
+    /* Selected Option: Softer Emerald Green #238636, Text #FFFFFF */
     body div[data-baseweb="popover"] li[aria-selected="true"],
     body div[data-baseweb="popover"] [data-baseweb="menu-item"][aria-selected="true"],
     body div[data-baseweb="popover"] [role="option"][aria-selected="true"],
@@ -870,8 +892,8 @@ def inject_styles(theme: str, lang: str):
     body div[data-baseweb="popover"] [role="option"][aria-selected="true"]:hover,
     li[data-baseweb="menu-item"][aria-selected="true"]:hover,
     li[role="option"][aria-selected="true"]:hover {{
-        background-color: #266337 !important;
-        background: #266337 !important;
+        background-color: #2ea043 !important;
+        background: #2ea043 !important;
         color: #FFFFFF !important;
     }}
 
