@@ -301,16 +301,7 @@ def inject_styles(theme: str, lang: str):
         text-align: {text_align};
     }}
 
-    #MainMenu, footer {{ visibility: hidden; }}
-    header {{ background: transparent !important; }}
-    [data-testid="stHeader"] {{ background: transparent !important; }}
-    [data-testid="collapsedControl"] {{
-        visibility: visible !important;
-        display: flex !important;
-        opacity: 1 !important;
-        transition: none !important;
-        cursor: pointer !important;
-    }}
+    #MainMenu, footer, header {{ visibility: hidden; }}
     .block-container {{ padding-top: 1.5rem; }}
 
     /* ── Hide 'Press Enter to apply' helper instructions completely ── */
@@ -804,17 +795,7 @@ def inject_styles(theme: str, lang: str):
         transform: translateY(1px);
     }}
 
-    /* Instant Click Response: No tap delay, instant pointer */
-    .top-controls-bar div[data-baseweb="select"],
-    .sidebar-controls-bar div[data-baseweb="select"],
-    .top-controls-bar div[data-baseweb="select"] *,
-    .sidebar-controls-bar div[data-baseweb="select"] * {{
-        touch-action: manipulation !important;
-        -webkit-tap-highlight-color: transparent !important;
-        cursor: pointer !important;
-    }}
-
-    /* ── Instant Dropdown Popover Opening (Zero lag / Zero animation delay) ── */
+    /* ── Dropdown Popover Menu (Dark Background #171A20, Single Border #303A32, Radius 12px, Subtle Shadow) ── */
     div[data-baseweb="popover"],
     div[data-baseweb="popover"] > div,
     div[data-baseweb="popover"] > div > div {{
@@ -824,10 +805,6 @@ def inject_styles(theme: str, lang: str):
         box-shadow: none !important;
         outline: none !important;
         padding: 0 !important;
-        animation: none !important;
-        -webkit-animation: none !important;
-        transition: none !important;
-        transform: none !important;
     }}
 
     /* Single subtle border, 12px radius, and subtle shadow: 0 8px 24px rgba(0,0,0,0.18) */
@@ -845,10 +822,6 @@ def inject_styles(theme: str, lang: str):
         padding: 6px !important;
         outline: none !important;
         overflow: hidden !important;
-        animation: none !important;
-        -webkit-animation: none !important;
-        transition: none !important;
-        transform: none !important;
     }}
 
     /* Option Padding 10px 16px, Enhanced Contrast & Readability */
