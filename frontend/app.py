@@ -651,7 +651,7 @@ def inject_styles(theme: str, lang: str):
     }}
 
 
-    /* ── NutriAI Segmented Controls: Language & Theme Switchers ── */
+    /* ── NutriAI Premium Toggle Switchers (Language AR/EN & Dark/Light Mode) ── */
     .top-controls-bar, .sidebar-controls-bar {{
         display: flex !important;
         align-items: center !important;
@@ -659,186 +659,160 @@ def inject_styles(theme: str, lang: str):
         width: 100% !important;
     }}
 
-    .lang-switcher-wrap, .theme-switcher-wrap {{
+    .lang-toggle-wrap, .theme-toggle-wrap {{
         display: flex !important;
         justify-content: center !important;
         align-items: center !important;
         width: 100% !important;
-    }}
-
-    .lang-switcher-wrap div[data-testid="stRadio"],
-    .theme-switcher-wrap div[data-testid="stRadio"] {{
-        margin: 0 !important;
-        padding: 0 !important;
-        width: 100% !important;
-        display: flex !important;
-        justify-content: center !important;
-    }}
-
-    /* Container: matching height 38px, single subtle border #303A32, radius 10px, background #171A20 */
-    .lang-switcher-wrap div[data-testid="stRadioGroup"],
-    .theme-switcher-wrap div[data-testid="stRadioGroup"],
-    .lang-switcher-wrap div[role="radiogroup"],
-    .theme-switcher-wrap div[role="radiogroup"] {{
         background-color: {container_bg} !important;
         border: 1px solid {container_border} !important;
         border-radius: 10px !important;
-        padding: 3px !important;
-        display: flex !important;
-        flex-direction: row !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-        gap: 2px !important;
         min-height: 38px !important;
         height: 38px !important;
-        width: 100% !important;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12) !important;
+        padding: 0 10px !important;
         box-sizing: border-box !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12) !important;
+        transition: border-color 0.2s ease, background-color 0.2s ease !important;
     }}
 
-    /* Subtle Languages Icon on the Language Switcher */
-    .lang-switcher-wrap div[role="radiogroup"]::before,
-    .lang-switcher-wrap div[data-testid="stRadioGroup"]::before {{
-        content: "";
-        display: inline-block;
-        width: 15px;
-        height: 15px;
-        background-image: url("{languages_svg}");
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: contain;
-        margin-inline-start: 8px;
-        margin-inline-end: 4px;
-        flex-shrink: 0;
-        opacity: 0.85;
+    .lang-toggle-wrap:hover, .theme-toggle-wrap:hover {{
+        border-color: #16a34a !important;
     }}
 
-    /* Hide default radio circle completely */
-    .lang-switcher-wrap label[data-baseweb="radio"] > div:first-of-type,
-    .theme-switcher-wrap label[data-baseweb="radio"] > div:first-of-type,
-    .lang-switcher-wrap div[class*="RadioMarkOuter"],
-    .theme-switcher-wrap div[class*="RadioMarkOuter"] {{
+    .lang-toggle-wrap div[data-testid="stCheckbox"],
+    .theme-toggle-wrap div[data-testid="stCheckbox"] {{
+        margin: 0 !important;
+        padding: 0 !important;
+        width: auto !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background: transparent !important;
+    }}
+
+    .lang-toggle-wrap label[data-baseweb="checkbox"],
+    .theme-toggle-wrap label[data-baseweb="checkbox"] {{
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 8px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        cursor: pointer !important;
+        user-select: none !important;
+        background: transparent !important;
+    }}
+
+    /* Custom track & thumb styling matching NutriAI identity */
+    .lang-toggle-wrap div[data-baseweb="checkbox"] > div:first-child,
+    .theme-toggle-wrap div[data-baseweb="checkbox"] > div:first-child,
+    .lang-toggle-wrap div[class*="ToggleTrack"],
+    .theme-toggle-wrap div[class*="ToggleTrack"] {{
+        border: none !important;
+        border-radius: 12px !important;
+        box-shadow: none !important;
+        transition: background-color 0.2s ease !important;
+    }}
+
+    /* Unchecked track */
+    .lang-toggle-wrap label[data-baseweb="checkbox"]:not(:has(input:checked)) div[class*="ToggleTrack"],
+    .theme-toggle-wrap label[data-baseweb="checkbox"]:not(:has(input:checked)) div[class*="ToggleTrack"],
+    .lang-toggle-wrap label[data-baseweb="checkbox"]:not(:has(input:checked)) > div:first-child,
+    .theme-toggle-wrap label[data-baseweb="checkbox"]:not(:has(input:checked)) > div:first-child {{
+        background-color: {"#374151" if is_dark else "#CBD5E1"} !important;
+    }}
+
+    /* Checked track (NutriAI Green) */
+    .lang-toggle-wrap label[data-baseweb="checkbox"]:has(input:checked) div[class*="ToggleTrack"],
+    .theme-toggle-wrap label[data-baseweb="checkbox"]:has(input:checked) div[class*="ToggleTrack"],
+    .lang-toggle-wrap label[data-baseweb="checkbox"]:has(input:checked) > div:first-child,
+    .theme-toggle-wrap label[data-baseweb="checkbox"]:has(input:checked) > div:first-child {{
+        background-color: #16a34a !important;
+    }}
+
+    /* White circular thumb */
+    .lang-toggle-wrap div[class*="Toggle"],
+    .theme-toggle-wrap div[class*="Toggle"],
+    .lang-toggle-wrap div[data-baseweb="checkbox"] > div:first-child > div,
+    .theme-toggle-wrap div[data-baseweb="checkbox"] > div:first-child > div {{
+        background-color: #FFFFFF !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+    }}
+
+    /* Hide any default checkmark SVGs */
+    .lang-toggle-wrap div[data-baseweb="checkbox"] svg,
+    .theme-toggle-wrap div[data-baseweb="checkbox"] svg {{
         display: none !important;
     }}
 
-    /* Clean BaseWeb padding on inner label wrapper */
-    .lang-switcher-wrap label[data-baseweb="radio"] > div,
-    .theme-switcher-wrap label[data-baseweb="radio"] > div {{
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-        margin: 0 !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-    }}
-
-    /* Segment Pills: compact, smooth 200ms transition, matching height */
-    .lang-switcher-wrap label[data-baseweb="radio"],
-    .theme-switcher-wrap label[data-baseweb="radio"] {{
-        flex: 1 1 auto !important;
-        background: transparent !important;
-        background-color: transparent !important;
-        border-radius: 7px !important;
-        padding: 0 8px !important;
-        margin: 0 !important;
-        margin-right: 0 !important;
-        margin-left: 0 !important;
-        cursor: pointer !important;
-        border: none !important;
-        outline: none !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        height: 30px !important;
-        transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease !important;
-        user-select: none !important;
-        box-sizing: border-box !important;
-    }}
-
-    /* Accessibility Focus Ring */
-    .lang-switcher-wrap label[data-baseweb="radio"]:focus-within,
-    .theme-switcher-wrap label[data-baseweb="radio"]:focus-within {{
-        outline: 2px solid #238636 !important;
-        outline-offset: 1px !important;
-    }}
-
-    /* Typography inside segments */
-    .lang-switcher-wrap label[data-baseweb="radio"] [data-testid="stMarkdownContainer"] p,
-    .theme-switcher-wrap label[data-baseweb="radio"] [data-testid="stMarkdownContainer"] p {{
+    /* ── 1. Language Toggle: AR / EN labels on opposite sides ── */
+    .lang-toggle-wrap label[data-baseweb="checkbox"]::before {{
+        content: "AR";
         font-size: 0.82rem !important;
-        font-weight: 500 !important;
-        color: {text_inactive} !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        white-space: nowrap !important;
-        line-height: 1 !important;
-        text-align: center !important;
-        transition: color 0.2s ease !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.5px !important;
+        transition: color 0.2s ease, opacity 0.2s ease !important;
+    }}
+    .lang-toggle-wrap label[data-baseweb="checkbox"]::after {{
+        content: "EN";
+        font-size: 0.82rem !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.5px !important;
+        transition: color 0.2s ease, opacity 0.2s ease !important;
     }}
 
-    /* Inactive hover: subtle lightup */
-    .lang-switcher-wrap label[data-baseweb="radio"]:not(:has(input:checked)):hover,
-    .theme-switcher-wrap label[data-baseweb="radio"]:not(:has(input:checked)):hover {{
-        background-color: {hover_bg} !important;
-    }}
-    .lang-switcher-wrap label[data-baseweb="radio"]:not(:has(input:checked)):hover p,
-    .theme-switcher-wrap label[data-baseweb="radio"]:not(:has(input:checked)):hover p {{
-        color: {text_hover} !important;
-    }}
-
-    /* Active Segment: Refined Emerald Green Background #238636, Crisp White Text, 200ms transition */
-    .lang-switcher-wrap label[data-baseweb="radio"]:has(input:checked),
-    .theme-switcher-wrap label[data-baseweb="radio"]:has(input:checked),
-    .lang-switcher-wrap label[data-baseweb="radio"][aria-checked="true"],
-    .theme-switcher-wrap label[data-baseweb="radio"][aria-checked="true"] {{
-        background-color: #238636 !important;
-        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2) !important;
-    }}
-    .lang-switcher-wrap label[data-baseweb="radio"]:has(input:checked) [data-testid="stMarkdownContainer"] p,
-    .theme-switcher-wrap label[data-baseweb="radio"]:has(input:checked) [data-testid="stMarkdownContainer"] p,
-    .lang-switcher-wrap label[data-baseweb="radio"][aria-checked="true"] [data-testid="stMarkdownContainer"] p,
-    .theme-switcher-wrap label[data-baseweb="radio"][aria-checked="true"] [data-testid="stMarkdownContainer"] p {{
-        color: #FFFFFF !important;
-        font-weight: 600 !important;
-    }}
-
-    /* Lucide Moon icon on Theme 'Dark' segment (first option) */
-    .theme-switcher-wrap label[data-baseweb="radio"]:first-of-type::before {{
-        content: "";
-        display: inline-block;
-        width: 14px;
-        height: 14px;
-        background-image: url("{moon_svg}");
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: contain;
-        margin-inline-end: 6px;
-        flex-shrink: 0;
-        transition: opacity 0.2s ease, filter 0.2s ease !important;
-    }}
-
-    /* Lucide Sun icon on Theme 'Light' segment (second option) */
-    .theme-switcher-wrap label[data-baseweb="radio"]:last-of-type::before {{
-        content: "";
-        display: inline-block;
-        width: 14px;
-        height: 14px;
-        background-image: url("{sun_svg}");
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: contain;
-        margin-inline-end: 6px;
-        flex-shrink: 0;
-        transition: opacity 0.2s ease, filter 0.2s ease !important;
-    }}
-
-    /* Inactive theme icons: subtle opacity */
-    .theme-switcher-wrap label[data-baseweb="radio"]:not(:has(input:checked))::before {{
-        opacity: 0.7;
-    }}
-    .theme-switcher-wrap label[data-baseweb="radio"]:has(input:checked)::before {{
+    /* When language is Arabic (Unchecked / False): AR is highlighted, EN is muted */
+    .lang-toggle-wrap label[data-baseweb="checkbox"]:not(:has(input:checked))::before {{
+        color: {"#4ADE80" if is_dark else "#15803D"} !important;
         opacity: 1 !important;
-        filter: brightness(0) invert(1) !important;
+    }}
+    .lang-toggle-wrap label[data-baseweb="checkbox"]:not(:has(input:checked))::after {{
+        color: {"#64748B" if is_dark else "#94A3B8"} !important;
+        opacity: 0.55 !important;
+    }}
+
+    /* When language is English (Checked / True): EN is highlighted, AR is muted */
+    .lang-toggle-wrap label[data-baseweb="checkbox"]:has(input:checked)::before {{
+        color: {"#64748B" if is_dark else "#94A3B8"} !important;
+        opacity: 0.55 !important;
+    }}
+    .lang-toggle-wrap label[data-baseweb="checkbox"]:has(input:checked)::after {{
+        color: {"#4ADE80" if is_dark else "#15803D"} !important;
+        opacity: 1 !important;
+    }}
+
+    /* ── 2. Theme Toggle: Sun ☀️ and Moon 🌙 on opposite sides ── */
+    .theme-toggle-wrap label[data-baseweb="checkbox"]::before {{
+        content: "☀️";
+        font-size: 0.85rem !important;
+        line-height: 1 !important;
+        transition: transform 0.2s ease, opacity 0.2s ease !important;
+    }}
+    .theme-toggle-wrap label[data-baseweb="checkbox"]::after {{
+        content: "🌙";
+        font-size: 0.85rem !important;
+        line-height: 1 !important;
+        transition: transform 0.2s ease, opacity 0.2s ease !important;
+    }}
+
+    /* When theme is Light Mode (Unchecked / False): Sun is highlighted, Moon is muted */
+    .theme-toggle-wrap label[data-baseweb="checkbox"]:not(:has(input:checked))::before {{
+        opacity: 1 !important;
+        transform: scale(1.15) !important;
+    }}
+    .theme-toggle-wrap label[data-baseweb="checkbox"]:not(:has(input:checked))::after {{
+        opacity: 0.4 !important;
+        transform: scale(0.85) !important;
+    }}
+
+    /* When theme is Dark Mode (Checked / True): Moon is highlighted, Sun is muted */
+    .theme-toggle-wrap label[data-baseweb="checkbox"]:has(input:checked)::before {{
+        opacity: 0.4 !important;
+        transform: scale(0.85) !important;
+    }}
+    .theme-toggle-wrap label[data-baseweb="checkbox"]:has(input:checked)::after {{
+        opacity: 1 !important;
+        transform: scale(1.15) !important;
     }}
 
     /* Clean standard styling for general selectbox popovers (e.g., AI Provider) */
@@ -890,22 +864,42 @@ def inject_styles(theme: str, lang: str):
 
 def init_state():
     defaults = {
-        "token":        None,
-        "username":     None,
-        "session_id":   None,
-        "sessions":     [],
-        "diet_plan":    None,
-        "chat_history": [],
-        "page":         "auth",
-        "provider":     "offline",
-        "lang":         "ar",
-        "theme":        "dark",
+        "token":             None,
+        "username":          None,
+        "session_id":        None,
+        "sessions":          [],
+        "diet_plan":         None,
+        "chat_history":      [],
+        "page":              "auth",
+        "provider":          "offline",
+        "lang":              "ar",
+        "theme":             "dark",
+        "auth_lang_toggle":  False,
+        "auth_theme_toggle": True,
+        "sb_lang_toggle":    False,
+        "sb_theme_toggle":   True,
     }
     for k, v in defaults.items():
         if k not in st.session_state:
             st.session_state[k] = v
 
 init_state()
+
+def toggle_language_auth():
+    st.session_state.lang = "en" if st.session_state.auth_lang_toggle else "ar"
+    st.session_state.sb_lang_toggle = st.session_state.auth_lang_toggle
+
+def toggle_theme_auth():
+    st.session_state.theme = "dark" if st.session_state.auth_theme_toggle else "light"
+    st.session_state.sb_theme_toggle = st.session_state.auth_theme_toggle
+
+def toggle_language_sb():
+    st.session_state.lang = "en" if st.session_state.sb_lang_toggle else "ar"
+    st.session_state.auth_lang_toggle = st.session_state.sb_lang_toggle
+
+def toggle_theme_sb():
+    st.session_state.theme = "dark" if st.session_state.sb_theme_toggle else "light"
+    st.session_state.auth_theme_toggle = st.session_state.sb_theme_toggle
 
 # ══════════════════════════════════════════════════════════════════════════════
 # API HELPERS
@@ -995,45 +989,29 @@ def render_auth():
     t = T[st.session_state.lang]
     inject_styles(st.session_state.theme, st.session_state.lang)
 
-    # Modern Top Controls Bar for Auth Page (Segmented Language & Theme Switchers)
+    # Modern Top Controls Bar for Auth Page (Modern Language & Theme Toggle Switches)
     st.markdown('<div class="top-controls-bar">', unsafe_allow_html=True)
     c_empty, c_bar = st.columns([2.0, 2.0])
     with c_bar:
         c_l, c_th = st.columns(2)
         with c_l:
-            st.markdown('<div class="lang-switcher-wrap">', unsafe_allow_html=True)
-            if "auth_lang_radio" in st.session_state and st.session_state.auth_lang_radio != st.session_state.lang:
-                st.session_state.auth_lang_radio = st.session_state.lang
-            lang_choice = st.radio(
-                "Language",
-                ["ar", "en"],
-                index=0 if st.session_state.lang == "ar" else 1,
-                format_func=lambda x: "العربية" if x == "ar" else "English",
-                key="auth_lang_radio",
-                horizontal=True,
+            st.markdown('<div class="lang-toggle-wrap">', unsafe_allow_html=True)
+            st.toggle(
+                "Language (AR/EN)",
+                key="auth_lang_toggle",
+                on_change=toggle_language_auth,
                 label_visibility="collapsed",
             )
-            if lang_choice != st.session_state.lang:
-                st.session_state.lang = lang_choice
-                st.rerun()
             st.markdown('</div>', unsafe_allow_html=True)
 
         with c_th:
-            st.markdown('<div class="theme-switcher-wrap">', unsafe_allow_html=True)
-            if "auth_theme_radio" in st.session_state and st.session_state.auth_theme_radio != st.session_state.theme:
-                st.session_state.auth_theme_radio = st.session_state.theme
-            theme_choice = st.radio(
-                "Theme",
-                ["dark", "light"],
-                index=0 if st.session_state.theme == "dark" else 1,
-                format_func=lambda x: ("داكن" if x == "dark" else "فاتح") if st.session_state.lang == "ar" else ("Dark" if x == "dark" else "Light"),
-                key="auth_theme_radio",
-                horizontal=True,
+            st.markdown('<div class="theme-toggle-wrap">', unsafe_allow_html=True)
+            st.toggle(
+                "Theme (Dark/Light)",
+                key="auth_theme_toggle",
+                on_change=toggle_theme_auth,
                 label_visibility="collapsed",
             )
-            if theme_choice != st.session_state.theme:
-                st.session_state.theme = theme_choice
-                st.rerun()
             st.markdown('</div>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -1092,43 +1070,27 @@ def render_sidebar():
         st.markdown('<div class="nutriai-logo" style="font-size:1.4rem">🥗 NutriAI</div>', unsafe_allow_html=True)
         st.markdown(f'<div class="nutriai-tagline">@{st.session_state.username}</div>', unsafe_allow_html=True)
 
-        # ── Modern Segmented Language & Theme Controls ──
+        # ── Modern Language & Theme Toggle Controls ──
         st.markdown('<div class="sidebar-controls-bar">', unsafe_allow_html=True)
         c_lang, c_thm = st.columns(2)
         with c_lang:
-            st.markdown('<div class="lang-switcher-wrap">', unsafe_allow_html=True)
-            if "sb_lang_radio" in st.session_state and st.session_state.sb_lang_radio != st.session_state.lang:
-                st.session_state.sb_lang_radio = st.session_state.lang
-            lang_choice = st.radio(
-                "Language",
-                ["ar", "en"],
-                index=0 if st.session_state.lang == "ar" else 1,
-                format_func=lambda x: "العربية" if x == "ar" else "English",
-                key="sb_lang_radio",
-                horizontal=True,
+            st.markdown('<div class="lang-toggle-wrap">', unsafe_allow_html=True)
+            st.toggle(
+                "Language (AR/EN)",
+                key="sb_lang_toggle",
+                on_change=toggle_language_sb,
                 label_visibility="collapsed",
             )
-            if lang_choice != st.session_state.lang:
-                st.session_state.lang = lang_choice
-                st.rerun()
             st.markdown('</div>', unsafe_allow_html=True)
 
         with c_thm:
-            st.markdown('<div class="theme-switcher-wrap">', unsafe_allow_html=True)
-            if "sb_theme_radio" in st.session_state and st.session_state.sb_theme_radio != st.session_state.theme:
-                st.session_state.sb_theme_radio = st.session_state.theme
-            theme_choice = st.radio(
-                "Theme",
-                ["dark", "light"],
-                index=0 if st.session_state.theme == "dark" else 1,
-                format_func=lambda x: ("داكن" if x == "dark" else "فاتح") if st.session_state.lang == "ar" else ("Dark" if x == "dark" else "Light"),
-                key="sb_theme_radio",
-                horizontal=True,
+            st.markdown('<div class="theme-toggle-wrap">', unsafe_allow_html=True)
+            st.toggle(
+                "Theme (Dark/Light)",
+                key="sb_theme_toggle",
+                on_change=toggle_theme_sb,
                 label_visibility="collapsed",
             )
-            if theme_choice != st.session_state.theme:
-                st.session_state.theme = theme_choice
-                st.rerun()
             st.markdown('</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
