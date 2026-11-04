@@ -649,7 +649,7 @@ def inject_styles(theme: str, lang: str):
     .stButton > button:hover,
     .stDownloadButton > button:hover,
     div[data-testid="stDownloadButton"] > button:hover,
-    button[data-testid="stBaseButton-secondary"]:hover,
+    button[data-testid="stBaseButton-secondary"]:not(div[data-baseweb="input"] button):not(div[data-baseweb="base-input"] button):not(.stTextInput button):hover,
     button[data-testid="stBaseButton-primary"]:hover {{
         background: { '#2e7d32' if is_dark else '#15803d' } !important;
         border-color: { '#388e3c' if is_dark else '#166534' } !important;
@@ -765,34 +765,43 @@ def inject_styles(theme: str, lang: str):
         flex-shrink: 0;
     }}
 
-    /* Hide default faint BaseWeb caret arrow */
-    .top-controls-bar div[data-baseweb="select"] svg,
-    .sidebar-controls-bar div[data-baseweb="select"] svg {{
+    /* Remove ::after on selectbox container to avoid click blocking */
+    .top-controls-bar div[data-baseweb="select"]::after,
+    .sidebar-controls-bar div[data-baseweb="select"]::after {{
+        content: none !important;
         display: none !important;
     }}
 
-    /* Clear Lucide ChevronDown Icon on Trailing Edge */
-    .top-controls-bar div[data-baseweb="select"]::after,
-    .sidebar-controls-bar div[data-baseweb="select"]::after {{
-        content: "";
-        display: inline-block;
-        width: 16px;
-        height: 16px;
-        background-image: url("{chevron_down_svg}");
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: contain;
-        margin-inline-end: 14px;
-        margin-inline-start: 6px;
-        flex-shrink: 0;
-        pointer-events: none;
-        transition: transform 0.2s ease, opacity 0.2s ease !important;
-        opacity: 0.85;
+    /* BaseWeb native caret arrow: replaced with crisp Lucide ChevronDown and full instant clickability */
+    .top-controls-bar div[data-baseweb="select"] svg,
+    .sidebar-controls-bar div[data-baseweb="select"] svg {{
+        display: inline-block !important;
+        visibility: visible !important;
+        width: 18px !important;
+        height: 18px !important;
+        min-width: 18px !important;
+        min-height: 18px !important;
+        background-image: url("{chevron_down_svg}") !important;
+        background-repeat: no-repeat !important;
+        background-position: center !important;
+        background-size: contain !important;
+        margin-inline-end: 12px !important;
+        cursor: pointer !important;
+        pointer-events: auto !important;
+        opacity: 0.9 !important;
+        transition: transform 0.15s ease, opacity 0.15s ease !important;
     }}
-    .top-controls-bar div[data-baseweb="select"]:hover::after,
-    .sidebar-controls-bar div[data-baseweb="select"]:hover::after {{
-        opacity: 1;
-        transform: translateY(1px);
+
+    /* Hide the default faint SVG path inside the native SVG so only the crisp Lucide ChevronDown background renders */
+    .top-controls-bar div[data-baseweb="select"] svg path,
+    .sidebar-controls-bar div[data-baseweb="select"] svg path {{
+        display: none !important;
+    }}
+
+    .top-controls-bar div[data-baseweb="select"]:hover svg,
+    .sidebar-controls-bar div[data-baseweb="select"]:hover svg {{
+        opacity: 1 !important;
+        transform: translateY(1px) !important;
     }}
 
     /* ── Dropdown Popover Menu (Dark Background #171A20, Single Border #303A32, Radius 12px, Subtle Shadow) ── */
@@ -805,6 +814,8 @@ def inject_styles(theme: str, lang: str):
         box-shadow: none !important;
         outline: none !important;
         padding: 0 !important;
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
     }}
 
     /* Single subtle border, 12px radius, and subtle shadow: 0 8px 24px rgba(0,0,0,0.18) */
@@ -822,6 +833,8 @@ def inject_styles(theme: str, lang: str):
         padding: 6px !important;
         outline: none !important;
         overflow: hidden !important;
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
     }}
 
     /* Option Padding 10px 16px, Enhanced Contrast & Readability */
