@@ -740,8 +740,9 @@ def inject_styles(theme: str, lang: str):
     }}
 
     /* ── 1. Language Toggle: AR (left) and EN (right) ── */
-    [data-testid="stSidebar"] [data-testid="stHorizontalBlock"]:first-of-type > div[data-testid="column"]:first-child label[data-baseweb="checkbox"]::before,
-    .main [data-testid="stHorizontalBlock"]:first-of-type > div[data-testid="column"]:nth-child(2) label[data-baseweb="checkbox"]::before,
+    [data-testid="stSidebar"] div[data-testid="column"]:first-child label[data-baseweb="checkbox"]::before,
+    [data-testid="stAppViewContainer"] div[data-testid="column"]:nth-child(2) label[data-baseweb="checkbox"]::before,
+    label[data-baseweb="checkbox"]:has(input[aria-label*="Language"])::before,
     div[data-testid="stCheckbox"]:has(input[aria-label*="Language"]) label[data-baseweb="checkbox"]::before {{
         content: "AR" !important;
         font-size: 0.82rem !important;
@@ -754,8 +755,9 @@ def inject_styles(theme: str, lang: str):
         transition: color 0.2s ease, opacity 0.2s ease !important;
     }}
 
-    [data-testid="stSidebar"] [data-testid="stHorizontalBlock"]:first-of-type > div[data-testid="column"]:first-child label[data-baseweb="checkbox"]::after,
-    .main [data-testid="stHorizontalBlock"]:first-of-type > div[data-testid="column"]:nth-child(2) label[data-baseweb="checkbox"]::after,
+    [data-testid="stSidebar"] div[data-testid="column"]:first-child label[data-baseweb="checkbox"]::after,
+    [data-testid="stAppViewContainer"] div[data-testid="column"]:nth-child(2) label[data-baseweb="checkbox"]::after,
+    label[data-baseweb="checkbox"]:has(input[aria-label*="Language"])::after,
     div[data-testid="stCheckbox"]:has(input[aria-label*="Language"]) label[data-baseweb="checkbox"]::after {{
         content: "EN" !important;
         font-size: 0.82rem !important;
@@ -769,8 +771,9 @@ def inject_styles(theme: str, lang: str):
     }}
 
     /* ── 2. Theme Toggle: Sun \2600 (left) and Moon \1F319 (right) ── */
-    [data-testid="stSidebar"] [data-testid="stHorizontalBlock"]:first-of-type > div[data-testid="column"]:last-child label[data-baseweb="checkbox"]::before,
-    .main [data-testid="stHorizontalBlock"]:first-of-type > div[data-testid="column"]:nth-child(3) label[data-baseweb="checkbox"]::before,
+    [data-testid="stSidebar"] div[data-testid="column"]:last-child label[data-baseweb="checkbox"]::before,
+    [data-testid="stAppViewContainer"] div[data-testid="column"]:nth-child(3) label[data-baseweb="checkbox"]::before,
+    label[data-baseweb="checkbox"]:has(input[aria-label*="Theme"])::before,
     div[data-testid="stCheckbox"]:has(input[aria-label*="Theme"]) label[data-baseweb="checkbox"]::before {{
         content: "\\2600" !important;
         font-size: 0.95rem !important;
@@ -783,8 +786,9 @@ def inject_styles(theme: str, lang: str):
         transition: transform 0.2s ease, opacity 0.2s ease !important;
     }}
 
-    [data-testid="stSidebar"] [data-testid="stHorizontalBlock"]:first-of-type > div[data-testid="column"]:last-child label[data-baseweb="checkbox"]::after,
-    .main [data-testid="stHorizontalBlock"]:first-of-type > div[data-testid="column"]:nth-child(3) label[data-baseweb="checkbox"]::after,
+    [data-testid="stSidebar"] div[data-testid="column"]:last-child label[data-baseweb="checkbox"]::after,
+    [data-testid="stAppViewContainer"] div[data-testid="column"]:nth-child(3) label[data-baseweb="checkbox"]::after,
+    label[data-baseweb="checkbox"]:has(input[aria-label*="Theme"])::after,
     div[data-testid="stCheckbox"]:has(input[aria-label*="Theme"]) label[data-baseweb="checkbox"]::after {{
         content: "\\1F319" !important;
         font-size: 0.95rem !important;
