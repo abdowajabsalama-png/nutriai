@@ -280,6 +280,26 @@ def inject_styles(theme: str, lang: str):
 
     day_border = f"border-right: 4px solid #16a34a; border-radius: 8px 0 0 8px;" if is_ar else f"border-left: 4px solid #16a34a; border-radius: 0 8px 8px 0;"
 
+    # ── Precomputed NutriAI Toggle Switch Active/Muted States ──
+    active_green = "#4ade80" if is_dark else "#16a34a"
+    muted_text = "#64748b" if is_dark else "#94a3b8"
+
+    lang_ar_color = active_green if is_ar else muted_text
+    lang_ar_opacity = "1" if is_ar else "0.45"
+    lang_ar_weight = "700" if is_ar else "500"
+
+    lang_en_color = active_green if not is_ar else muted_text
+    lang_en_opacity = "1" if not is_ar else "0.45"
+    lang_en_weight = "700" if not is_ar else "500"
+
+    sun_opacity = "1" if not is_dark else "0.4"
+    sun_transform = "scale(1.15)" if not is_dark else "scale(0.85)"
+    sun_filter = "drop-shadow(0 0 4px rgba(245, 158, 11, 0.6))" if not is_dark else "none"
+
+    moon_opacity = "1" if is_dark else "0.4"
+    moon_transform = "scale(1.15)" if is_dark else "scale(0.85)"
+    moon_filter = "drop-shadow(0 0 4px rgba(96, 165, 250, 0.6))" if is_dark else "none"
+
     css = f"""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=DM+Sans:wght@300;400;500;700&family=Playfair+Display:wght@600;700&display=swap');
@@ -652,16 +672,7 @@ def inject_styles(theme: str, lang: str):
 
 
     /* ── NutriAI Premium Toggle Switch Controls (AR/EN & Dark/Light) ── */
-    .top-controls-bar, .sidebar-controls-bar {{
-        display: flex !important;
-        align-items: center !important;
-        margin-bottom: 0.5rem !important;
-        width: 100% !important;
-    }}
-
-    /* Target the toggle checkbox wrapper directly */
-    div[data-testid="stCheckbox"]:has(input[aria-label*="Language"]),
-    div[data-testid="stCheckbox"]:has(input[aria-label*="Theme"]) {{
+    div[data-testid="stCheckbox"] {{
         margin: 0 !important;
         padding: 0 !important;
         width: 100% !important;
@@ -670,14 +681,13 @@ def inject_styles(theme: str, lang: str):
     }}
 
     /* Card container directly on the native label: matching height 40px, subtle single border, 12px radius */
-    div[data-testid="stCheckbox"]:has(input[aria-label*="Language"]) label[data-baseweb="checkbox"],
-    div[data-testid="stCheckbox"]:has(input[aria-label*="Theme"]) label[data-baseweb="checkbox"] {{
+    div[data-testid="stCheckbox"] label[data-baseweb="checkbox"] {{
         background-color: {container_bg} !important;
         border: 1px solid {container_border} !important;
         border-radius: 12px !important;
         min-height: 40px !important;
         height: 40px !important;
-        padding: 0 14px !important;
+        padding: 0 12px !important;
         display: inline-flex !important;
         flex-direction: row !important;
         align-items: center !important;
@@ -689,119 +699,102 @@ def inject_styles(theme: str, lang: str):
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12) !important;
         transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease !important;
         width: 100% !important;
+        direction: ltr !important; /* Force LTR inside toggle so left=AR/Sun and right=EN/Moon consistently */
     }}
 
-    div[data-testid="stCheckbox"]:has(input[aria-label*="Language"]) label[data-baseweb="checkbox"]:hover,
-    div[data-testid="stCheckbox"]:has(input[aria-label*="Theme"]) label[data-baseweb="checkbox"]:hover {{
+    div[data-testid="stCheckbox"] label[data-baseweb="checkbox"]:hover {{
         border-color: #16a34a !important;
         box-shadow: 0 0 0 1px #16a34a !important;
     }}
 
-    /* Accessibility focus ring */
-    div[data-testid="stCheckbox"]:has(input[aria-label*="Language"]) label[data-baseweb="checkbox"]:focus-within,
-    div[data-testid="stCheckbox"]:has(input[aria-label*="Theme"]) label[data-baseweb="checkbox"]:focus-within {{
+    div[data-testid="stCheckbox"] label[data-baseweb="checkbox"]:focus-within {{
         outline: 2px solid #16a34a !important;
         outline-offset: 1px !important;
     }}
 
     /* Smooth rounded toggle track */
-    div[data-testid="stCheckbox"]:has(input[role="switch"]) label[data-baseweb="checkbox"] > div:first-child {{
+    div[data-testid="stCheckbox"] label[data-baseweb="checkbox"] > div:first-child {{
         border-radius: 12px !important;
         border: none !important;
         box-shadow: none !important;
         margin: 0 !important;
         transition: background-color 0.2s ease !important;
-    }}
-
-    /* Unchecked track */
-    div[data-testid="stCheckbox"]:has(input[role="switch"]) label[data-baseweb="checkbox"]:not(:has(input:checked)) > div:first-child {{
         background-color: {"#374151" if is_dark else "#CBD5E1"} !important;
     }}
 
     /* Checked track (NutriAI Green) */
-    div[data-testid="stCheckbox"]:has(input[role="switch"]) label[data-baseweb="checkbox"]:has(input:checked) > div:first-child {{
+    div[data-testid="stCheckbox"] input[type="checkbox"]:checked ~ div,
+    div[data-testid="stCheckbox"] label[data-baseweb="checkbox"]:has(input:checked) > div:first-child {{
         background-color: #16a34a !important;
     }}
 
     /* White circular thumb knob */
-    div[data-testid="stCheckbox"]:has(input[role="switch"]) label[data-baseweb="checkbox"] > div:first-child > div {{
+    div[data-testid="stCheckbox"] label[data-baseweb="checkbox"] > div:first-child > div {{
         background-color: #FFFFFF !important;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
     }}
 
     /* Hide any default checkmark SVGs */
-    div[data-testid="stCheckbox"]:has(input[role="switch"]) svg {{
+    div[data-testid="stCheckbox"] svg {{
         display: none !important;
     }}
 
-    /* ── 1. Language Toggle: AR and EN on opposite sides ── */
+    /* ── 1. Language Toggle: AR (left) and EN (right) ── */
+    [data-testid="stSidebar"] [data-testid="stHorizontalBlock"]:first-of-type > div[data-testid="column"]:first-child label[data-baseweb="checkbox"]::before,
+    .main [data-testid="stHorizontalBlock"]:first-of-type > div[data-testid="column"]:nth-child(2) label[data-baseweb="checkbox"]::before,
     div[data-testid="stCheckbox"]:has(input[aria-label*="Language"]) label[data-baseweb="checkbox"]::before {{
-        content: "AR";
+        content: "AR" !important;
         font-size: 0.82rem !important;
-        font-weight: 700 !important;
+        font-weight: {lang_ar_weight} !important;
+        color: {lang_ar_color} !important;
+        opacity: {lang_ar_opacity} !important;
         letter-spacing: 0.5px !important;
+        line-height: 1 !important;
+        display: inline-block !important;
         transition: color 0.2s ease, opacity 0.2s ease !important;
     }}
+
+    [data-testid="stSidebar"] [data-testid="stHorizontalBlock"]:first-of-type > div[data-testid="column"]:first-child label[data-baseweb="checkbox"]::after,
+    .main [data-testid="stHorizontalBlock"]:first-of-type > div[data-testid="column"]:nth-child(2) label[data-baseweb="checkbox"]::after,
     div[data-testid="stCheckbox"]:has(input[aria-label*="Language"]) label[data-baseweb="checkbox"]::after {{
-        content: "EN";
+        content: "EN" !important;
         font-size: 0.82rem !important;
-        font-weight: 700 !important;
+        font-weight: {lang_en_weight} !important;
+        color: {lang_en_color} !important;
+        opacity: {lang_en_opacity} !important;
         letter-spacing: 0.5px !important;
+        line-height: 1 !important;
+        display: inline-block !important;
         transition: color 0.2s ease, opacity 0.2s ease !important;
     }}
 
-    /* When language is Arabic (Unchecked / False): AR is highlighted, EN is muted */
-    div[data-testid="stCheckbox"]:has(input[aria-label*="Language"]) label[data-baseweb="checkbox"]:not(:has(input:checked))::before {{
-        color: {"#4ADE80" if is_dark else "#15803D"} !important;
-        opacity: 1 !important;
-    }}
-    div[data-testid="stCheckbox"]:has(input[aria-label*="Language"]) label[data-baseweb="checkbox"]:not(:has(input:checked))::after {{
-        color: {"#64748B" if is_dark else "#94A3B8"} !important;
-        opacity: 0.5 !important;
-    }}
-
-    /* When language is English (Checked / True): EN is highlighted, AR is muted */
-    div[data-testid="stCheckbox"]:has(input[aria-label*="Language"]) label[data-baseweb="checkbox"]:has(input:checked)::before {{
-        color: {"#64748B" if is_dark else "#94A3B8"} !important;
-        opacity: 0.5 !important;
-    }}
-    div[data-testid="stCheckbox"]:has(input[aria-label*="Language"]) label[data-baseweb="checkbox"]:has(input:checked)::after {{
-        color: {"#4ADE80" if is_dark else "#15803D"} !important;
-        opacity: 1 !important;
-    }}
-
-    /* ── 2. Theme Toggle: Sun ☀️ and Moon 🌙 on opposite sides ── */
+    /* ── 2. Theme Toggle: Sun \2600 (left) and Moon \1F319 (right) ── */
+    [data-testid="stSidebar"] [data-testid="stHorizontalBlock"]:first-of-type > div[data-testid="column"]:last-child label[data-baseweb="checkbox"]::before,
+    .main [data-testid="stHorizontalBlock"]:first-of-type > div[data-testid="column"]:nth-child(3) label[data-baseweb="checkbox"]::before,
     div[data-testid="stCheckbox"]:has(input[aria-label*="Theme"]) label[data-baseweb="checkbox"]::before {{
-        content: "☀️";
-        font-size: 0.88rem !important;
+        content: "\\2600" !important;
+        font-size: 0.95rem !important;
         line-height: 1 !important;
+        color: #F59E0B !important;
+        opacity: {sun_opacity} !important;
+        transform: {sun_transform} !important;
+        filter: {sun_filter} !important;
+        display: inline-block !important;
         transition: transform 0.2s ease, opacity 0.2s ease !important;
     }}
+
+    [data-testid="stSidebar"] [data-testid="stHorizontalBlock"]:first-of-type > div[data-testid="column"]:last-child label[data-baseweb="checkbox"]::after,
+    .main [data-testid="stHorizontalBlock"]:first-of-type > div[data-testid="column"]:nth-child(3) label[data-baseweb="checkbox"]::after,
     div[data-testid="stCheckbox"]:has(input[aria-label*="Theme"]) label[data-baseweb="checkbox"]::after {{
-        content: "🌙";
-        font-size: 0.88rem !important;
+        content: "\\1F319" !important;
+        font-size: 0.95rem !important;
         line-height: 1 !important;
+        color: #60A5FA !important;
+        opacity: {moon_opacity} !important;
+        transform: {moon_transform} !important;
+        filter: {moon_filter} !important;
+        display: inline-block !important;
         transition: transform 0.2s ease, opacity 0.2s ease !important;
-    }}
-
-    /* When Light Mode (Unchecked / False): Sun is highlighted, Moon is muted */
-    div[data-testid="stCheckbox"]:has(input[aria-label*="Theme"]) label[data-baseweb="checkbox"]:not(:has(input:checked))::before {{
-        opacity: 1 !important;
-        transform: scale(1.15) !important;
-    }}
-    div[data-testid="stCheckbox"]:has(input[aria-label*="Theme"]) label[data-baseweb="checkbox"]:not(:has(input:checked))::after {{
-        opacity: 0.4 !important;
-        transform: scale(0.85) !important;
-    }}
-
-    /* When Dark Mode (Checked / True): Moon is highlighted, Sun is muted */
-    div[data-testid="stCheckbox"]:has(input[aria-label*="Theme"]) label[data-baseweb="checkbox"]:has(input:checked)::before {{
-        opacity: 0.4 !important;
-        transform: scale(0.85) !important;
-    }}
-    div[data-testid="stCheckbox"]:has(input[aria-label*="Theme"]) label[data-baseweb="checkbox"]:has(input:checked)::after {{
-        opacity: 1 !important;
-        transform: scale(1.15) !important;
     }}
 
     /* Clean standard styling for general selectbox popovers (e.g., AI Provider) */
@@ -979,25 +972,21 @@ def render_auth():
     inject_styles(st.session_state.theme, st.session_state.lang)
 
     # Modern Top Controls Bar for Auth Page (Modern Language & Theme Toggle Switches)
-    st.markdown('<div class="top-controls-bar">', unsafe_allow_html=True)
-    c_empty, c_bar = st.columns([2.0, 2.0])
-    with c_bar:
-        c_l, c_th = st.columns(2)
-        with c_l:
-            st.toggle(
-                "Language (AR/EN)",
-                key="auth_lang_toggle",
-                on_change=toggle_language_auth,
-                label_visibility="collapsed",
-            )
-        with c_th:
-            st.toggle(
-                "Theme (Dark/Light)",
-                key="auth_theme_toggle",
-                on_change=toggle_theme_auth,
-                label_visibility="collapsed",
-            )
-    st.markdown('</div>', unsafe_allow_html=True)
+    c_empty, col_lang, col_theme = st.columns([1.8, 1.1, 1.1])
+    with col_lang:
+        st.toggle(
+            "Language",
+            key="auth_lang_toggle",
+            on_change=toggle_language_auth,
+            label_visibility="collapsed",
+        )
+    with col_theme:
+        st.toggle(
+            "Theme",
+            key="auth_theme_toggle",
+            on_change=toggle_theme_auth,
+            label_visibility="collapsed",
+        )
 
     st.markdown("<br>", unsafe_allow_html=True)
     c1, c2, c3 = st.columns([1, 1.4, 1])
@@ -1055,23 +1044,21 @@ def render_sidebar():
         st.markdown(f'<div class="nutriai-tagline">@{st.session_state.username}</div>', unsafe_allow_html=True)
 
         # ── Modern Language & Theme Toggle Controls ──
-        st.markdown('<div class="sidebar-controls-bar">', unsafe_allow_html=True)
-        c_lang, c_thm = st.columns(2)
-        with c_lang:
+        col_lang, col_theme = st.columns(2)
+        with col_lang:
             st.toggle(
-                "Language (AR/EN)",
+                "Language",
                 key="sb_lang_toggle",
                 on_change=toggle_language_sb,
                 label_visibility="collapsed",
             )
-        with c_thm:
+        with col_theme:
             st.toggle(
-                "Theme (Dark/Light)",
+                "Theme",
                 key="sb_theme_toggle",
                 on_change=toggle_theme_sb,
                 label_visibility="collapsed",
             )
-        st.markdown('</div>', unsafe_allow_html=True)
 
         st.divider()
 
