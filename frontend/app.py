@@ -693,11 +693,9 @@ def inject_styles(theme: str, lang: str):
     }}
 
     /* ── NutriAI Premium Toggle Switch Controls (AR/EN & Dark/Light) ── */
-    .main [data-testid="stHorizontalBlock"]:first-of-type div[data-testid="stToggle"],
-    .main [data-testid="stHorizontalBlock"]:first-of-type div[data-testid="stCheckbox"],
-    [data-testid="stSidebar"] div[data-testid="stToggle"],
-    [data-testid="stSidebar"] div[data-testid="stCheckbox"],
-    div[data-testid="stToggle"] {{
+    div[data-testid="stCheckbox"]:has(input[role="switch"]),
+    div[data-testid="stToggle"],
+    div[data-testid="stCheckbox"]:has(input[id*="toggle"]) {{
         margin: 0 !important;
         padding: 0 !important;
         width: 100% !important;
@@ -706,13 +704,14 @@ def inject_styles(theme: str, lang: str):
     }}
 
     /* Card container directly on the native toggle label */
-    .main [data-testid="stHorizontalBlock"]:first-of-type label[data-baseweb="checkbox"],
-    .main [data-testid="stHorizontalBlock"]:first-of-type div[data-testid="stToggle"] label,
-    [data-testid="stSidebar"] label[data-baseweb="checkbox"],
-    [data-testid="stSidebar"] div[data-testid="stToggle"] label,
+    div[data-testid="stCheckbox"]:has(input[role="switch"]) label[data-baseweb="checkbox"],
+    div[data-testid="stCheckbox"]:has(input[role="switch"]) label,
     div[data-testid="stToggle"] label[data-baseweb="checkbox"],
     div[data-testid="stToggle"] label,
-    div[data-testid="stCheckbox"]:has(input[role="switch"]) label {{
+    div[data-testid="stCheckbox"]:has(input[id*="toggle"]) label[data-baseweb="checkbox"],
+    div[data-testid="stCheckbox"]:has(input[id*="toggle"]) label,
+    label[data-baseweb="checkbox"]:has(input[role="switch"]),
+    label[data-baseweb="checkbox"]:has(input[id*="toggle"]) {{
         background-color: {container_bg} !important;
         border: 1px solid {container_border} !important;
         border-radius: 12px !important;
@@ -733,26 +732,24 @@ def inject_styles(theme: str, lang: str):
         direction: ltr !important; /* Force LTR inside toggle so left=AR/Sun and right=EN/Moon consistently */
     }}
 
-    .main [data-testid="stHorizontalBlock"]:first-of-type label[data-baseweb="checkbox"]:hover,
-    .main [data-testid="stHorizontalBlock"]:first-of-type div[data-testid="stToggle"] label:hover,
-    [data-testid="stSidebar"] label[data-baseweb="checkbox"]:hover,
-    [data-testid="stSidebar"] div[data-testid="stToggle"] label:hover,
-    div[data-testid="stToggle"] label:hover {{
+    div[data-testid="stCheckbox"]:has(input[role="switch"]) label[data-baseweb="checkbox"]:hover,
+    div[data-testid="stToggle"] label:hover,
+    label[data-baseweb="checkbox"]:has(input[role="switch"]):hover {{
         border-color: #16a34a !important;
         box-shadow: 0 0 0 1px #16a34a !important;
     }}
 
-    .main [data-testid="stHorizontalBlock"]:first-of-type label[data-baseweb="checkbox"]:focus-within,
-    [data-testid="stSidebar"] label[data-baseweb="checkbox"]:focus-within,
-    div[data-testid="stToggle"] label:focus-within {{
+    div[data-testid="stCheckbox"]:has(input[role="switch"]) label[data-baseweb="checkbox"]:focus-within,
+    div[data-testid="stToggle"] label:focus-within,
+    label[data-baseweb="checkbox"]:has(input[role="switch"]):focus-within {{
         outline: 2px solid #16a34a !important;
         outline-offset: 1px !important;
     }}
 
     /* Smooth rounded toggle track */
     label[data-baseweb="checkbox"]:has(input[role="switch"]) > div:first-child,
-    div[data-testid="stToggle"] label > div:first-child,
-    div[data-testid="stCheckbox"]:has(input[role="switch"]) label > div:first-child {{
+    div[data-testid="stCheckbox"]:has(input[role="switch"]) label > div:first-child,
+    div[data-testid="stToggle"] label > div:first-child {{
         border-radius: 12px !important;
         border: none !important;
         box-shadow: none !important;
@@ -762,46 +759,45 @@ def inject_styles(theme: str, lang: str):
     }}
 
     /* Checked track (NutriAI Green) */
-    div[data-testid="stToggle"] input:checked ~ div,
     div[data-testid="stCheckbox"]:has(input[role="switch"]) input:checked ~ div,
+    div[data-testid="stToggle"] input:checked ~ div,
     label[data-baseweb="checkbox"]:has(input[role="switch"]) input:checked ~ div {{
         background-color: #16a34a !important;
     }}
 
     /* White circular thumb knob */
     label[data-baseweb="checkbox"]:has(input[role="switch"]) > div:first-child > div,
-    div[data-testid="stToggle"] label > div:first-child > div,
-    div[data-testid="stCheckbox"]:has(input[role="switch"]) label > div:first-child > div {{
+    div[data-testid="stCheckbox"]:has(input[role="switch"]) label > div:first-child > div,
+    div[data-testid="stToggle"] label > div:first-child > div {{
         background-color: #FFFFFF !important;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
     }}
 
-    /* Hide any default checkmark SVGs inside toggle */
+    /* Hide any default checkmark SVGs */
+    div[data-testid="stCheckbox"]:has(input[role="switch"]) svg,
     div[data-testid="stToggle"] svg,
     label[data-baseweb="checkbox"]:has(input[role="switch"]) svg {{
         display: none !important;
     }}
 
-    /* Active theme card border matching Screenshot 3 */
-    .main [data-testid="stHorizontalBlock"]:first-of-type div[data-testid="column"]:nth-child(3) label[data-baseweb="checkbox"],
-    .main [data-testid="stHorizontalBlock"]:first-of-type div[data-testid="column"]:nth-child(3) div[data-testid="stToggle"] label,
-    [data-testid="stSidebar"] div[data-testid="column"]:last-child label[data-baseweb="checkbox"],
-    [data-testid="stSidebar"] div[data-testid="column"]:last-child div[data-testid="stToggle"] label,
-    div[data-testid="stCheckbox"]:has(input[aria-label*="Theme"]) label,
+    /* Active theme card border matching Screenshot */
+    div[data-testid="stCheckbox"]:has(input[aria-label*="Theme"]) label[data-baseweb="checkbox"],
+    div[data-testid="stCheckbox"]:has(input[id*="theme_toggle"]) label[data-baseweb="checkbox"],
     div[data-testid="stToggle"]:has(input[aria-label*="Theme"]) label,
-    label[data-baseweb="checkbox"]:has(input[aria-label*="Theme"]) {{
+    div[data-testid="stToggle"]:has(input[id*="theme_toggle"]) label,
+    label[data-baseweb="checkbox"]:has(input[aria-label*="Theme"]),
+    label[data-baseweb="checkbox"]:has(input[id*="theme_toggle"]) {{
         border-color: {"#16a34a" if is_dark else container_border} !important;
         box-shadow: {"0 0 0 1px #16a34a" if is_dark else "0 1px 3px rgba(0, 0, 0, 0.12)"} !important;
     }}
 
     /* ── 1. Language Toggle: AR (left) and EN (right) ── */
-    .main [data-testid="stHorizontalBlock"]:first-of-type div[data-testid="column"]:nth-child(2) label[data-baseweb="checkbox"]::before,
-    .main [data-testid="stHorizontalBlock"]:first-of-type div[data-testid="column"]:nth-child(2) div[data-testid="stToggle"] label::before,
-    [data-testid="stSidebar"] div[data-testid="column"]:first-child label[data-baseweb="checkbox"]::before,
-    [data-testid="stSidebar"] div[data-testid="column"]:first-child div[data-testid="stToggle"] label::before,
-    label[data-baseweb="checkbox"]:has(input[aria-label*="Language"])::before,
+    div[data-testid="stCheckbox"]:has(input[aria-label*="Language"]) label[data-baseweb="checkbox"]::before,
+    div[data-testid="stCheckbox"]:has(input[id*="lang_toggle"]) label[data-baseweb="checkbox"]::before,
     div[data-testid="stToggle"]:has(input[aria-label*="Language"]) label::before,
-    div[data-testid="stCheckbox"]:has(input[aria-label*="Language"]) label::before {{
+    div[data-testid="stToggle"]:has(input[id*="lang_toggle"]) label::before,
+    label[data-baseweb="checkbox"]:has(input[aria-label*="Language"])::before,
+    label[data-baseweb="checkbox"]:has(input[id*="lang_toggle"])::before {{
         content: "AR" !important;
         font-size: 0.82rem !important;
         font-weight: {lang_ar_weight} !important;
@@ -813,13 +809,12 @@ def inject_styles(theme: str, lang: str):
         transition: color 0.2s ease, opacity 0.2s ease !important;
     }}
 
-    .main [data-testid="stHorizontalBlock"]:first-of-type div[data-testid="column"]:nth-child(2) label[data-baseweb="checkbox"]::after,
-    .main [data-testid="stHorizontalBlock"]:first-of-type div[data-testid="column"]:nth-child(2) div[data-testid="stToggle"] label::after,
-    [data-testid="stSidebar"] div[data-testid="column"]:first-child label[data-baseweb="checkbox"]::after,
-    [data-testid="stSidebar"] div[data-testid="column"]:first-child div[data-testid="stToggle"] label::after,
-    label[data-baseweb="checkbox"]:has(input[aria-label*="Language"])::after,
+    div[data-testid="stCheckbox"]:has(input[aria-label*="Language"]) label[data-baseweb="checkbox"]::after,
+    div[data-testid="stCheckbox"]:has(input[id*="lang_toggle"]) label[data-baseweb="checkbox"]::after,
     div[data-testid="stToggle"]:has(input[aria-label*="Language"]) label::after,
-    div[data-testid="stCheckbox"]:has(input[aria-label*="Language"]) label::after {{
+    div[data-testid="stToggle"]:has(input[id*="lang_toggle"]) label::after,
+    label[data-baseweb="checkbox"]:has(input[aria-label*="Language"])::after,
+    label[data-baseweb="checkbox"]:has(input[id*="lang_toggle"])::after {{
         content: "EN" !important;
         font-size: 0.82rem !important;
         font-weight: {lang_en_weight} !important;
@@ -832,13 +827,12 @@ def inject_styles(theme: str, lang: str):
     }}
 
     /* ── 2. Theme Toggle: Sun ☀️ (left) and Moon 🌙 (right) ── */
-    .main [data-testid="stHorizontalBlock"]:first-of-type div[data-testid="column"]:nth-child(3) label[data-baseweb="checkbox"]::before,
-    .main [data-testid="stHorizontalBlock"]:first-of-type div[data-testid="column"]:nth-child(3) div[data-testid="stToggle"] label::before,
-    [data-testid="stSidebar"] div[data-testid="column"]:last-child label[data-baseweb="checkbox"]::before,
-    [data-testid="stSidebar"] div[data-testid="column"]:last-child div[data-testid="stToggle"] label::before,
-    label[data-baseweb="checkbox"]:has(input[aria-label*="Theme"])::before,
+    div[data-testid="stCheckbox"]:has(input[aria-label*="Theme"]) label[data-baseweb="checkbox"]::before,
+    div[data-testid="stCheckbox"]:has(input[id*="theme_toggle"]) label[data-baseweb="checkbox"]::before,
     div[data-testid="stToggle"]:has(input[aria-label*="Theme"]) label::before,
-    div[data-testid="stCheckbox"]:has(input[aria-label*="Theme"]) label::before {{
+    div[data-testid="stToggle"]:has(input[id*="theme_toggle"]) label::before,
+    label[data-baseweb="checkbox"]:has(input[aria-label*="Theme"])::before,
+    label[data-baseweb="checkbox"]:has(input[id*="theme_toggle"])::before {{
         content: "☀️" !important;
         font-size: 0.95rem !important;
         line-height: 1 !important;
@@ -850,13 +844,12 @@ def inject_styles(theme: str, lang: str):
         transition: transform 0.2s ease, opacity 0.2s ease !important;
     }}
 
-    .main [data-testid="stHorizontalBlock"]:first-of-type div[data-testid="column"]:nth-child(3) label[data-baseweb="checkbox"]::after,
-    .main [data-testid="stHorizontalBlock"]:first-of-type div[data-testid="column"]:nth-child(3) div[data-testid="stToggle"] label::after,
-    [data-testid="stSidebar"] div[data-testid="column"]:last-child label[data-baseweb="checkbox"]::after,
-    [data-testid="stSidebar"] div[data-testid="column"]:last-child div[data-testid="stToggle"] label::after,
-    label[data-baseweb="checkbox"]:has(input[aria-label*="Theme"])::after,
+    div[data-testid="stCheckbox"]:has(input[aria-label*="Theme"]) label[data-baseweb="checkbox"]::after,
+    div[data-testid="stCheckbox"]:has(input[id*="theme_toggle"]) label[data-baseweb="checkbox"]::after,
     div[data-testid="stToggle"]:has(input[aria-label*="Theme"]) label::after,
-    div[data-testid="stCheckbox"]:has(input[aria-label*="Theme"]) label::after {{
+    div[data-testid="stToggle"]:has(input[id*="theme_toggle"]) label::after,
+    label[data-baseweb="checkbox"]:has(input[aria-label*="Theme"])::after,
+    label[data-baseweb="checkbox"]:has(input[id*="theme_toggle"])::after {{
         content: "🌙" !important;
         font-size: 0.95rem !important;
         line-height: 1 !important;
@@ -1042,20 +1035,24 @@ def render_auth():
     t = T[st.session_state.lang]
     inject_styles(st.session_state.theme, st.session_state.lang)
 
-    # Modern Top Controls Bar for Auth Page (Modern Language & Theme Toggle Switches)
-    c_empty, col_lang, col_theme = st.columns([1.8, 1.1, 1.1])
-    with col_lang:
-        st.toggle(
-            "Language",
-            key="auth_lang_toggle",
-            on_change=toggle_language_auth,
-            label_visibility="collapsed",
-        )
+    # Modern Top Controls Bar for Auth Page (Theme on Left, Language Next to It in BOTH EN & AR)
+    if st.session_state.lang == "ar":
+        c_empty, col_lang, col_theme = st.columns([1.8, 1.1, 1.1])
+    else:
+        col_theme, col_lang, c_empty = st.columns([1.1, 1.1, 1.8])
+
     with col_theme:
         st.toggle(
             "Theme",
             key="auth_theme_toggle",
             on_change=toggle_theme_auth,
+            label_visibility="collapsed",
+        )
+    with col_lang:
+        st.toggle(
+            "Language",
+            key="auth_lang_toggle",
+            on_change=toggle_language_auth,
             label_visibility="collapsed",
         )
 
@@ -1115,19 +1112,23 @@ def render_sidebar():
         st.markdown(f'<div class="nutriai-tagline">@{st.session_state.username}</div>', unsafe_allow_html=True)
 
         # ── Modern Language & Theme Toggle Controls ──
-        col_lang, col_theme = st.columns(2)
-        with col_lang:
-            st.toggle(
-                "Language",
-                key="sb_lang_toggle",
-                on_change=toggle_language_sb,
-                label_visibility="collapsed",
-            )
+        if st.session_state.lang == "ar":
+            col_lang, col_theme = st.columns(2)
+        else:
+            col_theme, col_lang = st.columns(2)
+
         with col_theme:
             st.toggle(
                 "Theme",
                 key="sb_theme_toggle",
                 on_change=toggle_theme_sb,
+                label_visibility="collapsed",
+            )
+        with col_lang:
+            st.toggle(
+                "Language",
+                key="sb_lang_toggle",
+                on_change=toggle_language_sb,
                 label_visibility="collapsed",
             )
 
