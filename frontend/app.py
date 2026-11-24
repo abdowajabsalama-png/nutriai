@@ -671,9 +671,26 @@ def inject_styles(theme: str, lang: str):
     }}
 
 
+    /* ── Protect All Form Inputs & Labels from ANY pseudo-elements (Ensure username and password never get AR/EN) ── */
+    .stTextInput label::before,
+    .stTextInput label::after,
+    .stNumberInput label::before,
+    .stNumberInput label::after,
+    .stSelectbox label::before,
+    .stSelectbox label::after,
+    .stTextArea label::before,
+    .stTextArea label::after,
+    [data-testid="stWidgetLabel"] label::before,
+    [data-testid="stWidgetLabel"] label::after {{
+        content: none !important;
+        display: none !important;
+    }}
+
     /* ── NutriAI Premium Toggle Switch Controls (AR/EN & Dark/Light) ── */
-    div[data-testid="stCheckbox"],
-    div[data-testid="stToggle"] {{
+    .auth-top-bar div[data-testid="stCheckbox"],
+    .auth-top-bar div[data-testid="stToggle"],
+    .sidebar-top-bar div[data-testid="stCheckbox"],
+    .sidebar-top-bar div[data-testid="stToggle"] {{
         margin: 0 !important;
         padding: 0 !important;
         width: 100% !important;
@@ -681,10 +698,11 @@ def inject_styles(theme: str, lang: str):
         justify-content: center !important;
     }}
 
-    /* Card container directly on the native label: matching height 40px, subtle single border, 12px radius */
-    div[data-testid="stCheckbox"] label,
-    div[data-testid="stToggle"] label,
-    label[data-baseweb="checkbox"] {{
+    /* Card container directly on the native toggle label */
+    .auth-top-bar label[data-baseweb="checkbox"],
+    .sidebar-top-bar label[data-baseweb="checkbox"],
+    .auth-top-bar div[data-testid="stToggle"] label,
+    .sidebar-top-bar div[data-testid="stToggle"] label {{
         background-color: {container_bg} !important;
         border: 1px solid {container_border} !important;
         border-radius: 12px !important;
@@ -705,24 +723,27 @@ def inject_styles(theme: str, lang: str):
         direction: ltr !important; /* Force LTR inside toggle so left=AR/Sun and right=EN/Moon consistently */
     }}
 
-    div[data-testid="stCheckbox"] label:hover,
-    div[data-testid="stToggle"] label:hover,
-    label[data-baseweb="checkbox"]:hover {{
+    .auth-top-bar label[data-baseweb="checkbox"]:hover,
+    .sidebar-top-bar label[data-baseweb="checkbox"]:hover,
+    .auth-top-bar div[data-testid="stToggle"] label:hover,
+    .sidebar-top-bar div[data-testid="stToggle"] label:hover {{
         border-color: #16a34a !important;
         box-shadow: 0 0 0 1px #16a34a !important;
     }}
 
-    div[data-testid="stCheckbox"] label:focus-within,
-    div[data-testid="stToggle"] label:focus-within,
-    label[data-baseweb="checkbox"]:focus-within {{
+    .auth-top-bar label[data-baseweb="checkbox"]:focus-within,
+    .sidebar-top-bar label[data-baseweb="checkbox"]:focus-within,
+    .auth-top-bar div[data-testid="stToggle"] label:focus-within,
+    .sidebar-top-bar div[data-testid="stToggle"] label:focus-within {{
         outline: 2px solid #16a34a !important;
         outline-offset: 1px !important;
     }}
 
     /* Smooth rounded toggle track */
-    div[data-testid="stCheckbox"] label > div:first-child,
-    div[data-testid="stToggle"] label > div:first-child,
-    label[data-baseweb="checkbox"] > div:first-child {{
+    .auth-top-bar label[data-baseweb="checkbox"] > div:first-child,
+    .sidebar-top-bar label[data-baseweb="checkbox"] > div:first-child,
+    .auth-top-bar div[data-testid="stToggle"] label > div:first-child,
+    .sidebar-top-bar div[data-testid="stToggle"] label > div:first-child {{
         border-radius: 12px !important;
         border: none !important;
         box-shadow: none !important;
@@ -732,38 +753,40 @@ def inject_styles(theme: str, lang: str):
     }}
 
     /* Checked track (NutriAI Green) */
-    div[data-testid="stCheckbox"] input:checked ~ div,
-    div[data-testid="stToggle"] input:checked ~ div,
-    input[type="checkbox"]:checked ~ div {{
+    .auth-top-bar input:checked ~ div,
+    .sidebar-top-bar input:checked ~ div {{
         background-color: #16a34a !important;
     }}
 
     /* White circular thumb knob */
-    div[data-testid="stCheckbox"] label > div:first-child > div,
-    div[data-testid="stToggle"] label > div:first-child > div,
-    label[data-baseweb="checkbox"] > div:first-child > div {{
+    .auth-top-bar label[data-baseweb="checkbox"] > div:first-child > div,
+    .sidebar-top-bar label[data-baseweb="checkbox"] > div:first-child > div,
+    .auth-top-bar div[data-testid="stToggle"] label > div:first-child > div,
+    .sidebar-top-bar div[data-testid="stToggle"] label > div:first-child > div {{
         background-color: #FFFFFF !important;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
     }}
 
     /* Hide any default checkmark SVGs */
-    div[data-testid="stCheckbox"] svg,
-    div[data-testid="stToggle"] svg {{
+    .auth-top-bar svg,
+    .sidebar-top-bar svg {{
         display: none !important;
     }}
 
     /* Active theme card border */
-    [data-testid="stSidebar"] div[data-testid="column"]:last-child label,
-    [data-testid="stAppViewContainer"] div[data-testid="column"]:nth-child(3) label,
-    div[data-testid="column"]:has(.nutriai-toggle-theme) label {{
+    .auth-top-bar div[data-testid="column"]:nth-child(3) label[data-baseweb="checkbox"],
+    .auth-top-bar div[data-testid="column"]:nth-child(3) div[data-testid="stToggle"] label,
+    .sidebar-top-bar div[data-testid="column"]:last-child label[data-baseweb="checkbox"],
+    .sidebar-top-bar div[data-testid="column"]:last-child div[data-testid="stToggle"] label {{
         border-color: {"#16a34a" if is_dark else container_border} !important;
         box-shadow: {"0 0 0 1px #16a34a" if is_dark else "0 1px 3px rgba(0, 0, 0, 0.12)"} !important;
     }}
 
-    /* ── 1. Language Toggle: AR (left) and EN (right) ── */
-    [data-testid="stSidebar"] div[data-testid="column"]:first-child label::before,
-    [data-testid="stAppViewContainer"] div[data-testid="column"]:nth-child(2) label::before,
-    div[data-testid="column"]:has(.nutriai-toggle-lang) label::before {{
+    /* ── 1. Language Toggle: AR (left) and EN (right) ── ONLY inside top bar and sidebar! */
+    .auth-top-bar div[data-testid="column"]:nth-child(2) label[data-baseweb="checkbox"]::before,
+    .auth-top-bar div[data-testid="column"]:nth-child(2) div[data-testid="stToggle"] label::before,
+    .sidebar-top-bar div[data-testid="column"]:first-child label[data-baseweb="checkbox"]::before,
+    .sidebar-top-bar div[data-testid="column"]:first-child div[data-testid="stToggle"] label::before {{
         content: "AR" !important;
         font-size: 0.82rem !important;
         font-weight: {lang_ar_weight} !important;
@@ -775,9 +798,10 @@ def inject_styles(theme: str, lang: str):
         transition: color 0.2s ease, opacity 0.2s ease !important;
     }}
 
-    [data-testid="stSidebar"] div[data-testid="column"]:first-child label::after,
-    [data-testid="stAppViewContainer"] div[data-testid="column"]:nth-child(2) label::after,
-    div[data-testid="column"]:has(.nutriai-toggle-lang) label::after {{
+    .auth-top-bar div[data-testid="column"]:nth-child(2) label[data-baseweb="checkbox"]::after,
+    .auth-top-bar div[data-testid="column"]:nth-child(2) div[data-testid="stToggle"] label::after,
+    .sidebar-top-bar div[data-testid="column"]:first-child label[data-baseweb="checkbox"]::after,
+    .sidebar-top-bar div[data-testid="column"]:first-child div[data-testid="stToggle"] label::after {{
         content: "EN" !important;
         font-size: 0.82rem !important;
         font-weight: {lang_en_weight} !important;
@@ -789,28 +813,11 @@ def inject_styles(theme: str, lang: str):
         transition: color 0.2s ease, opacity 0.2s ease !important;
     }}
 
-    /* Fallback for Language Toggle by aria-label */
-    div[data-testid="stCheckbox"]:has(input[aria-label*="Language"]) label::before,
-    div[data-testid="stToggle"]:has(input[aria-label*="Language"]) label::before {{
-        content: "AR" !important;
-        font-size: 0.82rem !important;
-        font-weight: {lang_ar_weight} !important;
-        color: {lang_ar_color} !important;
-        opacity: {lang_ar_opacity} !important;
-    }}
-    div[data-testid="stCheckbox"]:has(input[aria-label*="Language"]) label::after,
-    div[data-testid="stToggle"]:has(input[aria-label*="Language"]) label::after {{
-        content: "EN" !important;
-        font-size: 0.82rem !important;
-        font-weight: {lang_en_weight} !important;
-        color: {lang_en_color} !important;
-        opacity: {lang_en_opacity} !important;
-    }}
-
-    /* ── 2. Theme Toggle: Sun ☀️ (left) and Moon 🌙 (right) ── */
-    [data-testid="stSidebar"] div[data-testid="column"]:last-child label::before,
-    [data-testid="stAppViewContainer"] div[data-testid="column"]:nth-child(3) label::before,
-    div[data-testid="column"]:has(.nutriai-toggle-theme) label::before {{
+    /* ── 2. Theme Toggle: Sun ☀️ (left) and Moon 🌙 (right) ── ONLY inside top bar and sidebar! */
+    .auth-top-bar div[data-testid="column"]:nth-child(3) label[data-baseweb="checkbox"]::before,
+    .auth-top-bar div[data-testid="column"]:nth-child(3) div[data-testid="stToggle"] label::before,
+    .sidebar-top-bar div[data-testid="column"]:last-child label[data-baseweb="checkbox"]::before,
+    .sidebar-top-bar div[data-testid="column"]:last-child div[data-testid="stToggle"] label::before {{
         content: "☀️" !important;
         font-size: 0.95rem !important;
         line-height: 1 !important;
@@ -822,9 +829,10 @@ def inject_styles(theme: str, lang: str):
         transition: transform 0.2s ease, opacity 0.2s ease !important;
     }}
 
-    [data-testid="stSidebar"] div[data-testid="column"]:last-child label::after,
-    [data-testid="stAppViewContainer"] div[data-testid="column"]:nth-child(3) label::after,
-    div[data-testid="column"]:has(.nutriai-toggle-theme) label::after {{
+    .auth-top-bar div[data-testid="column"]:nth-child(3) label[data-baseweb="checkbox"]::after,
+    .auth-top-bar div[data-testid="column"]:nth-child(3) div[data-testid="stToggle"] label::after,
+    .sidebar-top-bar div[data-testid="column"]:last-child label[data-baseweb="checkbox"]::after,
+    .sidebar-top-bar div[data-testid="column"]:last-child div[data-testid="stToggle"] label::after {{
         content: "🌙" !important;
         font-size: 0.95rem !important;
         line-height: 1 !important;
@@ -834,20 +842,6 @@ def inject_styles(theme: str, lang: str):
         filter: {moon_filter} !important;
         display: inline-block !important;
         transition: transform 0.2s ease, opacity 0.2s ease !important;
-    }}
-
-    /* Fallback for Theme Toggle by aria-label */
-    div[data-testid="stCheckbox"]:has(input[aria-label*="Theme"]) label::before,
-    div[data-testid="stToggle"]:has(input[aria-label*="Theme"]) label::before {{
-        content: "☀️" !important;
-        font-size: 0.95rem !important;
-        opacity: {sun_opacity} !important;
-    }}
-    div[data-testid="stCheckbox"]:has(input[aria-label*="Theme"]) label::after,
-    div[data-testid="stToggle"]:has(input[aria-label*="Theme"]) label::after {{
-        content: "🌙" !important;
-        font-size: 0.95rem !important;
-        opacity: {moon_opacity} !important;
     }}
 
     /* Clean standard styling for general selectbox popovers (e.g., AI Provider) */
@@ -1025,9 +1019,9 @@ def render_auth():
     inject_styles(st.session_state.theme, st.session_state.lang)
 
     # Modern Top Controls Bar for Auth Page (Modern Language & Theme Toggle Switches)
+    st.markdown('<div class="auth-top-bar">', unsafe_allow_html=True)
     c_empty, col_lang, col_theme = st.columns([1.8, 1.1, 1.1])
     with col_lang:
-        st.markdown('<div class="nutriai-toggle-lang"></div>', unsafe_allow_html=True)
         st.toggle(
             "Language",
             key="auth_lang_toggle",
@@ -1035,13 +1029,13 @@ def render_auth():
             label_visibility="collapsed",
         )
     with col_theme:
-        st.markdown('<div class="nutriai-toggle-theme"></div>', unsafe_allow_html=True)
         st.toggle(
             "Theme",
             key="auth_theme_toggle",
             on_change=toggle_theme_auth,
             label_visibility="collapsed",
         )
+    st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
     c1, c2, c3 = st.columns([1, 1.4, 1])
@@ -1099,9 +1093,9 @@ def render_sidebar():
         st.markdown(f'<div class="nutriai-tagline">@{st.session_state.username}</div>', unsafe_allow_html=True)
 
         # ── Modern Language & Theme Toggle Controls ──
+        st.markdown('<div class="sidebar-top-bar">', unsafe_allow_html=True)
         col_lang, col_theme = st.columns(2)
         with col_lang:
-            st.markdown('<div class="nutriai-toggle-lang"></div>', unsafe_allow_html=True)
             st.toggle(
                 "Language",
                 key="sb_lang_toggle",
@@ -1109,13 +1103,13 @@ def render_sidebar():
                 label_visibility="collapsed",
             )
         with col_theme:
-            st.markdown('<div class="nutriai-toggle-theme"></div>', unsafe_allow_html=True)
             st.toggle(
                 "Theme",
                 key="sb_theme_toggle",
                 on_change=toggle_theme_sb,
                 label_visibility="collapsed",
             )
+        st.markdown('</div>', unsafe_allow_html=True)
 
         st.divider()
 
