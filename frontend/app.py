@@ -681,16 +681,23 @@ def inject_styles(theme: str, lang: str):
     .stTextArea label::before,
     .stTextArea label::after,
     [data-testid="stWidgetLabel"] label::before,
-    [data-testid="stWidgetLabel"] label::after {{
+    [data-testid="stWidgetLabel"] label::after,
+    [data-testid="stWidgetLabel"] p::before,
+    [data-testid="stWidgetLabel"] p::after,
+    div[data-testid="stTextInput"] label::before,
+    div[data-testid="stTextInput"] label::after,
+    div[data-testid="stPasswordInput"] label::before,
+    div[data-testid="stPasswordInput"] label::after {{
         content: none !important;
         display: none !important;
     }}
 
     /* ── NutriAI Premium Toggle Switch Controls (AR/EN & Dark/Light) ── */
-    .auth-top-bar div[data-testid="stCheckbox"],
-    .auth-top-bar div[data-testid="stToggle"],
-    .sidebar-top-bar div[data-testid="stCheckbox"],
-    .sidebar-top-bar div[data-testid="stToggle"] {{
+    .main [data-testid="stHorizontalBlock"]:first-of-type div[data-testid="stToggle"],
+    .main [data-testid="stHorizontalBlock"]:first-of-type div[data-testid="stCheckbox"],
+    [data-testid="stSidebar"] div[data-testid="stToggle"],
+    [data-testid="stSidebar"] div[data-testid="stCheckbox"],
+    div[data-testid="stToggle"] {{
         margin: 0 !important;
         padding: 0 !important;
         width: 100% !important;
@@ -699,10 +706,13 @@ def inject_styles(theme: str, lang: str):
     }}
 
     /* Card container directly on the native toggle label */
-    .auth-top-bar label[data-baseweb="checkbox"],
-    .sidebar-top-bar label[data-baseweb="checkbox"],
-    .auth-top-bar div[data-testid="stToggle"] label,
-    .sidebar-top-bar div[data-testid="stToggle"] label {{
+    .main [data-testid="stHorizontalBlock"]:first-of-type label[data-baseweb="checkbox"],
+    .main [data-testid="stHorizontalBlock"]:first-of-type div[data-testid="stToggle"] label,
+    [data-testid="stSidebar"] label[data-baseweb="checkbox"],
+    [data-testid="stSidebar"] div[data-testid="stToggle"] label,
+    div[data-testid="stToggle"] label[data-baseweb="checkbox"],
+    div[data-testid="stToggle"] label,
+    div[data-testid="stCheckbox"]:has(input[role="switch"]) label {{
         background-color: {container_bg} !important;
         border: 1px solid {container_border} !important;
         border-radius: 12px !important;
@@ -723,27 +733,26 @@ def inject_styles(theme: str, lang: str):
         direction: ltr !important; /* Force LTR inside toggle so left=AR/Sun and right=EN/Moon consistently */
     }}
 
-    .auth-top-bar label[data-baseweb="checkbox"]:hover,
-    .sidebar-top-bar label[data-baseweb="checkbox"]:hover,
-    .auth-top-bar div[data-testid="stToggle"] label:hover,
-    .sidebar-top-bar div[data-testid="stToggle"] label:hover {{
+    .main [data-testid="stHorizontalBlock"]:first-of-type label[data-baseweb="checkbox"]:hover,
+    .main [data-testid="stHorizontalBlock"]:first-of-type div[data-testid="stToggle"] label:hover,
+    [data-testid="stSidebar"] label[data-baseweb="checkbox"]:hover,
+    [data-testid="stSidebar"] div[data-testid="stToggle"] label:hover,
+    div[data-testid="stToggle"] label:hover {{
         border-color: #16a34a !important;
         box-shadow: 0 0 0 1px #16a34a !important;
     }}
 
-    .auth-top-bar label[data-baseweb="checkbox"]:focus-within,
-    .sidebar-top-bar label[data-baseweb="checkbox"]:focus-within,
-    .auth-top-bar div[data-testid="stToggle"] label:focus-within,
-    .sidebar-top-bar div[data-testid="stToggle"] label:focus-within {{
+    .main [data-testid="stHorizontalBlock"]:first-of-type label[data-baseweb="checkbox"]:focus-within,
+    [data-testid="stSidebar"] label[data-baseweb="checkbox"]:focus-within,
+    div[data-testid="stToggle"] label:focus-within {{
         outline: 2px solid #16a34a !important;
         outline-offset: 1px !important;
     }}
 
     /* Smooth rounded toggle track */
-    .auth-top-bar label[data-baseweb="checkbox"] > div:first-child,
-    .sidebar-top-bar label[data-baseweb="checkbox"] > div:first-child,
-    .auth-top-bar div[data-testid="stToggle"] label > div:first-child,
-    .sidebar-top-bar div[data-testid="stToggle"] label > div:first-child {{
+    label[data-baseweb="checkbox"]:has(input[role="switch"]) > div:first-child,
+    div[data-testid="stToggle"] label > div:first-child,
+    div[data-testid="stCheckbox"]:has(input[role="switch"]) label > div:first-child {{
         border-radius: 12px !important;
         border: none !important;
         box-shadow: none !important;
@@ -753,40 +762,46 @@ def inject_styles(theme: str, lang: str):
     }}
 
     /* Checked track (NutriAI Green) */
-    .auth-top-bar input:checked ~ div,
-    .sidebar-top-bar input:checked ~ div {{
+    div[data-testid="stToggle"] input:checked ~ div,
+    div[data-testid="stCheckbox"]:has(input[role="switch"]) input:checked ~ div,
+    label[data-baseweb="checkbox"]:has(input[role="switch"]) input:checked ~ div {{
         background-color: #16a34a !important;
     }}
 
     /* White circular thumb knob */
-    .auth-top-bar label[data-baseweb="checkbox"] > div:first-child > div,
-    .sidebar-top-bar label[data-baseweb="checkbox"] > div:first-child > div,
-    .auth-top-bar div[data-testid="stToggle"] label > div:first-child > div,
-    .sidebar-top-bar div[data-testid="stToggle"] label > div:first-child > div {{
+    label[data-baseweb="checkbox"]:has(input[role="switch"]) > div:first-child > div,
+    div[data-testid="stToggle"] label > div:first-child > div,
+    div[data-testid="stCheckbox"]:has(input[role="switch"]) label > div:first-child > div {{
         background-color: #FFFFFF !important;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
     }}
 
-    /* Hide any default checkmark SVGs */
-    .auth-top-bar svg,
-    .sidebar-top-bar svg {{
+    /* Hide any default checkmark SVGs inside toggle */
+    div[data-testid="stToggle"] svg,
+    label[data-baseweb="checkbox"]:has(input[role="switch"]) svg {{
         display: none !important;
     }}
 
-    /* Active theme card border */
-    .auth-top-bar div[data-testid="column"]:nth-child(3) label[data-baseweb="checkbox"],
-    .auth-top-bar div[data-testid="column"]:nth-child(3) div[data-testid="stToggle"] label,
-    .sidebar-top-bar div[data-testid="column"]:last-child label[data-baseweb="checkbox"],
-    .sidebar-top-bar div[data-testid="column"]:last-child div[data-testid="stToggle"] label {{
+    /* Active theme card border matching Screenshot 3 */
+    .main [data-testid="stHorizontalBlock"]:first-of-type div[data-testid="column"]:nth-child(3) label[data-baseweb="checkbox"],
+    .main [data-testid="stHorizontalBlock"]:first-of-type div[data-testid="column"]:nth-child(3) div[data-testid="stToggle"] label,
+    [data-testid="stSidebar"] div[data-testid="column"]:last-child label[data-baseweb="checkbox"],
+    [data-testid="stSidebar"] div[data-testid="column"]:last-child div[data-testid="stToggle"] label,
+    div[data-testid="stCheckbox"]:has(input[aria-label*="Theme"]) label,
+    div[data-testid="stToggle"]:has(input[aria-label*="Theme"]) label,
+    label[data-baseweb="checkbox"]:has(input[aria-label*="Theme"]) {{
         border-color: {"#16a34a" if is_dark else container_border} !important;
         box-shadow: {"0 0 0 1px #16a34a" if is_dark else "0 1px 3px rgba(0, 0, 0, 0.12)"} !important;
     }}
 
-    /* ── 1. Language Toggle: AR (left) and EN (right) ── ONLY inside top bar and sidebar! */
-    .auth-top-bar div[data-testid="column"]:nth-child(2) label[data-baseweb="checkbox"]::before,
-    .auth-top-bar div[data-testid="column"]:nth-child(2) div[data-testid="stToggle"] label::before,
-    .sidebar-top-bar div[data-testid="column"]:first-child label[data-baseweb="checkbox"]::before,
-    .sidebar-top-bar div[data-testid="column"]:first-child div[data-testid="stToggle"] label::before {{
+    /* ── 1. Language Toggle: AR (left) and EN (right) ── */
+    .main [data-testid="stHorizontalBlock"]:first-of-type div[data-testid="column"]:nth-child(2) label[data-baseweb="checkbox"]::before,
+    .main [data-testid="stHorizontalBlock"]:first-of-type div[data-testid="column"]:nth-child(2) div[data-testid="stToggle"] label::before,
+    [data-testid="stSidebar"] div[data-testid="column"]:first-child label[data-baseweb="checkbox"]::before,
+    [data-testid="stSidebar"] div[data-testid="column"]:first-child div[data-testid="stToggle"] label::before,
+    label[data-baseweb="checkbox"]:has(input[aria-label*="Language"])::before,
+    div[data-testid="stToggle"]:has(input[aria-label*="Language"]) label::before,
+    div[data-testid="stCheckbox"]:has(input[aria-label*="Language"]) label::before {{
         content: "AR" !important;
         font-size: 0.82rem !important;
         font-weight: {lang_ar_weight} !important;
@@ -798,10 +813,13 @@ def inject_styles(theme: str, lang: str):
         transition: color 0.2s ease, opacity 0.2s ease !important;
     }}
 
-    .auth-top-bar div[data-testid="column"]:nth-child(2) label[data-baseweb="checkbox"]::after,
-    .auth-top-bar div[data-testid="column"]:nth-child(2) div[data-testid="stToggle"] label::after,
-    .sidebar-top-bar div[data-testid="column"]:first-child label[data-baseweb="checkbox"]::after,
-    .sidebar-top-bar div[data-testid="column"]:first-child div[data-testid="stToggle"] label::after {{
+    .main [data-testid="stHorizontalBlock"]:first-of-type div[data-testid="column"]:nth-child(2) label[data-baseweb="checkbox"]::after,
+    .main [data-testid="stHorizontalBlock"]:first-of-type div[data-testid="column"]:nth-child(2) div[data-testid="stToggle"] label::after,
+    [data-testid="stSidebar"] div[data-testid="column"]:first-child label[data-baseweb="checkbox"]::after,
+    [data-testid="stSidebar"] div[data-testid="column"]:first-child div[data-testid="stToggle"] label::after,
+    label[data-baseweb="checkbox"]:has(input[aria-label*="Language"])::after,
+    div[data-testid="stToggle"]:has(input[aria-label*="Language"]) label::after,
+    div[data-testid="stCheckbox"]:has(input[aria-label*="Language"]) label::after {{
         content: "EN" !important;
         font-size: 0.82rem !important;
         font-weight: {lang_en_weight} !important;
@@ -813,11 +831,14 @@ def inject_styles(theme: str, lang: str):
         transition: color 0.2s ease, opacity 0.2s ease !important;
     }}
 
-    /* ── 2. Theme Toggle: Sun ☀️ (left) and Moon 🌙 (right) ── ONLY inside top bar and sidebar! */
-    .auth-top-bar div[data-testid="column"]:nth-child(3) label[data-baseweb="checkbox"]::before,
-    .auth-top-bar div[data-testid="column"]:nth-child(3) div[data-testid="stToggle"] label::before,
-    .sidebar-top-bar div[data-testid="column"]:last-child label[data-baseweb="checkbox"]::before,
-    .sidebar-top-bar div[data-testid="column"]:last-child div[data-testid="stToggle"] label::before {{
+    /* ── 2. Theme Toggle: Sun ☀️ (left) and Moon 🌙 (right) ── */
+    .main [data-testid="stHorizontalBlock"]:first-of-type div[data-testid="column"]:nth-child(3) label[data-baseweb="checkbox"]::before,
+    .main [data-testid="stHorizontalBlock"]:first-of-type div[data-testid="column"]:nth-child(3) div[data-testid="stToggle"] label::before,
+    [data-testid="stSidebar"] div[data-testid="column"]:last-child label[data-baseweb="checkbox"]::before,
+    [data-testid="stSidebar"] div[data-testid="column"]:last-child div[data-testid="stToggle"] label::before,
+    label[data-baseweb="checkbox"]:has(input[aria-label*="Theme"])::before,
+    div[data-testid="stToggle"]:has(input[aria-label*="Theme"]) label::before,
+    div[data-testid="stCheckbox"]:has(input[aria-label*="Theme"]) label::before {{
         content: "☀️" !important;
         font-size: 0.95rem !important;
         line-height: 1 !important;
@@ -829,10 +850,13 @@ def inject_styles(theme: str, lang: str):
         transition: transform 0.2s ease, opacity 0.2s ease !important;
     }}
 
-    .auth-top-bar div[data-testid="column"]:nth-child(3) label[data-baseweb="checkbox"]::after,
-    .auth-top-bar div[data-testid="column"]:nth-child(3) div[data-testid="stToggle"] label::after,
-    .sidebar-top-bar div[data-testid="column"]:last-child label[data-baseweb="checkbox"]::after,
-    .sidebar-top-bar div[data-testid="column"]:last-child div[data-testid="stToggle"] label::after {{
+    .main [data-testid="stHorizontalBlock"]:first-of-type div[data-testid="column"]:nth-child(3) label[data-baseweb="checkbox"]::after,
+    .main [data-testid="stHorizontalBlock"]:first-of-type div[data-testid="column"]:nth-child(3) div[data-testid="stToggle"] label::after,
+    [data-testid="stSidebar"] div[data-testid="column"]:last-child label[data-baseweb="checkbox"]::after,
+    [data-testid="stSidebar"] div[data-testid="column"]:last-child div[data-testid="stToggle"] label::after,
+    label[data-baseweb="checkbox"]:has(input[aria-label*="Theme"])::after,
+    div[data-testid="stToggle"]:has(input[aria-label*="Theme"]) label::after,
+    div[data-testid="stCheckbox"]:has(input[aria-label*="Theme"]) label::after {{
         content: "🌙" !important;
         font-size: 0.95rem !important;
         line-height: 1 !important;
@@ -1019,7 +1043,6 @@ def render_auth():
     inject_styles(st.session_state.theme, st.session_state.lang)
 
     # Modern Top Controls Bar for Auth Page (Modern Language & Theme Toggle Switches)
-    st.markdown('<div class="auth-top-bar">', unsafe_allow_html=True)
     c_empty, col_lang, col_theme = st.columns([1.8, 1.1, 1.1])
     with col_lang:
         st.toggle(
@@ -1035,7 +1058,6 @@ def render_auth():
             on_change=toggle_theme_auth,
             label_visibility="collapsed",
         )
-    st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
     c1, c2, c3 = st.columns([1, 1.4, 1])
@@ -1093,7 +1115,6 @@ def render_sidebar():
         st.markdown(f'<div class="nutriai-tagline">@{st.session_state.username}</div>', unsafe_allow_html=True)
 
         # ── Modern Language & Theme Toggle Controls ──
-        st.markdown('<div class="sidebar-top-bar">', unsafe_allow_html=True)
         col_lang, col_theme = st.columns(2)
         with col_lang:
             st.toggle(
@@ -1109,7 +1130,6 @@ def render_sidebar():
                 on_change=toggle_theme_sb,
                 label_visibility="collapsed",
             )
-        st.markdown('</div>', unsafe_allow_html=True)
 
         st.divider()
 
